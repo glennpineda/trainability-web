@@ -30,7 +30,7 @@ python3 -m http.server 8000
 
 ## Deploying (FTP)
 
-`./deploy.sh` uploads the site over FTP/FTPS/SFTP using `curl`. It reads `FTP_HOST`, `FTP_USER`, `FTP_PASS`, `FTP_REMOTE_DIR`, `FTP_PROTOCOL` and `FTP_PORT` from a local `.env` file (copy `.env.example`; `.env` is git-ignored) or from environment variables.
+`./deploy.sh --check` logs in and lists the remote folder without uploading. `./deploy.sh` uploads the site over FTP/FTPS/SFTP using `curl`. It reads `FTP_HOST`, `FTP_USER`, `FTP_PASS`, `FTP_REMOTE_DIR`, `FTP_PROTOCOL` and `FTP_PORT` from a local `.env` file (copy `.env.example`; `.env` is git-ignored) or from environment variables.
 
 When working in Claude Code on the web, set these as environment variables in the cloud environment settings rather than in a file — the container is temporary and `.env` is never committed.
 

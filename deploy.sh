@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Upload the website to the FTP server.
+# Usage: ./deploy.sh [--check]
 # Credentials come from .env (if present) or the environment — see .env.example.
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -26,6 +27,15 @@ esac
 
 base="${scheme}://${FTP_HOST}${FTP_PORT:+:$FTP_PORT}/${FTP_REMOTE_DIR#/}"
 base="${base%/}"
+
+# --check: log in and list the remote folder without uploading anything
+if [[ "${1:-}" == "--check" ]]; then
+  echo "Connecting to $FTP_HOST ($FTP_PROTOCOL), listing ${FTP_REMOTE_DIR}"
+  printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | \
+    curl --silent --show-error --fail "${tls[@]}" --config - --list-only "$base/"
+  echo "Connection OK"
+  exit 0
+fi
 
 # Pass credentials via a config on stdin so they never appear in the process list
 for f in "${FILES[@]}"; do
