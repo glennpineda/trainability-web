@@ -1,37 +1,59 @@
 # Trainability Website
 
-Marketing website for Trainability. It is a plain static site — HTML, CSS and a little JavaScript — with no build step or dependencies.
+The website for Trainability, a personal training gym and open gym in San Francisco with two locations, Mission and Potrero Hill. Slogan: **You belong here.**
+
+It is a static site: HTML, CSS and a little JavaScript, assembled by a small Node script with no dependencies. It replaces the WordPress site at trnblt.com, whose content it started from.
 
 ## Structure
 
 ```
-index.html      Page markup and content
-styles.css      All styles (light + dark mode via CSS variables)
-main.js         Mobile nav toggle and footer year
-deploy.sh       FTP deploy script
-.env.example    Template for deploy credentials
-assets/         Logo and other static assets
+src/layout.html   Head, header and footer shared by every page
+src/pages/        One file per page; name.html becomes /name/
+src/site.json     Links and contact details used across pages
+src/team.json     The team, pulled from Studio (npm run team), don't edit by hand
+styles.css        All styles (dark theme, magenta-to-cerulean gradient)
+main.js           Menus, current page, footer year, embedded form height
+assets/           Photos, video, the logo and wordmark the site uses
+assets/team/      Team photos, pulled from Studio
+brand/            Studio, Coach and other logos kept for reference (not uploaded)
+scripts/          build, serve, fetch-team and build-number
+deploy.sh         Builds, then uploads dist/ by FTPS
+dist/             The built site (git-ignored)
 ```
 
-## Running locally
-
-Open `index.html` directly in a browser, or serve the folder:
+## Working on it
 
 ```sh
-python3 -m http.server 8000
-# then visit http://localhost:8000
+npm run build    # build into dist/
+npm run serve    # preview dist/ at http://localhost:8000
+npm run team     # refresh the team from Studio, then build
 ```
 
-## Editing
+Pages start with a settings comment (`title`, `description`). Inside pages and the layout, write links as `{{root}}team/` so they work from any folder, and use `{{phone}}`, `{{membershipUrl}}` and the other keys in `src/site.json`.
 
-- **Content:** all copy lives in `index.html`, one `<section>` per area (Programs, Approach, About, Contact).
-- **Colours:** change the variables at the top of `styles.css` (`--brand`, `--accent`, etc.).
-- **Contact email:** replace `hello@trainability.example` in `index.html`. The form currently uses a `mailto:` action; swap in a form service (e.g. Formspree, Netlify Forms) for real submissions.
+### The team comes from Studio
+
+Names, titles, bios, photos and locations of trainers and staff come from Studio, never from this repo. `npm run team` reads Studio's public team list (`/api/forms/team`): everyone active, as trainers (anyone who trained a client in the past 90 days, or has the trainer role) and staff (everyone else). A person's locations are where they trained clients in those 90 days, or their default place. The team page shows Trainers, then Staff; a section with nobody in it is left out.
+
+Until Studio has `/api/forms/team`, the script falls back to the trainers Studio's PT form offers and their public trainer pages, with no staff.
+
+### Forms and links to Studio
+
+- The personal training page embeds Studio's own inquiry form (`/forms/ptinquiry`); it sizes itself to fit.
+- Buying a membership and reserving a studio still go to GloFox (the CRM) until Studio's join and reserve pages are switched on. Change `membershipUrl` and `reserveUrl` in `src/site.json` then.
+
+## Versioning
+
+Versions work the way they do in Studio: `MAJOR.MINOR.BUILD` plus a code name for each minor version. The site started at **3.0 Ianthine**, build 1. The label shows in the footer, e.g. "3.0.1 · Ianthine".
+
+- **Build** is the commit count since the minor began (`buildBase` in `package.json`). `npm run build-number` shows the next one; `npm run build-number -- --set` writes it into `package.json` and the footer of `index.html`. Run it before a deploy and commit the change.
+- **A new minor** (3.1) is set by hand: change `version` to `3.1.0`, set `buildBase` to the current commit count (`git rev-list --count HEAD`), and give it a code name. Glenn chooses the name; never invent one.
+- Add each release's changes to `CHANGELOG.md` under its heading, e.g. `## 3.0 Ianthine`.
 
 ## Deploying (FTP)
 
-`./deploy.sh --check` logs in and lists the remote folder without uploading. `./deploy.sh` uploads the site over FTP/FTPS/SFTP using `curl`. It reads `FTP_HOST`, `FTP_USER`, `FTP_PASS`, `FTP_REMOTE_DIR`, `FTP_PROTOCOL` and `FTP_PORT` from a local `.env` file (copy `.env.example`; `.env` is git-ignored) or from environment variables.
+`./deploy.sh --check` logs in and lists the remote folder without uploading. `./deploy.sh` builds the site and uploads `dist/` over FTP/FTPS/SFTP using `curl`, all files over one connection. Upload goes to `FTP_REMOTE_DIR`, which is `/`: the FTP login opens in `public_html`, which trainability.org serves (and trnblt.com will). The folders beside the site there (`trnblt.com`, `website2`) are other sites; the deploy never deletes anything except stale files in `assets/team/`. It reads `FTP_HOST`, `FTP_USER`, `FTP_PASS`, `FTP_REMOTE_DIR`, `FTP_PROTOCOL` and `FTP_PORT` from a local `.env` file (copy `.env.example`; `.env` is git-ignored) or from environment variables.
 
 When working in Claude Code on the web, set these as environment variables in the cloud environment settings rather than in a file — the container is temporary and `.env` is never committed.
 
-Any other static host works too — GitHub Pages, Netlify, Vercel or Cloudflare Pages. For GitHub Pages, enable Pages on the repository and point it at the root of the default branch.
+FTPS uses TLS 1.2 on purpose: over TLS 1.3 this host (Pure-FTPd) aborts some uploads with `451 Error during read from data connection` and leaves an empty file behind.

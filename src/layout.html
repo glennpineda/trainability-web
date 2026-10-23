@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}}</title>
+  <meta name="description" content="{{description}}">
+  <meta property="og:title" content="{{title}}">
+  <meta property="og:description" content="{{description}}">
+  <meta property="og:image" content="{{root}}assets/photos/potrero/IMG_2926.jpg">
+  <link rel="icon" href="{{root}}assets/logos/trainability-mark.png" type="image/png">
+  <link rel="apple-touch-icon" href="{{root}}assets/logos/trainability-mark.png">
+  <meta name="theme-color" content="#0a0a0f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&display=swap">
+  <link rel="stylesheet" href="{{root}}styles.css">
+  <script src="{{root}}main.js" defer></script>
+</head>
+<body data-page="{{page}}">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="{{root}}" aria-label="Trainability home">
+        <img src="{{root}}assets/logos/trainability-mark.png" alt="" width="36" height="36">
+        <img class="wordmark" src="{{root}}assets/logos/trainability-wordmark-white.svg" alt="" width="222" height="18">
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Menu</span>
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Main">
+        <div class="nav-group">
+          <button class="nav-group-toggle" aria-expanded="false">Locations</button>
+          <div class="nav-menu">
+            <a href="{{root}}mission/" data-nav="mission">Mission</a>
+            <a href="{{root}}potrero-hill/" data-nav="potrero-hill">Potrero Hill</a>
+          </div>
+        </div>
+        <div class="nav-group">
+          <button class="nav-group-toggle" aria-expanded="false">Services</button>
+          <div class="nav-menu">
+            <a href="{{root}}personal-training/" data-nav="personal-training">Personal training</a>
+            <a href="{{root}}membership/" data-nav="membership">Open gym membership</a>
+            <a href="{{root}}book-a-studio/" data-nav="book-a-studio">Book a studio</a>
+            <a href="{{root}}stretching/" data-nav="stretching">Assisted stretching</a>
+            <a href="{{root}}nutrition/" data-nav="nutrition">Nutrition guidance</a>
+          </div>
+        </div>
+        <a href="{{root}}team/" data-nav="team">Our team</a>
+        <a href="{{root}}contact/" data-nav="contact">Contact</a>
+        <a href="{{root}}membership/#day-pass" class="btn btn-small">Free day pass</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+{{content}}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-about">
+        <a class="brand footer-brand" href="{{root}}" aria-label="Trainability home">
+          <img src="{{root}}assets/logos/trainability-mark.png" alt="" width="28" height="28">
+          <img class="wordmark" src="{{root}}assets/logos/trainability-wordmark-white.svg" alt="" width="173" height="14">
+        </a>
+        <p class="footer-slogan gradient-text">You belong here.</p>
+        <p>Personal training and open gym in San Francisco since 2020.</p>
+        <p><a href="tel:+14155946019">(415) 594-6019</a></p>
+      </div>
+      <div>
+        <h2 class="footer-heading">Mission</h2>
+        <address>1470 Valencia St<br>San Francisco, CA 94110</address>
+        <p>By appointment only.</p>
+      </div>
+      <div>
+        <h2 class="footer-heading">Potrero Hill</h2>
+        <address>180 Pennsylvania Ave<br>San Francisco, CA 94107</address>
+        <p>Mon–Fri 6 AM – 9 PM<br>Sat–Sun 8 AM – 6 PM</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="{{root}}personal-training/">Personal training</a>
+        <a href="{{root}}membership/">Membership</a>
+        <a href="{{root}}book-a-studio/">Book a studio</a>
+        <a href="{{root}}team/">Our team</a>
+        <a href="{{root}}contact/">Contact</a>
+        <a href="{{root}}privacy/">Privacy policy</a>
+      </nav>
+    </div>
+    <div class="container footer-legal">
+      <p>&copy; <span id="year">2026</span> Trainability LLC and Trainability Strength LLC. <span class="site-version">{{version}}</span></p>
+    </div>
+  </footer>
+</body>
+</html>

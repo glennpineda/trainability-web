@@ -1,0 +1,13 @@
+{
+  "name": "trainability-web",
+  "private": true,
+  "version": "3.0.1",
+  "codename": "Ianthine",
+  "buildBase": 2,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "team": "node scripts/fetch-team.mjs",
+    "build-number": "node scripts/build-number.mjs"
+  }
+}
