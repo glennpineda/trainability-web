@@ -49,6 +49,12 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **Holiday hours from Studio.** Read live in the browser from Studio's team
   list: a bar under the header in the 14 days before, a note next to Potrero
   Hill's hours, and "Today we're closed" in the day pass dialog.
+- **Google reviews on the location pages.** "What people say" above Find us
+  on Mission and Potrero Hill: the Google rating, the number of reviews and up
+  to five of them, loaded from Google's Places API on each visit.
+- **Initials for now on the team page** while the photos are redone
+  (`teamPhotos` in site.json); "Our team" (the trainers, with Fuad) and "Our
+  staff".
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
 - **Magenta and cerulean.** The brand colours are magenta (`#c44e9b`, from

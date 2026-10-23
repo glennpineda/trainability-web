@@ -8,22 +8,47 @@ toggle.addEventListener('click', () => {
   nav.classList.toggle('open', !open);
 });
 
-// Locations and Services menus: open on click (and on hover, in the CSS)
+// Locations, Services and Apps menus. Hovering opens one, and it stays open
+// for a moment after the pointer leaves, so it can travel down to the items.
+// A click pins it open until another click, a click elsewhere or Esc. On
+// phones (the ☰ menu) they're always open, so none of this applies.
 const groups = [...document.querySelectorAll('.nav-group')];
+const wide = window.matchMedia('(min-width: 768px)');
+const setOpen = (group, open) => {
+  group.classList.toggle('open', open);
+  group.querySelector('.nav-group-toggle').setAttribute('aria-expanded', String(open));
+  if (!open) delete group.dataset.pinned;
+};
+const closeAll = (except) => groups.forEach((g) => { if (g !== except) setOpen(g, false); });
 for (const group of groups) {
   const button = group.querySelector('.nav-group-toggle');
+  let timer;
+  group.addEventListener('pointerenter', (e) => {
+    if (e.pointerType !== 'mouse' || !wide.matches) return;
+    clearTimeout(timer);
+    closeAll(group);
+    setOpen(group, true);
+  });
+  group.addEventListener('pointerleave', (e) => {
+    if (e.pointerType !== 'mouse' || group.dataset.pinned) return;
+    timer = setTimeout(() => setOpen(group, false), 300);
+  });
   button.addEventListener('click', () => {
-    const open = !group.classList.contains('open');
-    groups.forEach((g) => { g.classList.remove('open'); g.querySelector('.nav-group-toggle').setAttribute('aria-expanded', 'false'); });
-    group.classList.toggle('open', open);
-    button.setAttribute('aria-expanded', String(open));
+    clearTimeout(timer);
+    if (group.dataset.pinned) { setOpen(group, false); return; }
+    closeAll(group);
+    setOpen(group, true);
+    group.dataset.pinned = 'yes';
   });
 }
 document.addEventListener('click', (e) => {
-  if (!e.target.closest('.nav-group')) groups.forEach((g) => { g.classList.remove('open'); g.querySelector('.nav-group-toggle').setAttribute('aria-expanded', 'false'); });
+  if (!e.target.closest('.nav-group')) closeAll();
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') groups.forEach((g) => g.classList.remove('open'));
+  if (e.key !== 'Escape') return;
+  const open = groups.find((g) => g.classList.contains('open'));
+  closeAll();
+  open?.querySelector('.nav-group-toggle').focus();
 });
 
 // Close the mobile menu after choosing a link
@@ -214,4 +239,69 @@ if (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'Mac
       : `Today we're open ${hours(d)}${what}.`;
     el.hidden = false;
   });
+})();
+
+/* Google reviews on the location pages (section.reviews, built when site.json
+   has the key and the place's Google id): the rating, how many reviews, and
+   Google's own pick of up to five, loaded from Google's Places API on each
+   visit, as its terms ask (no copies kept here). The key only works from the
+   website's own addresses. Nothing shows if Google can't be reached. */
+(async () => {
+  const section = document.querySelector('section.reviews[data-google-place]');
+  const key = document.body.dataset.googleKey;
+  if (!section || !key) return;
+  let place;
+  /* For trying it out locally: ?reviews-api=/a-file.json, only on this machine. */
+  const test = new URL(location.href).searchParams.get('reviews-api');
+  const local = test?.startsWith('/') && /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  try {
+    const r = await fetch(local ? test : `https://places.googleapis.com/v1/places/${encodeURIComponent(section.dataset.googlePlace)}?languageCode=en&key=${encodeURIComponent(key)}`, {
+      headers: { 'X-Goog-FieldMask': 'rating,userRatingCount,reviews,googleMapsLinks' },
+    });
+    if (!r.ok) return;
+    place = await r.json();
+  } catch { return; }
+  const reviews = (place.reviews || []).filter((v) => v.text?.text || v.originalText?.text);
+  if (!place.rating || !reviews.length) return;
+
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const stars = (n) => {
+    const s = el('span', 'stars');
+    s.setAttribute('role', 'img');
+    s.setAttribute('aria-label', `${n} out of 5 stars`);
+    s.style.setProperty('--rating', String(n));
+    s.textContent = '★★★★★';
+    return s;
+  };
+
+  const summary = section.querySelector('.reviews-summary');
+  summary.append(stars(place.rating), el('strong', null, place.rating.toFixed(1)),
+    ` · ${place.userRatingCount?.toLocaleString('en-US') || ''} Google reviews`);
+
+  const list = section.querySelector('.reviews-list');
+  reviews.slice(0, 5).forEach((v) => {
+    const card = el('figure', 'review');
+    const quote = el('blockquote', null, (v.text?.text || v.originalText.text).trim());
+    const by = el('figcaption');
+    const a = v.authorAttribution || {};
+    if (a.photoUri) {
+      const img = el('img');
+      img.src = a.photoUri; img.alt = ''; img.width = 40; img.height = 40; img.loading = 'lazy';
+      img.referrerPolicy = 'no-referrer';
+      by.append(img);
+    }
+    const who = el('span', 'review-who');
+    const name = a.uri ? el('a', null, a.displayName || 'A Google user') : el('span', null, a.displayName || 'A Google user');
+    if (a.uri) { name.href = a.uri; name.rel = 'noopener'; name.target = '_blank'; }
+    who.append(name, el('span', 'review-when', v.relativePublishTimeDescription || ''));
+    by.append(who);
+    card.append(stars(v.rating || 5), quote, by);
+    list.append(card);
+  });
+
+  // Google's own links, where it gives them
+  const links = place.googleMapsLinks || {};
+  if (links.reviewsUri) section.querySelector('.reviews-all').href = links.reviewsUri;
+  if (links.writeAReviewUri) section.querySelector('.reviews-write').href = links.writeAReviewUri;
+  section.hidden = false;
 })();

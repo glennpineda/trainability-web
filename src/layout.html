@@ -18,13 +18,14 @@
   <script src="{{root}}main.js" defer></script>
   <script src="{{root}}assets/hexes.js" defer></script>
 </head>
-<body data-page="{{page}}" data-team-api="{{studio}}/api/forms/team">
+<body data-page="{{page}}" data-team-api="{{studio}}/api/forms/team" data-google-key="{{googlePlacesKey}}">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="{{root}}" aria-label="Trainability home">
         <img src="{{root}}assets/logos/trainability-mark.png" alt="" width="36" height="36">
+        <img class="wordmark" src="{{root}}assets/logos/trainability-wordmark-white.svg" alt="" width="222" height="18">
       </a>
       <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only">Menu</span>
@@ -93,11 +94,12 @@
         <a href="{{root}}personal-training/">Personal training</a>
         <a href="{{root}}membership/">Membership</a>
         <a href="{{root}}reserve-a-studio/">Reserve a studio</a>
+        <a href="{{root}}our-story/">Our story</a>
         <a href="{{root}}team/">Our team</a>
         <a href="{{root}}contact/">Contact</a>
         <a href="{{memberPortal}}" data-member-login>Member login</a>
-        <a href="{{root}}studio/">Studio</a>
-        <a href="{{root}}coach/">Coach</a>
+        <a href="{{root}}studio/">Trainability® Studio</a>
+        <a href="{{root}}coach/">Trainability® Coach</a>
         <a href="{{root}}privacy/">Privacy policy</a>
       </nav>
     </div>

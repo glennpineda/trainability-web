@@ -35,13 +35,16 @@ const layout = readFileSync(join(SRC, "layout.html"), "utf8");
 /* The team page's cards, from src/team.json (npm run team pulls it from Studio). */
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const team = JSON.parse(readFileSync(join(SRC, "team.json"), "utf8"));
-/* Partners who aren't in Studio (src/partners.json), shown after Studio's staff. */
+/* Partners who aren't in Studio (src/partners.json), shown in Our team after Studio's trainers. */
 const partners = JSON.parse(readFileSync(join(SRC, "partners.json"), "utf8")).partners;
 /* A place as the filter and the address name it: "Potrero Hill" is potrero-hill. */
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+/* Photos on the team page, or everyone's initials in a circle while the photos
+   are being redone (Glenn, 23 Oct 2026): "teamPhotos" in site.json. */
+const photoOf = (t) => (site.teamPhotos === false ? null : t.photo);
 const cards = (people, root) => people.map((t) => `
       <article class="person" data-places="${(t.allLocations ? team.places || [] : t.locations).map(slug).join(" ")}">
-        ${t.photo ? `<img src="${root}${t.photo}" alt="${esc(t.name)}" width="400" height="400" loading="lazy">` : `<div class="person-initials" aria-hidden="true">${esc(t.name.split(" ").map((w) => w[0]).join("").slice(0, 2))}</div>`}
+        ${photoOf(t) ? `<img src="${root}${photoOf(t)}" alt="${esc(t.name)}" width="400" height="400" loading="lazy">` : `<div class="person-initials" aria-hidden="true">${esc(t.name.split(" ").map((w) => w[0]).join("").slice(0, 2))}</div>`}
         <div class="person-body">
           <h3>${esc(t.name)}</h3>
           ${t.title ? `<p class="person-title">${esc(t.title)}</p>` : ""}
@@ -62,7 +65,7 @@ const teamSection = (people, root, { id, eyebrow, heading, intro, alt, after = "
     <section class="section${alt ? " section-alt" : ""}" id="${id}">
       <div class="container">
         <header class="section-head">
-          <p class="eyebrow gradient-text">${eyebrow}</p>
+          ${eyebrow ? `<p class="eyebrow gradient-text">${eyebrow}</p>` : ""}
           <h2>${heading}</h2>
           <p>${intro}</p>${after}
         </header>
@@ -92,7 +95,29 @@ const hoursLines = (week) => {
 };
 const potrero = hoursLines(team.hours?.["Potrero Hill"] || site.potreroHours);
 
+/* Google reviews for a location, above its Find us: an empty section main.js
+   fills from Google (Places API) on each visit. Left out until site.json has
+   the key and the place's Google id. */
+const reviews = (place, name) => site.googlePlacesKey && place ? `
+    <section class="section reviews" data-google-place="${esc(place)}" hidden>
+      <div class="container">
+        <header class="section-head reviews-head">
+          <h2>What people say</h2>
+          <p class="reviews-summary"></p>
+        </header>
+        <div class="reviews-list"></div>
+        <div class="hero-actions reviews-actions">
+          <a class="btn btn-ghost reviews-all" href="https://search.google.com/local/reviews?placeid=${esc(place)}">See all reviews on Google</a>
+          <a class="btn reviews-write" href="https://search.google.com/local/writereview?placeid=${esc(place)}">Review ${esc(name)} on Google</a>
+        </div>
+        <p class="reviews-credit">Reviews from Google Maps</p>
+      </div>
+    </section>
+` : "";
+
 const generated = {
+  missionReviews: () => reviews(site.missionGooglePlace, "the Mission"),
+  potreroReviews: () => reviews(site.potreroGooglePlace, "Potrero Hill"),
   /* "Mon–Fri 6 AM – 9 PM · Sat–Sun 8 AM – 6 PM", on one line, on separate lines,
      or as the day pass dialog's boxes. */
   potreroHours: () => potrero.map((l) => `${l.days} ${l.time}`).join(" · "),
@@ -104,14 +129,15 @@ const generated = {
       <div><dt>${l.days}</dt><dd>${l.time}</dd></div>`).join(""),
 
   /* The jump buttons, only once there are staff to jump to. */
-  teamJump: () => team.staff.length + partners.length ? `
+  teamJump: () => team.staff.length ? `
         <div class="hero-actions">
-          <a href="#trainers" class="btn btn-ghost">Trainers</a>
-          <a href="#staff" class="btn btn-ghost">Staff</a>
+          <a href="#trainers" class="btn btn-ghost">Our team</a>
+          <a href="#staff" class="btn btn-ghost">Our staff</a>
         </div>` : "",
-  trainerSection: (root) => teamSection(team.trainers, root, { id: "trainers", eyebrow: "Trainers", heading: "Our trainers",
+  /* Our team: the trainers, with Fuad (partners.json) (Glenn, 23 Oct 2026). */
+  trainerSection: (root) => teamSection([...team.trainers, ...partners], root, { id: "trainers", heading: "Our team",
     intro: "Certified, independent and experienced: matched to your goals, at the location where they train.", after: teamFilter() }),
-  staffSection: (root) => teamSection([...team.staff, ...partners], root, { id: "staff", eyebrow: "Staff", heading: "Our staff", alt: true,
+  staffSection: (root) => teamSection(team.staff, root, { id: "staff", heading: "Our staff", alt: true,
     intro: "The people who keep every visit seamless and personal." }),
 };
 

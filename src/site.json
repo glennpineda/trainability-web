@@ -1,5 +1,9 @@
 {
   "studio": "https://trainabilitystudio.com",
+  "teamPhotos": false,
+  "googlePlacesKey": "AIzaSyAO5kUn_1TVWGPX0w_zYxiQo0yw2X13Ul4",
+  "missionGooglePlace": "ChIJHZNgXft_j4ARiI7icWWin7M",
+  "potreroGooglePlace": "ChIJTXoXzEJ_j4ARjuQPWZ_jM7Y",
   "memberPortal": "https://trainabilitystudio.com/me",
   "coachApp": "https://trainabilitycoach.com",
   "ptForm": "https://trainabilitystudio.com/forms/ptinquiry",
