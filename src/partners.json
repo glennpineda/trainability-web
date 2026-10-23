@@ -1,0 +1,14 @@
+{
+  "about": "People who work with Trainability but aren't in Studio, shown with the staff on the team page. Everyone else comes from Studio (src/team.json). Fuad's photo is from fuadfit.com, used with his OK (Glenn, 23 Oct 2026).",
+  "partners": [
+    {
+      "name": "Fuad Al Qudsi",
+      "title": "Registered Dietitian Nutritionist · FuadFit",
+      "bio": "Fuad, RDN, CPT, partners with Trainability on nutrition. He specializes in adult and older adult weight management, sports nutrition, and conditions linked to body weight, such as pre-diabetes, diabetes, high cholesterol and high blood pressure. Trainability members get a complimentary 30-minute consultation.",
+      "locations": [],
+      "allLocations": true,
+      "photo": "assets/partners/fuad-al-qudsi.jpg",
+      "link": { "href": "{{root}}nutrition/", "label": "Nutrition guidance" }
+    }
+  ]
+}

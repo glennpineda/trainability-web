@@ -1,6 +1,10 @@
 {
   "from": "https://trainabilitystudio.com/api/forms/team",
-  "fetchedAt": "2026-10-23T19:18:38.441Z",
+  "fetchedAt": "2026-10-23T19:37:17.863Z",
+  "places": [
+    "Mission",
+    "Potrero Hill"
+  ],
   "trainers": [
     {
       "name": "Anka Urbahn",

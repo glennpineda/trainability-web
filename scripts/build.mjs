@@ -35,39 +35,83 @@ const layout = readFileSync(join(SRC, "layout.html"), "utf8");
 /* The team page's cards, from src/team.json (npm run team pulls it from Studio). */
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const team = JSON.parse(readFileSync(join(SRC, "team.json"), "utf8"));
+/* Partners who aren't in Studio (src/partners.json), shown after Studio's staff. */
+const partners = JSON.parse(readFileSync(join(SRC, "partners.json"), "utf8")).partners;
+/* A place as the filter and the address name it: "Potrero Hill" is potrero-hill. */
+const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const cards = (people, root) => people.map((t) => `
-      <article class="person">
+      <article class="person" data-places="${(t.allLocations ? team.places || [] : t.locations).map(slug).join(" ")}">
         ${t.photo ? `<img src="${root}${t.photo}" alt="${esc(t.name)}" width="400" height="400" loading="lazy">` : `<div class="person-initials" aria-hidden="true">${esc(t.name.split(" ").map((w) => w[0]).join("").slice(0, 2))}</div>`}
         <div class="person-body">
           <h3>${esc(t.name)}</h3>
           ${t.title ? `<p class="person-title">${esc(t.title)}</p>` : ""}
           ${t.locations.length ? `<p class="person-where">${t.locations.map(esc).join(" · ")}</p>` : ""}
           ${t.bio ? `<p>${esc(t.bio)}</p>` : ""}
+          ${t.link ? `<a class="link-arrow" href="${t.link.href.replace("{{root}}", root)}">${esc(t.link.label)}</a>` : ""}
         </div>
       </article>`).join("");
+/* All / Mission / Potrero Hill, in Studio's order, under the trainers' heading.
+   main.js makes it work; without script it stays hidden and everyone shows. */
+const teamFilter = () => `
+          <div class="team-filter" role="group" aria-label="Show the team at" hidden>
+            <button type="button" data-filter="all" aria-pressed="true">All locations</button>${(team.places || []).map((p) => `
+            <button type="button" data-filter="${slug(p)}" aria-pressed="false">${esc(p)}</button>`).join("")}
+          </div>`;
 /* A section of the team page, left out when Studio lists nobody for it. */
-const teamSection = (people, root, { id, eyebrow, heading, intro, alt }) => people.length ? `
+const teamSection = (people, root, { id, eyebrow, heading, intro, alt, after = "" }) => people.length ? `
     <section class="section${alt ? " section-alt" : ""}" id="${id}">
       <div class="container">
         <header class="section-head">
           <p class="eyebrow gradient-text">${eyebrow}</p>
           <h2>${heading}</h2>
-          <p>${intro}</p>
+          <p>${intro}</p>${after}
         </header>
         <div class="team">${cards(people, root)}
         </div>
       </div>
     </section>` : "";
+/* Potrero Hill's opening hours: Studio's (npm run team) when it has them, else
+   site.json's. Mission is by appointment, so it has none on the site. */
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const clock = (m) => {
+  const h = Math.floor(m / 60) % 24, min = m % 60;
+  return `${h % 12 || 12}${min ? `:${String(min).padStart(2, "0")}` : ""} ${h < 12 ? "AM" : "PM"}`;
+};
+/* Days with the same hours, Monday first, run together: "Mon–Fri", "6 AM – 9 PM". */
+const hoursLines = (week) => {
+  const order = [1, 2, 3, 4, 5, 6, 0], same = (a, b) => String(week[a]) === String(week[b]);
+  const runs = [];
+  for (const d of order) {
+    const last = runs.at(-1);
+    if (last && same(last.to, d)) last.to = d; else runs.push({ from: d, to: d });
+  }
+  return runs.map(({ from, to }) => ({
+    days: from === to ? DAYS[from] : `${DAYS[from]}–${DAYS[to]}`,
+    time: week[from] ? `${clock(week[from][0])} – ${clock(week[from][1])}` : "Closed",
+  }));
+};
+const potrero = hoursLines(team.hours?.["Potrero Hill"] || site.potreroHours);
+
 const generated = {
+  /* "Mon–Fri 6 AM – 9 PM · Sat–Sun 8 AM – 6 PM", on one line, on separate lines,
+     or as the day pass dialog's boxes. */
+  potreroHours: () => potrero.map((l) => `${l.days} ${l.time}`).join(" · "),
+  potreroHoursBr: () => potrero.map((l) => `${l.days} ${l.time}`).join("<br>"),
+  /* Where Potrero Hill's holiday hours go when there are any coming up: filled
+     in the browser from Studio (main.js), since they change from day to day. */
+  potreroSpecial: () => `<p class="hours-special" data-special-for="Potrero Hill" hidden></p>`,
+  potreroHoursList: () => potrero.map((l) => `
+      <div><dt>${l.days}</dt><dd>${l.time}</dd></div>`).join(""),
+
   /* The jump buttons, only once there are staff to jump to. */
-  teamJump: () => team.staff.length ? `
+  teamJump: () => team.staff.length + partners.length ? `
         <div class="hero-actions">
           <a href="#trainers" class="btn btn-ghost">Trainers</a>
           <a href="#staff" class="btn btn-ghost">Staff</a>
         </div>` : "",
   trainerSection: (root) => teamSection(team.trainers, root, { id: "trainers", eyebrow: "Trainers", heading: "Our trainers",
-    intro: "Certified, independent and experienced: matched to your goals, at the location where they train." }),
-  staffSection: (root) => teamSection(team.staff, root, { id: "staff", eyebrow: "Staff", heading: "Our staff", alt: true,
+    intro: "Certified, independent and experienced: matched to your goals, at the location where they train.", after: teamFilter() }),
+  staffSection: (root) => teamSection([...team.staff, ...partners], root, { id: "staff", eyebrow: "Staff", heading: "Our staff", alt: true,
     intro: "The people who keep every visit seamless and personal." }),
 };
 

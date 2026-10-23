@@ -86,7 +86,7 @@ p { margin: 0 0 1em; }
 /* Outline in the gradient: the surface fills the padding box, the gradient shows in the border. */
 .btn-ghost { background: linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box; color: var(--text); }
 .btn-ghost:hover { background: var(--gradient-button) border-box; color: var(--on-gradient); }
-.btn-small { padding: 0.5em 1.1em; font-size: 0.85rem; }
+.btn-small { padding: 0.5em 1.1em; font-size: 0.85rem; white-space: nowrap; }
 
 /* Text filled with the gradient; the plain colour is the fallback. */
 .gradient-text {
@@ -96,6 +96,11 @@ p { margin: 0 0 1em; }
   -webkit-text-fill-color: transparent;
 }
 
+/* The drifting hexagons (assets/hexes.js, from Studio): fixed behind every page.
+   Content sits above them; the heroes have a solid ground, so they cover them. */
+.hexes { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+main, .site-footer { position: relative; z-index: 1; }
+
 /* Header */
 .site-header {
   position: sticky; top: 0; z-index: 50;
@@ -104,15 +109,17 @@ p { margin: 0 0 1em; }
   border-bottom: 1px solid var(--border);
 }
 .site-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--gradient); }
-.header-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; height: 64px; }
 .brand { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; }
-/* The TRAINABILITY® wordmark from Studio's lettering (assets/logos). */
-.brand .wordmark { height: 18px; width: auto; }
-@media (max-width: 380px) { .brand .wordmark { height: 15px; } }
+/* The TRAINABILITY® wordmark from Studio's lettering (assets/logos): in the
+   footer, and large on the home page's hero; the header has just the mark. */
 .footer-brand .wordmark { height: 14px; }
+.hero-brand { display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 2vw, 24px); margin-bottom: clamp(24px, 3vw, 36px); }
+.hero-mark { height: clamp(96px, 12vw, 168px); width: auto; filter: drop-shadow(0 8px 24px rgb(0 0 0 / 0.45)); }
+.hero-wordmark { display: block; height: clamp(28px, 6.5vw, 88px); width: auto; max-width: 100%; object-fit: contain; }
 
-.site-nav { display: flex; align-items: center; gap: 24px; }
-.site-nav a:not(.btn), .nav-group-toggle {
+.site-nav { display: flex; align-items: center; gap: 20px; }
+.site-nav a:not(.btn), .nav-group-toggle { white-space: nowrap;
   color: var(--text); text-decoration: none; font: inherit; font-weight: 500;
   text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.9rem;
   background: none; border: 0; padding: 0; cursor: pointer;
@@ -129,12 +136,32 @@ p { margin: 0 0 1em; }
 .nav-menu a { padding: 10px 12px; border-radius: 8px; }
 .site-nav .nav-menu a:hover { background: var(--bg-alt); }
 .nav-group.open .nav-menu { display: flex; }
-@media (hover: hover) and (min-width: 961px) { .nav-group:hover .nav-menu { display: flex; } }
+@media (hover: hover) and (min-width: 768px) { .nav-group:hover .nav-menu { display: flex; } }
+
+/* Tablets and small laptops: the whole menu still fits on one line, smaller
+   and closer together.
+   Below 768px it folds into the ☰ menu. */
+@media (min-width: 768px) and (max-width: 1240px) {
+  .header-inner { gap: 20px; }
+  .site-nav { gap: 16px; }
+  .site-nav a:not(.btn), .nav-group-toggle { font-size: 0.8rem; letter-spacing: 0.04em; }
+  .site-nav .btn-small { padding: 0.5em 0.95em; font-size: 0.78rem; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container.header-inner { padding: 0 16px; }
+  .header-inner { gap: 14px; }
+  .site-nav { gap: 13px; }
+  .site-nav a:not(.btn), .nav-group-toggle { font-size: 0.74rem; letter-spacing: 0.02em; }
+  .nav-group-toggle::after { margin-left: 3px; }
+  .site-nav a.nav-login { gap: 4px; }
+  .nav-login svg { width: 15px; height: 15px; }
+  .site-nav .btn-small { padding: 0.5em 0.8em; font-size: 0.72rem; }
+}
 
 .nav-toggle { display: none; background: none; border: 0; padding: 8px; cursor: pointer; }
 .nav-toggle .bar { display: block; width: 22px; height: 2px; margin: 5px 0; background: var(--text); transition: transform 0.2s, opacity 0.2s; }
 
-@media (max-width: 960px) {
+@media (max-width: 767px) {
   .nav-toggle { display: block; }
   .site-nav {
     position: absolute; top: 64px; left: 0; right: 0;
@@ -162,7 +189,11 @@ p { margin: 0 0 1em; }
   min-height: min(86vh, 760px); display: grid; align-items: end;
   padding: clamp(96px, 14vw, 160px) 0 clamp(56px, 8vw, 96px);
 }
+/* Heroes fade into the page over their last stretch, so there's no hard line
+   where the hexagons begin. Only the backgrounds fade: the words stay solid. */
+:root { --hero-fade: linear-gradient(to bottom, #000 0%, #000 calc(100% - 200px), transparent 100%); }
 .hero-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.hero-media, .hero::before, .page-hero::before { -webkit-mask-image: var(--hero-fade); mask-image: var(--hero-fade); }
 .hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background:
@@ -170,8 +201,11 @@ p { margin: 0 0 1em; }
     radial-gradient(ellipse at top right, color-mix(in srgb, var(--cerulean) 35%, transparent), transparent 60%),
     radial-gradient(ellipse at bottom left, color-mix(in srgb, var(--magenta) 35%, transparent), transparent 55%);
 }
-.hero-content { max-width: 52rem; margin-left: 0; }
-.hero h1 { font-size: clamp(3.5rem, 11vw, 8rem); }
+.hero-content { max-width: 64rem; margin-left: auto; margin-right: auto; text-align: center; }
+.hero-content .lead { margin-left: auto; margin-right: auto; }
+.hero-content .hero-actions { justify-content: center; }
+/* The slogan, under the name: smaller than the wordmark, so the name leads. */
+.hero h1 { font-size: clamp(2rem, 6vw, 4.5rem); }
 .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.85rem; font-weight: 700; }
 .lead { font-size: 1.2rem; color: var(--muted); max-width: 38em; }
 .hero .lead, .page-hero .lead { color: var(--text); opacity: 0.88; }
@@ -181,25 +215,31 @@ p { margin: 0 0 1em; }
 .page-hero {
   position: relative; isolation: isolate;
   padding: clamp(88px, 12vw, 150px) 0 clamp(48px, 7vw, 80px);
+}
+.page-hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
   background:
     linear-gradient(to top, var(--bg) 0%, color-mix(in srgb, var(--bg) 62%, transparent) 55%, color-mix(in srgb, var(--bg) 75%, transparent) 100%),
     var(--hero-image, none) center / cover no-repeat,
     radial-gradient(ellipse at top right, color-mix(in srgb, var(--cerulean) 35%, transparent), transparent 60%),
-    radial-gradient(ellipse at bottom left, color-mix(in srgb, var(--magenta) 30%, transparent), transparent 55%);
+    radial-gradient(ellipse at bottom left, color-mix(in srgb, var(--magenta) 30%, transparent), transparent 55%),
+    var(--bg);
 }
 .page-hero-short { padding-top: clamp(64px, 9vw, 110px); }
 .page-hero h1 { font-size: clamp(3rem, 8vw, 5.75rem); }
 
 /* Sections */
 .section { padding: clamp(56px, 8vw, 96px) 0; }
-.section-alt { background: var(--bg-alt); }
+.section-alt { background: color-mix(in srgb, var(--bg-alt) 72%, transparent); }
 .section-head { max-width: 40em; margin-bottom: 40px; }
 .section-head p { color: var(--muted); font-size: 1.1rem; }
 .center { text-align: center; margin-top: 40px; }
 .center .lead { margin: 0 auto 20px; }
+.center .hero-actions { justify-content: center; }
 .footnote { color: var(--muted); font-size: 0.9rem; margin-top: 20px; }
 
-.prose { max-width: 46rem; }
+/* Comfortable line length, left-aligned with the other sections (not a narrow centred column). */
+.prose > * { max-width: 46rem; }
 .prose h2 { margin-top: 1.4em; }
 .prose h2:first-child { margin-top: 0; }
 .prose h3 { margin-top: 1.2em; }
@@ -220,6 +260,7 @@ a.service, a.location-card { color: inherit; text-decoration: none; }
 a.service:hover, a.location-card:hover { border-color: color-mix(in srgb, var(--magenta-bright) 50%, var(--border)); transform: translateY(-2px); }
 .service, .fact, .price, .reason { padding: 28px; }
 .service p, .fact p, .price p, .reason p { color: var(--muted); }
+.service p { overflow-wrap: anywhere; }   /* a long email address wraps inside its card */
 .services { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .contact-options { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 
@@ -282,17 +323,35 @@ address { font-style: normal; }
 }
 .steps p { color: var(--muted); margin: 0; }
 
+/* A partner beside their text (Fuad on the nutrition page). */
+.partner { display: grid; gap: 40px; align-items: center; }
+@media (min-width: 800px) { .partner { grid-template-columns: minmax(240px, 340px) 1fr; } }
+.partner-photo { margin: 0; }
+.partner-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 30%; border-radius: var(--radius); border: 2px solid transparent; background: var(--gradient) border-box; }
+.partner-photo figcaption { margin-top: 12px; font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 1.2rem; line-height: 1.2; }
+.partner-photo figcaption span { color: var(--magenta-bright); font-size: 0.95rem; letter-spacing: 0.08em; }
+
 /* Team: from Studio (scripts/fetch-team.mjs). */
+.team-filter { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.team-filter[hidden], .person[hidden], .section[hidden], .team-empty[hidden], .hero-actions a[hidden] { display: none; }
+.team-filter button {
+  font: inherit; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.6em 1.2em; border-radius: 999px; cursor: pointer; color: var(--text);
+  border: 2px solid transparent; background: linear-gradient(var(--bg), var(--bg)) padding-box, var(--gradient) border-box;
+}
+.team-filter button[aria-pressed="true"] { background: var(--gradient-button) border-box; color: var(--on-gradient); }
+.team-empty { color: var(--muted); padding-bottom: 48px; }
 .team { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); align-items: start; }
 .person { overflow: hidden; display: flex; flex-direction: column; }
-.person img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.person img { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: center 25%; }
 /* No photo in Studio: their initials in a circle, not a big empty square. */
 .person-initials { display: grid; place-items: center; width: 88px; height: 88px; margin: 24px 24px 0; border-radius: 50%; background: var(--gradient-button); color: var(--on-gradient); font-family: var(--display); font-size: 2.2rem; font-weight: 800; }
 .person-body { padding: 20px 24px 24px; }
 .person-body h3 { margin-bottom: 0.2em; }
 .person-title { color: var(--magenta-bright); font-weight: 600; margin-bottom: 0.2em; }
 .person-where { color: var(--muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.08em; }
-.person-body p:last-child { color: var(--muted); font-size: 0.95rem; margin-bottom: 0; }
+.person-body p:last-child, .person-body p:nth-last-child(2) { color: var(--muted); font-size: 0.95rem; }
+.person-body p:last-child { margin-bottom: 0; }
 
 /* Studio's PT inquiry form, embedded (docs/FORMS-API.md in Studio). */
 .pt-start { display: grid; gap: 40px; align-items: start; }
@@ -301,7 +360,7 @@ address { font-style: normal; }
 .embed iframe { display: block; width: 100%; border: 0; min-height: 600px; background: #fff; }
 
 /* Footer */
-.site-footer { border-top: 1px solid var(--border); padding: 48px 0 24px; color: var(--muted); font-size: 0.95rem; background: var(--bg-alt); }
+.site-footer { border-top: 1px solid var(--border); padding: 48px 0 24px; color: var(--muted); font-size: 0.95rem; background: color-mix(in srgb, var(--bg-alt) 80%, transparent); }
 .footer-grid { display: grid; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 .footer-grid p, .footer-grid address { margin: 0 0 8px; }
 .footer-heading { font-size: 1.1rem; color: var(--text); margin-bottom: 10px; }
@@ -312,3 +371,123 @@ address { font-style: normal; }
 .footer-legal { border-top: 1px solid var(--border); margin-top: 32px; padding-top: 20px; font-size: 0.85rem; }
 .footer-legal p { margin: 0; }
 .site-version { margin-left: 8px; white-space: nowrap; font-size: 0.8rem; opacity: 0.7; }
+
+/* Dialogs (layout.html): the free day pass and member login. */
+.panel {
+  width: min(520px, calc(100vw - 32px)); padding: 32px 28px 28px; margin: auto;
+  color: var(--text); background: var(--surface); border: 2px solid transparent; border-radius: var(--radius);
+  background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--gradient) border-box;
+  box-shadow: var(--shadow), var(--glow);
+}
+.panel::backdrop { background: rgb(5 5 10 / 0.72); backdrop-filter: blur(4px); }
+.panel h2 { font-size: clamp(2rem, 6vw, 2.6rem); }
+.panel p { color: color-mix(in srgb, var(--text) 85%, var(--muted)); }
+.panel-close { position: absolute; top: 10px; right: 12px; }
+.panel-close button { background: none; border: 0; color: var(--muted); font-size: 1.8rem; line-height: 1; cursor: pointer; padding: 4px 8px; }
+.panel-close button:hover { color: var(--text); }
+
+/* The free day pass dialog, opened by [data-day-pass] buttons. */
+.day-pass-hours { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0 12px; }
+.day-pass-hours div { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; }
+.day-pass-hours dt { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 1.2rem; }
+.day-pass-hours dd { margin: 2px 0 0; color: var(--muted); white-space: nowrap; }
+.day-pass address a { display: inline-flex; align-items: flex-start; gap: 8px; color: var(--muted); text-decoration: none; }
+.day-pass address a span { text-decoration: underline; text-underline-offset: 3px; }
+.day-pass address .pin { flex: none; width: 20px; height: 20px; margin-top: 2px; fill: var(--magenta-bright); }
+.day-pass address a:hover { color: var(--text); }
+.day-pass-map { display: block; width: 100%; height: 200px; margin-top: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-alt); }
+.day-pass .hero-actions { margin-top: 20px; justify-content: center; }
+.day-pass .hero-actions form { margin: 0; }
+
+/* The member login dialog, opened by [data-member-login] links. */
+.member-login-form { margin-top: 20px; }
+.member-login-form label { display: block; font-weight: 600; margin-bottom: 6px; }
+.member-login-form input {
+  width: 100%; padding: 12px 14px; font: inherit; color: var(--text);
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px;
+}
+.member-login-form input:focus { outline: 2px solid var(--cerulean-bright); outline-offset: 1px; border-color: transparent; }
+.member-login-form input[aria-invalid="true"] { border-color: var(--magenta-bright); }
+.panel .member-login-problem { color: var(--magenta-bright); font-size: 0.9rem; margin: 8px 0 0; }
+.member-login-send { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.member-login-send .btn { flex: 1 1 180px; }
+.panel .member-login-note { font-size: 0.9rem; color: var(--muted); margin: 14px 0 0; }
+.panel .member-login-join { font-size: 0.9rem; margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--border); }
+.member-login-join a { color: var(--magenta-bright); }
+
+/* Member login in the header, with a person icon. */
+.site-nav a.nav-login { display: inline-flex; align-items: center; gap: 6px; }
+.nav-login svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* The app pages (studio.html, coach.html): the app's own logo over the heading, all centred. */
+.app-logo { display: block; height: clamp(72px, 12vw, 128px); width: auto; max-width: 100%; object-fit: contain; margin-bottom: 32px; }
+.app-hero h1 { font-size: clamp(2.6rem, 6.5vw, 4.75rem); }
+.app-hero .container { text-align: center; }
+.app-hero .app-logo { margin-left: auto; margin-right: auto; }
+.app-hero .lead { margin-left: auto; margin-right: auto; }
+.app-hero .hero-actions { justify-content: center; }
+[data-page="studio"] .section-head, [data-page="coach"] .section-head { text-align: center; margin-left: auto; margin-right: auto; }
+[data-page="studio"] .section-head p, [data-page="coach"] .section-head p { margin-left: auto; margin-right: auto; }
+.app-note { color: var(--muted); font-size: 0.95rem; margin-top: 16px; }
+.app-note a { color: var(--magenta-bright); }
+
+/* The app pages' hero background: three of the app's screens, tilted and
+   floating on a slow magenta and cerulean glow, behind a dark wash so the
+   words stay easy to read. The screenshots come from the apps' own manuals
+   (npm run app-shots). Still when the device asks for less motion. */
+.app-hero { overflow: hidden; padding-bottom: clamp(72px, 10vw, 128px); }
+.app-showcase { position: absolute; inset: 0; z-index: -1; pointer-events: none; -webkit-mask-image: var(--hero-fade); mask-image: var(--hero-fade); }
+.app-showcase::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 45%, color-mix(in srgb, var(--bg) 88%, transparent) 0%, color-mix(in srgb, var(--bg) 62%, transparent) 55%, color-mix(in srgb, var(--bg) 30%, transparent) 100%),
+    linear-gradient(to bottom, color-mix(in srgb, var(--bg) 40%, transparent), transparent 30%);
+}
+.app-glow, .app-glow::before {
+  position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.8;
+  animation: app-glow 16s ease-in-out infinite alternate;
+}
+.app-glow { width: 55vmax; height: 55vmax; left: -12vmax; top: -18vmax; background: radial-gradient(circle, var(--magenta), transparent 65%); }
+.app-glow::before { content: ""; width: 50vmax; height: 50vmax; left: 55vmax; top: 22vmax; background: radial-gradient(circle, var(--cerulean), transparent 65%); animation-duration: 20s; animation-direction: alternate-reverse; }
+.app-hero-coach .app-glow { background: radial-gradient(circle, var(--cerulean), transparent 65%); }
+.app-hero-coach .app-glow::before { background: radial-gradient(circle, var(--magenta), transparent 65%); }
+@keyframes app-glow { from { transform: translate(0, 0) scale(1); } to { transform: translate(8vmax, 6vmax) scale(1.15); } }
+
+.app-phones {
+  position: absolute; left: 50%; top: 50%;
+  display: flex; align-items: center; gap: clamp(48px, 13vw, 230px);
+  transform: translate(-50%, -46%) perspective(1800px) rotateX(40deg) rotateZ(-26deg);
+  transform-style: preserve-3d;
+}
+.app-phone {
+  flex: none; width: clamp(170px, 20vw, 270px); aspect-ratio: 560 / 1100; overflow: hidden;
+  border-radius: clamp(22px, 2.6vw, 34px); border: clamp(5px, 0.6vw, 8px) solid #1c1b26;
+  background: #1c1b26;
+  box-shadow: 0 30px 60px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.06), 0 0 60px color-mix(in srgb, var(--magenta) 30%, transparent);
+  animation: app-float 9s ease-in-out infinite;
+}
+.app-hero-coach .app-phone { box-shadow: 0 30px 60px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.06), 0 0 60px color-mix(in srgb, var(--cerulean) 35%, transparent); }
+.app-phone img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.app-phone-1 { animation-delay: -3s; }
+.app-phone-2 { animation-delay: -6s; margin-top: -30%; opacity: 0.7; }
+.app-phone-3 { animation-delay: -1.5s; margin-top: 24%; }
+@keyframes app-float { 0%, 100% { transform: translateZ(0) translateY(0); } 50% { transform: translateZ(40px) translateY(-18px); } }
+@media (prefers-reduced-motion: reduce) { .app-glow, .app-glow::before, .app-phone { animation: none; } }
+@media (max-width: 640px) { .app-phones { gap: 28px; transform: translate(-50%, -44%) perspective(1200px) rotateX(40deg) rotateZ(-26deg); } }
+
+/* Holiday hours from Studio (main.js): a bar under the header, and a note next
+   to the opening hours, shown only when some are coming up. */
+.holiday-bar {
+  position: relative; z-index: 2; text-align: center; font-size: 0.9rem;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--magenta) 26%, var(--bg)), color-mix(in srgb, var(--cerulean) 26%, var(--bg)));
+  border-bottom: 1px solid var(--border);
+}
+.holiday-bar .container { padding-top: 10px; padding-bottom: 10px; }
+.holiday-bar p { margin: 0; }
+.holiday-bar strong { color: var(--magenta-bright); }
+.hours-special { margin: 6px 0 0; font-size: 0.9rem; color: var(--magenta-bright); }
+.lead + .hours-special { font-size: 1rem; }
+.panel .day-pass-today {
+  margin: 0 0 12px; padding: 10px 14px; border-radius: 8px; font-weight: 600;
+  color: var(--text); background: color-mix(in srgb, var(--magenta) 22%, transparent); border: 1px solid color-mix(in srgb, var(--magenta) 45%, transparent);
+}

@@ -1,14 +1,14 @@
 <!--
-title: Book a Studio – Trainability
+title: Reserve a Studio – Trainability
 description: Reserve a private studio at Trainability Potrero Hill. Complimentary for active monthly members.
 -->
     <section class="page-hero" style="--hero-image: url('{{root}}assets/photos/potrero/IMG_2929.jpg')">
       <div class="container">
         <p class="eyebrow gradient-text">Potrero Hill</p>
-        <h1>Book a studio</h1>
+        <h1>Reserve a studio</h1>
         <p class="lead">A private space of your own: more focus, more privacy, a better workout. Included with your membership.</p>
         <div class="hero-actions">
-          <a href="{{reserveUrl}}" class="btn">Reserve a studio</a>
+          <a href="#reserve" class="btn">Reserve a studio</a>
         </div>
       </div>
     </section>
@@ -22,8 +22,17 @@ description: Reserve a private studio at Trainability Potrero Hill. Complimentar
           <li>Focus, with fewer distractions</li>
           <li>A more effective routine</li>
         </ul>
-        <h2>Who can book</h2>
-        <p>Booking a studio is a complimentary benefit for active monthly members. Not a member yet? <a href="{{root}}membership/">See membership</a>.</p>
-        <a href="{{reserveUrl}}" class="btn">Reserve a studio</a>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="reserve">
+      <div class="container">
+        <header class="section-head">
+          <h2>Reserve a studio</h2>
+          <p>Reserving a studio is for active monthly members at Potrero Hill, and it's included in your membership. Not a member yet? <a href="{{root}}membership/">Become a member</a>.</p>
+        </header>
+        <div class="embed embed-reserve">
+          <iframe data-form="reserve" src="{{reserveForm}}" title="Reserve a studio" height="820" loading="lazy"></iframe>
+        </div>
       </div>
     </section>

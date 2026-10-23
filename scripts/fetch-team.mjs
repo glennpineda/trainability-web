@@ -17,8 +17,10 @@
  * trainers its PT form offers (/api/forms/ptinquiry) and each one's public
  * trainer page (/api/trainer-page/<slug>), with no staff.
  *
- * Writes src/team.json and assets/team/; the build turns them into the team
- * page. Run it before a build when the team changes in Studio.
+ * Writes src/team.json (with Studio's places, in its order, for the team page's
+ * filter, and each place's opening hours where Studio has them) and
+ * assets/team/; the build turns them into the team page and the hours shown
+ * across the site. Run it before a build when the team or hours change in Studio.
  */
 import { writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -55,6 +57,13 @@ const person = async (p) => ({
   photo: await savePhoto(p.photo, p.name),
 });
 
+/* A place's week as Studio gives it (seven days, Sunday first, each
+   { open, close } in minutes past midnight or null for closed) made into
+   [open, close] pairs. Null when Studio has no hours for it, or doesn't send any. */
+const week = (hours) => Array.isArray(hours) && hours.length === 7
+  ? hours.map((d) => (d ? [Number(d.open), Number(d.close)] : null))
+  : null;
+
 /* Studio's team list: trainers and staff, as Studio sorts them. */
 async function fromTeamList() {
   const d = await json("/api/forms/team");
@@ -62,7 +71,8 @@ async function fromTeamList() {
   for (const p of d.trainers) trainers.push(await person(p));
   const staff = [];
   for (const p of d.staff) staff.push(await person(p));
-  return { source: "/api/forms/team", trainers, staff };
+  const hours = Object.fromEntries(d.places.map((p) => [p.name, week(p.hours)]).filter(([, w]) => w));
+  return { source: "/api/forms/team", places: d.places.map((p) => p.name), hours, trainers, staff };
 }
 
 /* Before Studio had the team list: trainers only, from the PT form and trainer pages. */
@@ -82,7 +92,7 @@ async function fromTrainerPages() {
       photo: page?.hasPhoto ? `/api/trainer-page/${slug}/photo` : null,
     }));
   }
-  return { source: "/api/forms/ptinquiry + /api/trainer-page", trainers, staff: [] };
+  return { source: "/api/forms/ptinquiry + /api/trainer-page", places: order, trainers, staff: [] };
 }
 
 rmSync(PHOTOS, { recursive: true, force: true });
@@ -98,6 +108,7 @@ try {
 }
 
 writeFileSync(join(ROOT, "src", "team.json"),
-  JSON.stringify({ from: STUDIO + team.source, fetchedAt: new Date().toISOString(), trainers: team.trainers, staff: team.staff }, null, 2) + "\n");
+  JSON.stringify({ from: STUDIO + team.source, fetchedAt: new Date().toISOString(), places: team.places, hours: team.hours || {}, trainers: team.trainers, staff: team.staff }, null, 2) + "\n");
 console.log(`${team.trainers.length} trainers: ${team.trainers.map((t) => t.name).join(", ")}`);
+console.log(`Hours from Studio: ${Object.keys(team.hours || {}).join(", ") || "none (the site's own are used)"}`);
 console.log(`${team.staff.length} staff${team.staff.length ? ": " + team.staff.map((t) => t.name).join(", ") : ""}`);

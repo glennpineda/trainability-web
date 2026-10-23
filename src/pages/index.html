@@ -7,12 +7,16 @@ description: Personal training in private microgyms in the Mission, and an open 
         <source src="{{root}}assets/video/hero.mp4" type="video/mp4">
       </video>
       <div class="container hero-content">
-        <p class="eyebrow gradient-text">Trainability · San Francisco · Since 2020</p>
+        <div class="hero-brand">
+          <img class="hero-mark" src="{{root}}assets/logos/trainability-mark.png" alt="" width="300" height="300">
+          <img class="hero-wordmark" src="{{root}}assets/logos/trainability-wordmark-white.svg" alt="Trainability" width="222" height="18">
+        </div>
+        <p class="eyebrow gradient-text">San Francisco · Since 2020</p>
         <h1>You belong <span class="gradient-text">here.</span></h1>
         <p class="lead">Personal training and an open gym, minus the big-box feeling. Two neighborhood gyms where everyone knows your name.</p>
         <div class="hero-actions">
           <a href="{{root}}personal-training/" class="btn">Get a trainer</a>
-          <a href="{{root}}membership/#day-pass" class="btn btn-ghost">Free day pass</a>
+          <a href="{{root}}membership/#day-pass" class="btn btn-ghost" data-day-pass>Free day pass</a>
         </div>
       </div>
     </section>
@@ -61,8 +65,8 @@ description: Personal training in private microgyms in the Mission, and an open 
             <h3>Open gym</h3>
             <p>Work out on your own at Potrero Hill, with a complimentary dietitian consultation.</p>
           </a>
-          <a class="service" href="{{root}}book-a-studio/">
-            <h3>Book a studio</h3>
+          <a class="service" href="{{root}}reserve-a-studio/">
+            <h3>Reserve a studio</h3>
             <p>A private microgym of your own, included with your membership.</p>
           </a>
           <a class="service" href="{{root}}stretching/">
@@ -110,7 +114,8 @@ description: Personal training in private microgyms in the Mission, and an open 
           <div>
             <dt>Potrero Hill</dt>
             <dd>180 Pennsylvania Ave, San Francisco, CA 94107</dd>
-            <dd>Mon–Fri 6 AM – 9 PM · Sat–Sun 8 AM – 6 PM</dd>
+            <dd>{{potreroHours}}</dd>
+            <dd>{{potreroSpecial}}</dd>
           </div>
         </dl>
       </div>

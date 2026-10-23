@@ -8,6 +8,7 @@
     "build": "node scripts/build.mjs",
     "serve": "node scripts/serve.mjs",
     "team": "node scripts/fetch-team.mjs",
+    "app-shots": "node scripts/app-shots.mjs",
     "build-number": "node scripts/build-number.mjs"
   }
 }
