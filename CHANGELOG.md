@@ -76,6 +76,13 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   Studio's Join page (trainabilitystudio.com/forms/join) instead of Glofox.
 - **Old links still work.** `/t2/bookstudio` forwards to Reserve a studio;
   more old addresses can be listed under `redirects` in src/site.json.
+- **Found in search, shared well.** Each page has a canonical address and
+  link-preview tags with a whole image address (previews in iMessage,
+  WhatsApp and Slack show the gym). The build writes sitemap.xml and
+  robots.txt, and the home and location pages carry the gyms' business
+  details for Google (addresses, phone, Potrero Hill's hours from Studio).
+- **A friendly "page not found".** src/pages/404.html, written as 404.shtml
+  and 404.html, with links that start from the site's top.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
 - **Magenta and cerulean.** The brand colours are magenta (`#c44e9b`, from

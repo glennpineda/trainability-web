@@ -148,10 +148,72 @@ const generated = {
     intro: "The people who keep every visit seamless and personal." }),
 };
 
+/* What search engines and link previews read (scripts/build.mjs fills
+   {{seo}} in the head). Every address is whole (https://trainability.org/…):
+   a preview card from iMessage, WhatsApp or Slack can't follow a relative
+   one. */
+const SITE = site.siteUrl.replace(/\/$/, "");
+const pageUrl = (name) => `${SITE}/${name === "index" ? "" : `${name}/`}`;
+const SHARE_IMAGE = `${SITE}/assets/photos/potrero/IMG_2926.jpg`;
+
+/* Google's business details (schema.org), so search can show the gyms'
+   addresses, phone and Potrero Hill's opening hours (from Studio). Mission is
+   by appointment only, so it has no hours here. No reviews: Google ignores a
+   business's own. */
+const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const hhmm = (m) => `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+const openingHours = (week) => week.flatMap((d, i) => d ? [{
+  "@type": "OpeningHoursSpecification", dayOfWeek: DAY_NAMES[i], opens: hhmm(d[0]), closes: hhmm(d[1]),
+}] : []);
+const ORG = {
+  "@type": "Organization", "@id": `${SITE}/#org`, name: "Trainability", url: `${SITE}/`,
+  logo: `${SITE}/assets/logos/trainability-mark.png`, telephone: "+1-415-594-6019", slogan: "You belong here.",
+};
+const GYMS = {
+  "potrero-hill": {
+    "@type": "ExerciseGym", "@id": `${SITE}/potrero-hill/#gym`, name: "Trainability Potrero Hill",
+    url: `${SITE}/potrero-hill/`, image: SHARE_IMAGE, telephone: "+1-415-594-6019", priceRange: "$$",
+    description: "Open gym with personal training and reservable private studios in Potrero Hill, San Francisco.",
+    address: { "@type": "PostalAddress", streetAddress: "180 Pennsylvania Ave", addressLocality: "San Francisco", addressRegion: "CA", postalCode: "94107", addressCountry: "US" },
+    openingHoursSpecification: openingHours(team.hours?.["Potrero Hill"] || site.potreroHours),
+    hasMap: `https://www.google.com/maps/search/?api=1&query=Trainability%20Potrero%20Hill&query_place_id=${site.potreroGooglePlace}`,
+    parentOrganization: { "@id": `${SITE}/#org` },
+  },
+  mission: {
+    "@type": "ExerciseGym", "@id": `${SITE}/mission/#gym`, name: "Trainability Mission",
+    url: `${SITE}/mission/`, image: `${SITE}/assets/photos/mission/site-studio-gallery1-1-1024x684.jpg`,
+    telephone: "+1-415-594-6019", priceRange: "$$",
+    description: "Private one-on-one personal training studios in the Mission, San Francisco. By appointment only.",
+    address: { "@type": "PostalAddress", streetAddress: "1470 Valencia St", addressLocality: "San Francisco", addressRegion: "CA", postalCode: "94110", addressCountry: "US" },
+    hasMap: `https://www.google.com/maps/search/?api=1&query=Trainability%20Mission&query_place_id=${site.missionGooglePlace}`,
+    parentOrganization: { "@id": `${SITE}/#org` },
+  },
+};
+const structuredData = (name) => {
+  const graph = name === "index" ? [ORG, GYMS.mission, GYMS["potrero-hill"]] : GYMS[name] ? [ORG, GYMS[name]] : null;
+  return graph ? `\n  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": graph })}</script>` : "";
+};
+const seo = (name, meta) => {
+  const hidden = meta.noindex === "yes";
+  return [
+    hidden ? `  <meta name="robots" content="noindex">` : `  <link rel="canonical" href="${pageUrl(name)}">`,
+    `  <meta property="og:type" content="website">`,
+    `  <meta property="og:site_name" content="Trainability">`,
+    `  <meta property="og:title" content="${esc(meta.title)}">`,
+    `  <meta property="og:description" content="${esc(meta.description)}">`,
+    hidden ? "" : `  <meta property="og:url" content="${pageUrl(name)}">`,
+    `  <meta property="og:image" content="${SHARE_IMAGE}">`,
+    `  <meta property="og:image:width" content="1024">`,
+    `  <meta property="og:image:height" content="768">`,
+    `  <meta name="twitter:card" content="summary_large_image">`,
+  ].filter(Boolean).join("\n") + structuredData(name);
+};
+
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 
 const pages = readdirSync(join(SRC, "pages")).filter((f) => f.endsWith(".html"));
+const listed = [];
 for (const file of pages) {
   const raw = readFileSync(join(SRC, "pages", file), "utf8");
   const head = raw.match(/^<!--([\s\S]*?)-->\s*/);
@@ -162,18 +224,33 @@ for (const file of pages) {
   for (const key of ["title", "description"]) if (!meta[key]) throw new Error(`${file}: no ${key}`);
 
   const name = file.replace(/\.html$/, "");
-  const root = name === "index" ? "./" : "../";
+  /* The not-found page is shown at whatever address was mistyped, so its
+     links start from the site's top (/) rather than ../ */
+  const notFound = name === "404";
+  const root = name === "index" ? "./" : notFound ? "/" : "../";
   const fill = (s) => s.replace(/\{\{(\w+)\}\}/g, (all, k) => {
-    const v = generated[k] ? generated[k](root) : { root, version, page: name, ...stamps, ...meta, ...site }[k];
+    const v = generated[k] ? generated[k](root) : { root, version, page: name, seo: seo(name, meta), ...stamps, ...meta, ...site }[k];
     if (v === undefined) throw new Error(`${file}: unknown {{${k}}}`);
     return v;
   });
 
   const html = fill(layout.replace("{{content}}", raw.slice(head[0].length).trimEnd()));
+  /* 404.shtml is the name this host (cPanel) shows for an address it can't
+     find; 404.html in case it ever looks for that. */
+  if (notFound) { for (const f of ["404.html", "404.shtml"]) writeFileSync(join(OUT, f), html); continue; }
   const dir = name === "index" ? OUT : join(OUT, name);
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, "index.html"), html);
+  if (meta.noindex !== "yes") listed.push(pageUrl(name));
 }
+
+/* For search engines: every page's address, and where to find that list. */
+writeFileSync(join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${listed.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}
+</urlset>
+`);
+writeFileSync(join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
 /* Old links still in use (site.json "redirects": old path -> page): a tiny
    page at the old address that forwards at once, keeping any ?query and
