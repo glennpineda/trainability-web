@@ -16,11 +16,10 @@ list and go in CHANGELOG.md.
 - **Coach page wording.** src/pages/coach.html is a draft from Coach's manual;
   replace it with the "What this is" section from Coach's sign-in page once
   that's live at trainabilitycoach.com.
-- **Studio 3.1.1846 to go live.** It's merged (opening hours, holiday hours,
-  By appointment only, the website sign-in link) but trainabilitystudio.com
-  still runs 3.1.1831. Once it's live: run `npm run team`, check Potrero
-  Hill's hours, deploy; check a holiday shows in the bar; try Member login
-  end to end. The website side of all of it is built.
+- **Studio hours check-ups.** Studio 3.1.1846 is live and the site reads its
+  hours. Still to do: Glenn ticks "By appointment only" for Mission in Studio;
+  try Member login end to end; set a test holiday in Studio and check it shows
+  in the bar.
 
 ## Open questions
 
