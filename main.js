@@ -63,7 +63,10 @@ nav.addEventListener('click', (e) => {
 const page = document.body.dataset.page;
 document.querySelectorAll(`[data-nav="${page}"]`).forEach((a) => a.setAttribute('aria-current', 'page'));
 
+// This year, wherever a page shows it (the footer, Our story's "Beyond 2026"),
+// so it rolls over on 1 January without a new build
 document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
 // Studio's embedded forms (personal training, reserve a studio, contact) say how tall they
 // are, so each frame fits with no second scrollbar

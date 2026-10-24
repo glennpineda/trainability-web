@@ -229,7 +229,7 @@ for (const file of pages) {
   const notFound = name === "404";
   const root = name === "index" ? "./" : notFound ? "/" : "../";
   const fill = (s) => s.replace(/\{\{(\w+)\}\}/g, (all, k) => {
-    const v = generated[k] ? generated[k](root) : { root, version, page: name, seo: seo(name, meta), ...stamps, ...meta, ...site }[k];
+    const v = generated[k] ? generated[k](root) : { root, version, page: name, seo: seo(name, meta), thisYear: String(new Date().getFullYear()), ...stamps, ...meta, ...site }[k];
     if (v === undefined) throw new Error(`${file}: unknown {{${k}}}`);
     return v;
   });
