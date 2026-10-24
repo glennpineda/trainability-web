@@ -12,10 +12,13 @@ list and go in CHANGELOG.md.
 - **Coach page wording.** src/pages/coach.html is a draft from Coach's manual;
   replace it with the "What this is" section from Coach's sign-in page once
   that's live at trainabilitycoach.com.
-- **Studio hours check-ups.** Studio 3.1.1846 is live and the site reads its
-  hours. Still to do: Glenn ticks "By appointment only" for Mission in Studio;
-  try Member login end to end; set a test holiday in Studio and check it shows
-  in the bar.
+- **Studio hours check-ups.** Mission is "By appointment only" in Studio
+  (done). Thanksgiving (26 Nov, closed) is set for Potrero Hill: the holiday
+  bar shows it from 12 Nov, two weeks ahead; check it then. Glenn tries
+  Member login end to end.
+- **Real tests on the live site.** One message through the Contact form, one
+  Cancel membership request (both to Concierge › Messages, with the receipt
+  email), and the online Join up to the payment step.
 
 ## Open questions
 
@@ -30,7 +33,4 @@ list and go in CHANGELOG.md.
 
 ## Next deploy
 
-- The Contact page (contact form and Cancel membership) and the privacy
-  page: Studio's contact form is live (3.1.1865). After deploying, Glenn
-  sends one real message and one real cancellation to check they land in
-  Concierge › Messages.
+- Nothing queued.
