@@ -65,7 +65,7 @@ document.querySelectorAll(`[data-nav="${page}"]`).forEach((a) => a.setAttribute(
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Studio's embedded forms (personal training, reserve a studio) say how tall they
+// Studio's embedded forms (personal training, reserve a studio, contact) say how tall they
 // are, so each frame fits with no second scrollbar
 addEventListener('message', (e) => {
   if (e.origin !== 'https://trainabilitystudio.com' || e.data?.source !== 'trainability-form') return;
@@ -153,6 +153,65 @@ if (login?.showModal) {
     // In the # so the address never reaches a server log
     const hand = new URLSearchParams({ email: address, send: e.submitter?.value === 'text' ? 'text' : 'email' });
     location.href = form.action + '#' + hand;
+  });
+}
+
+// Contact page: "Cancel membership" opens a dialog that sends the request to
+// Studio's contact form (topic "cancel"), where the front desk answers it.
+const cancel = document.querySelector('dialog.cancel-membership');
+if (cancel?.showModal) {
+  const form = cancel.querySelector('form.cancel-form');
+  const problem = cancel.querySelector('.panel-problem');
+  const send = form.querySelector('button[type="submit"]');
+  let openedAt = 0;
+  const say = (text, field) => {
+    problem.textContent = text;
+    problem.hidden = false;
+    if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
+  };
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-cancel-membership]')) return;
+    e.preventDefault();
+    openedAt = Date.now();
+    cancel.showModal();
+  });
+  cancel.addEventListener('click', (e) => { if (e.target === cancel) cancel.close(); });
+  form.addEventListener('input', (e) => { problem.hidden = true; e.target.removeAttribute('aria-invalid'); });
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = form.elements;
+    const value = (name) => f[name].value.trim();
+    if (!value('firstName')) return say('Enter your first name.', f.firstName);
+    if (!value('lastName')) return say('Enter your last name.', f.lastName);
+    if (!/^\S+@\S+\.\S+$/.test(value('email'))) return say('Enter the email address on your membership.', f.email);
+    if (value('phone').replace(/\D/g, '').length < 10) return say('Enter the phone number on your membership.', f.phone);
+    if (!f.agree.checked) return say('Tick "I understand" to send your request.', f.agree);
+    send.disabled = true;
+    try {
+      const res = await fetch(cancel.dataset.api, {
+        method: 'POST',
+        credentials: 'omit',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: value('firstName'), lastName: value('lastName'),
+          email: value('email'), phone: value('phone'),
+          topic: 'cancel', message: '', openedAt, website: f.website.value,
+        }),
+      });
+      const answer = await res.json().catch(() => ({}));
+      if (res.ok) {
+        cancel.querySelector('.cancel-ask').hidden = true;
+        cancel.querySelector('.cancel-done').hidden = false;
+        return;
+      }
+      if (res.status === 400 && answer.error) return say(answer.error, f[answer.field]);
+      if (res.status === 429) return say('Too many requests from here just now. Please try again in a few minutes, or call us.');
+      say('We couldn\'t send your request. Please try again, or call us at the front desk.');
+    } catch {
+      say('We couldn\'t send your request. Please check your connection and try again, or call us.');
+    } finally {
+      send.disabled = false;
+    }
   });
 }
 
@@ -315,4 +374,42 @@ if (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'Mac
   };
   window.addEventListener('scroll', check, { passive: true });
   check();
+})();
+
+// Our story: each chapter of the timeline rises in as it comes into view
+(() => {
+  const line = document.querySelector('.timeline');
+  if (!line || !('IntersectionObserver' in window)) return;
+  const seen = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add('tl-in'); seen.unobserve(e.target); }
+  }), { rootMargin: '0px 0px -12% 0px' });
+  line.classList.add('tl-ready');
+  line.querySelectorAll('.tl-item').forEach((item) => seen.observe(item));
+})();
+
+// Pick your gym: each card's photos take turns, a few seconds each. The cards
+// change at different moments, and only while they're on screen.
+(() => {
+  const shows = [...document.querySelectorAll('[data-slideshow]')];
+  if (!shows.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const every = 5000;
+  shows.forEach((show, n) => {
+    const shots = [...show.querySelectorAll('img')];
+    if (shots.length < 2) return;
+    let at = 0, timer = null;
+    const next = () => {
+      shots[at].classList.remove('on');
+      at = (at + 1) % shots.length;
+      const img = shots[at];
+      img.loading = 'eager';
+      shots[(at + 1) % shots.length].loading = 'eager'; // the one after, ready in time
+      img.classList.add('on');
+    };
+    const start = () => {
+      if (timer) return;
+      timer = setTimeout(function tick() { next(); timer = setTimeout(tick, every); }, every / 2 + n * (every / 2));
+    };
+    const stop = () => { clearTimeout(timer); timer = null; };
+    new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(show);
+  });
 })();

@@ -17,16 +17,34 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
           <p>Tell us about your goals and we'll match you with the right trainer.</p>
           <span class="link-arrow">Personal training form</span>
         </a>
+        <a class="service" href="#cancel" data-cancel-membership>
+          <h3>Canceling your membership?</h3>
+          <p>Send us your request and we'll take care of it. Please give us 14 days' notice before your next payment date.</p>
+          <span class="link-arrow">Cancel membership</span>
+        </a>
         <a class="service" href="{{phoneHref}}">
           <h3>Call us</h3>
           <p>{{phone}}</p>
+          <p>Our front desk at Potrero Hill. They're happy to answer questions about the Mission too.</p>
           <span class="link-arrow">Call now</span>
         </a>
-        <a class="service" href="mailto:{{email}}">
-          <h3>Email us</h3>
-          <p>{{email}}</p>
-          <span class="link-arrow">Send an email</span>
+        <a class="service" href="#message">
+          <h3>Send us a message</h3>
+          <p>Write to us here and we'll get back to you by email.</p>
+          <span class="link-arrow">Message us</span>
         </a>
+      </div>
+    </section>
+
+    <section class="section" id="message">
+      <div class="container two-col">
+        <div>
+          <h2>Send us a message</h2>
+          <p>Ask us anything: membership, training, reserving a studio, or a business opportunity. Our front desk reads every message and gets back to you by email as soon as we can.</p>
+        </div>
+        <div class="embed">
+          <iframe data-form="contact" src="{{contactForm}}" title="Send us a message" height="760" loading="lazy"></iframe>
+        </div>
       </div>
     </section>
 
@@ -49,3 +67,47 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
         </div>
       </div>
     </section>
+
+    <!-- Canceling a membership: the card above opens this, and it's sent to
+         Studio's contact form with the topic "cancel" (main.js), where the
+         front desk sees it in Concierge. -->
+    <dialog class="panel cancel-membership" id="cancel" aria-labelledby="cancel-title" data-api="{{studio}}/api/forms/contact">
+      <form method="dialog" class="panel-close"><button aria-label="Close">×</button></form>
+      <div class="cancel-ask">
+        <p class="eyebrow gradient-text">Members</p>
+        <h2 id="cancel-title">Cancel membership</h2>
+        <p>Enter your name, email and phone number as they are on your membership, so we can find you.</p>
+        <form class="panel-form cancel-form" novalidate>
+          <div class="panel-form-row">
+            <div>
+              <label for="cancel-first">First name</label>
+              <input id="cancel-first" name="firstName" autocomplete="given-name" required>
+            </div>
+            <div>
+              <label for="cancel-last">Last name</label>
+              <input id="cancel-last" name="lastName" autocomplete="family-name" required>
+            </div>
+          </div>
+          <label for="cancel-email">Email</label>
+          <input id="cancel-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          <label for="cancel-phone">Phone</label>
+          <input id="cancel-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+          <div class="cancel-policy">
+            <p>Please give us at least <strong>14 days' notice</strong> before your next payment date.</p>
+            <p>Membership fees already charged aren't refunded, so if you ask after your next payment date, that payment stays.</p>
+          </div>
+          <label class="panel-check"><input type="checkbox" name="agree" required> I understand</label>
+          <!-- For bots: people never see it, and a filled one is dropped -->
+          <input class="panel-trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="panel-problem" role="alert" hidden></p>
+          <button class="btn" type="submit">Send cancellation request</button>
+        </form>
+      </div>
+      <div class="cancel-done" hidden>
+        <p class="eyebrow gradient-text">Request sent</p>
+        <h2>We've got it</h2>
+        <p>Our front desk will confirm your cancellation by email. If you have questions in the meantime, call us at <a href="{{phoneHref}}">{{phone}}</a>.</p>
+        <form method="dialog" class="hero-actions"><button class="btn">Close</button></form>
+      </div>
+    </dialog>
+

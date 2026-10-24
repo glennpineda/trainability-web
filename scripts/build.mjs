@@ -17,15 +17,22 @@
  * with {{root}} in front ({{root}}team/), which becomes the right number of
  * "../" for the page's depth — the site then works from any folder on the host.
  *
- * styles.css, main.js and assets/ are copied as they are.
+ * styles.css, main.js and assets/ are copied as they are. Pages link to
+ * styles.css, main.js and hexes.js with a fingerprint of the file
+ * (styles.css?v=1a2b3c4d), so a browser fetches the new one as soon as it
+ * changes instead of keeping an old copy next to a new page.
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, cpSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "src");
 const OUT = join(ROOT, "dist");
+
+const fingerprint = (f) => createHash("sha256").update(readFileSync(join(ROOT, f))).digest("hex").slice(0, 8);
+const stamps = { cssV: fingerprint("styles.css"), jsV: fingerprint("main.js"), hexesV: fingerprint("assets/hexes.js") };
 
 const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8"));
 const version = pkg.codename ? `${pkg.version} · ${pkg.codename}` : pkg.version;
@@ -157,7 +164,7 @@ for (const file of pages) {
   const name = file.replace(/\.html$/, "");
   const root = name === "index" ? "./" : "../";
   const fill = (s) => s.replace(/\{\{(\w+)\}\}/g, (all, k) => {
-    const v = generated[k] ? generated[k](root) : { root, version, page: name, ...meta, ...site }[k];
+    const v = generated[k] ? generated[k](root) : { root, version, page: name, ...stamps, ...meta, ...site }[k];
     if (v === undefined) throw new Error(`${file}: unknown {{${k}}}`);
     return v;
   });

@@ -55,6 +55,23 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **Initials for now on the team page** while the photos are redone
   (`teamPhotos` in site.json); "Our team" (the trainers, with Fuad) and "Our
   staff".
+- **A quieter first screen.** The home hero is the name and "You belong
+  here." only, with a bouncing chevron that fades once you scroll; the intro
+  and buttons sit just below it.
+- **Pick your gym slideshows.** Each location card fades through four photos
+  of its gym, each slowly zooming; still with reduced motion.
+- **A note from Glenn.** The home page's "Not a big-box gym" section has a
+  welcome from the owner, with his photo, his signature and a link to Our
+  story.
+- **Our story as a timeline.** The chapters branch left and right off one
+  magenta-to-cerulean line, each with its year or label and an icon.
+- **Contact form and Cancel membership.** The Contact page embeds Studio's
+  contact form, which lands in Concierge › Messages, and a Cancel membership
+  dialog posts straight to it. The business email is no longer shown anywhere
+  on the site; the privacy page points to the form.
+- **Fresh styles after every change.** Pages link to styles.css, main.js and
+  hexes.js with a fingerprint of the file, so browsers never mix a new page
+  with old styles.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
 - **Magenta and cerulean.** The brand colours are magenta (`#c44e9b`, from

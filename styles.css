@@ -308,11 +308,28 @@ a.service:hover, a.location-card:hover { border-color: color-mix(in srgb, var(--
 .service p, .fact p, .price p, .reason p { color: var(--muted); }
 .service p { overflow-wrap: anywhere; }   /* a long email address wraps inside its card */
 .services { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
-.contact-options { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.contact-options { display: grid; gap: 20px; }
+/* Four cards: one column on phones, two by two, then all four in a row. */
+@media (min-width: 600px) { .contact-options { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .contact-options { grid-template-columns: repeat(4, 1fr); } }
 
 .locations { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .location-card { display: flex; flex-direction: column; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); transition: border-color 0.2s, transform 0.2s; }
 .location-card img { aspect-ratio: 16 / 10; object-fit: cover; width: 100%; }
+/* Pick your gym: each card fades through a few photos of its gym (main.js
+   moves .on along), every photo slowly zooming and drifting. With reduced
+   motion it's the first photo, still. */
+.location-shots { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+.location-shots img { position: absolute; inset: 0; height: 100%; opacity: 0; transition: opacity 1.4s ease; }
+.location-shots img.on { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .location-shots img { animation: shot-drift 16s ease-in-out infinite alternate; }
+  .location-shots img:nth-child(2) { transform-origin: 20% 30%; animation-delay: -4s; }
+  .location-shots img:nth-child(3) { transform-origin: 80% 70%; animation-delay: -8s; }
+  .location-shots img:nth-child(4) { transform-origin: 30% 80%; animation-delay: -12s; }
+  .location-shots img:nth-child(1) { transform-origin: 70% 40%; }
+}
+@keyframes shot-drift { from { transform: scale(1.02); } to { transform: scale(1.14); } }
 .location-body { padding: 24px 28px 28px; }
 .location-body p { color: var(--muted); }
 .location-tag { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; }
@@ -357,6 +374,32 @@ address { font-style: normal; }
 @media (min-width: 900px) { .belong-inner { grid-template-columns: 1.1fr 1fr; } }
 .belong-inner img { border-radius: var(--radius); width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .belong p:not(.lead):not(.eyebrow) { color: var(--muted); }
+/* Glenn's welcome, beside "Not a big-box gym": his photo, a short note, his
+   signature and the way into Our story. */
+.welcome {
+  margin: 0; padding: clamp(24px, 4vw, 36px); border-radius: var(--radius);
+  border: 2px solid transparent;
+  background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--gradient) border-box;
+  box-shadow: var(--shadow), var(--glow);
+}
+.welcome-top { display: flex; align-items: center; gap: 18px; }
+.belong-inner .welcome-top img {
+  flex: none; width: 96px; height: 96px; aspect-ratio: 1; border-radius: 50%; object-fit: cover;
+  border: 3px solid transparent; background: var(--gradient) border-box;
+}
+.welcome-top .eyebrow { margin: 0; }
+.welcome blockquote { margin: 20px 0 0; }
+.belong .welcome blockquote p { color: color-mix(in srgb, var(--text) 88%, var(--muted)); font-size: 1.08rem; line-height: 1.7; }
+.welcome blockquote p:first-child { margin-top: 0; }
+.welcome figcaption { margin-top: 12px; display: flex; flex-direction: column; }
+.welcome-signature {
+  display: block; width: 190px; aspect-ratio: 480 / 210; margin: 4px 0 6px -6px;
+  background: var(--gradient-bright);
+  -webkit-mask: url("assets/photos/glenn-signature.png") center / contain no-repeat;
+  mask: url("assets/photos/glenn-signature.png") center / contain no-repeat;
+}
+.welcome-name { font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; font-size: 1.1rem; margin-top: 2px; }
+.welcome .link-arrow { margin-top: 16px; }
 
 .visit { display: grid; gap: 32px; align-items: center; }
 @media (min-width: 900px) { .visit { grid-template-columns: 1fr 1fr; } }
@@ -443,6 +486,27 @@ address { font-style: normal; }
 .panel-close { position: absolute; top: 10px; right: 12px; }
 .panel-close button { background: none; border: 0; color: var(--muted); font-size: 1.8rem; line-height: 1; cursor: pointer; padding: 4px 8px; }
 .panel-close button:hover { color: var(--text); }
+
+/* Forms inside a dialog: the cancel membership request. */
+.panel-form { margin-top: 20px; }
+.panel-form label { display: block; font-weight: 600; margin: 14px 0 6px; }
+.panel-form input:not([type="checkbox"]) {
+  width: 100%; padding: 12px 14px; font: inherit; color: var(--text);
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px;
+}
+.panel-form input:focus { outline: 2px solid var(--cerulean-bright); outline-offset: 1px; border-color: transparent; }
+.panel-form input[aria-invalid="true"] { border-color: var(--magenta-bright); }
+.panel-form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0 12px; }
+.panel-form .panel-check { display: flex; align-items: center; gap: 10px; font-weight: 600; margin: 14px 0 0; cursor: pointer; }
+.panel-check input { width: 20px; height: 20px; accent-color: var(--magenta); }
+.panel-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.panel .panel-problem { color: var(--magenta-bright); font-size: 0.9rem; margin: 12px 0 0; }
+.panel-form .btn { width: 100%; margin-top: 18px; }
+.cancel-policy { margin-top: 18px; padding: 14px 16px; background: var(--bg-alt); border: 1px solid var(--border); border-left: 3px solid var(--magenta); border-radius: 8px; }
+.panel .cancel-policy p { margin: 0; font-size: 0.95rem; }
+.panel .cancel-policy p + p { margin-top: 8px; }
+.cancel-done .hero-actions { justify-content: center; }
+.cancel-done a { color: var(--magenta-bright); }
 
 /* The free day pass dialog, opened by [data-day-pass] buttons. */
 .day-pass-hours { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0 12px; }
@@ -577,3 +641,74 @@ address { font-style: normal; }
 /* Our story: the founder's sign-off. */
 .story p { font-size: 1.08rem; line-height: 1.75; }
 .story-sign { font-family: var(--display); font-size: 1.4rem !important; text-transform: uppercase; letter-spacing: 0.04em; color: var(--magenta-bright) !important; margin-top: 1.4em; }
+
+/* Our story as a timeline: one line down the middle, magenta at the top
+   turning cerulean at the bottom, each chapter branching off it, left and
+   right in turn, with its icon on the other side. Under 900px the line runs
+   down the left and every chapter sits to its right. */
+.timeline { --line: 4px; --icon: 72px; position: relative; list-style: none; margin: 0 auto; padding: 24px 0 8px; max-width: 72rem; }
+.timeline::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: var(--line); translate: -50% 0;
+  border-radius: var(--line); background: linear-gradient(to bottom, var(--magenta-bright), var(--cerulean-bright));
+}
+.tl-item {
+  --c: color-mix(in oklab, var(--magenta-bright), var(--cerulean-bright) var(--p));
+  position: relative; display: grid; grid-template-columns: 1fr 56px 1fr;
+  grid-template-areas: "head node icon" "body . .";
+}
+.tl-item + .tl-item { margin-top: clamp(48px, 7vw, 88px); }
+.tl-item:nth-child(even) { grid-template-areas: "icon node head" ". . body"; }
+.tl-head { grid-area: head; align-self: end; padding-bottom: 12px; border-bottom: 2px solid var(--c); }
+.tl-when { margin: 0 0 4px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.85rem; color: var(--c); }
+.tl-head h2 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.tl-body { grid-area: body; padding-top: 18px; }
+.tl-body p { color: color-mix(in srgb, var(--text) 85%, var(--muted)); }
+.tl-body p:first-child { margin-top: 0; }
+.tl-item:nth-child(odd) .tl-head, .tl-item:nth-child(odd) .tl-body { padding-right: clamp(8px, 2vw, 24px); }
+.tl-item:nth-child(even) .tl-head, .tl-item:nth-child(even) .tl-body { padding-left: clamp(8px, 2vw, 24px); }
+/* Where the chapter meets the line: a ring in its colour, the branch going
+   through it to the icon. */
+.tl-node { grid-area: node; align-self: end; position: relative; height: 2px; background: var(--c); }
+.tl-node::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; translate: -50% -50%;
+  border-radius: 50%; background: var(--bg); border: 5px solid var(--c);
+  box-shadow: 0 0 0 5px var(--bg), 0 0 18px color-mix(in srgb, var(--c) 60%, transparent);
+}
+.tl-icon { grid-area: icon; align-self: end; position: relative; display: flex; height: 2px; align-items: center; }
+.tl-item:nth-child(odd) .tl-icon { padding-left: clamp(32px, 9vw, 120px); }
+.tl-item:nth-child(even) .tl-icon { justify-content: flex-end; padding-right: clamp(32px, 9vw, 120px); }
+.tl-icon::before {
+  content: ""; position: absolute; top: 0; height: 2px; background: var(--c);
+  width: calc(clamp(32px, 9vw, 120px) + var(--icon) / 2);
+}
+.tl-item:nth-child(odd) .tl-icon::before { left: 0; }
+.tl-item:nth-child(even) .tl-icon::before { right: 0; }
+.tl-icon svg {
+  position: relative; flex: none; box-sizing: border-box; width: var(--icon); height: var(--icon); padding: 16px;
+  border-radius: 50%; background: var(--surface); border: 4px solid var(--c); color: var(--c);
+  fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  box-shadow: 0 0 0 6px var(--bg), 0 0 28px color-mix(in srgb, var(--c) 45%, transparent);
+}
+.tl-sign { text-align: center; margin: clamp(40px, 6vw, 64px) 0 0; }
+.story-section .center { margin-top: 24px; }
+
+@media (max-width: 899px) {
+  .timeline { --icon: 52px; padding-top: 8px; }
+  .timeline::before { left: calc(var(--icon) / 2); }
+  .tl-item, .tl-item:nth-child(even) {
+    grid-template-columns: var(--icon) 1fr; column-gap: 16px;
+    grid-template-areas: "icon head" ". body";
+  }
+  .tl-node { display: none; }
+  .tl-item:nth-child(n) .tl-icon { padding: 0; justify-content: flex-start; }
+  .tl-icon::before { display: none; }
+  .tl-icon svg { padding: 11px; border-width: 3px; }
+  .tl-item:nth-child(n) .tl-head, .tl-item:nth-child(n) .tl-body { padding-left: 0; padding-right: 0; }
+}
+
+/* Each chapter rises into place as it scrolls into view (main.js adds
+   .tl-ready; without script, or with reduced motion, they simply show). */
+@media (prefers-reduced-motion: no-preference) {
+  .tl-ready .tl-item { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .tl-ready .tl-item.tl-in { opacity: 1; transform: none; }
+}

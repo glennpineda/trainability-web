@@ -5,11 +5,7 @@ list and go in CHANGELOG.md.
 
 ## To build
 
-- **Contact form answered by Concierge in Studio.** A contact form on the
-  website whose messages land in Studio, where Concierge can answer them.
-  Needs a Studio side (a public `/api/forms/...` form, like the PT inquiry,
-  that Concierge picks up) and the website side (the form on the contact page,
-  embedded or posting to it).
+- Nothing queued.
 
 ## Waiting on Studio or Coach
 
@@ -34,4 +30,7 @@ list and go in CHANGELOG.md.
 
 ## Next deploy
 
-- Nothing queued.
+- The Contact page (contact form and Cancel membership) and the privacy
+  page: Studio's contact form is live (3.1.1865). After deploying, Glenn
+  sends one real message and one real cancellation to check they land in
+  Concierge › Messages.

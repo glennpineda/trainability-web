@@ -37,7 +37,12 @@ description: Personal training in private microgyms in the Mission, and an open 
         </header>
         <div class="locations">
           <a class="location-card" href="{{root}}mission/">
-            <img src="{{root}}assets/photos/mission/site-studio-gallery1-1-1024x684.jpg" alt="A private microgym at Trainability in the Mission" loading="lazy" width="1024" height="684">
+            <div class="location-shots" data-slideshow>
+              <img class="on" src="{{root}}assets/photos/mission/site-studio-gallery1-1-1024x684.jpg" alt="Private microgyms at Trainability in the Mission" loading="lazy" width="1024" height="684">
+              <img src="{{root}}assets/photos/mission/DSC00283-1024x683.jpg" alt="" loading="lazy" width="1024" height="683">
+              <img src="{{root}}assets/photos/mission/DSC00276-1024x683.jpg" alt="" loading="lazy" width="1024" height="683">
+              <img src="{{root}}assets/photos/mission/DSC00300-1024x683.jpg" alt="" loading="lazy" width="1024" height="683">
+            </div>
             <div class="location-body">
               <p class="location-tag">Mission</p>
               <h3>Private one-on-one training</h3>
@@ -46,7 +51,12 @@ description: Personal training in private microgyms in the Mission, and an open 
             </div>
           </a>
           <a class="location-card" href="{{root}}potrero-hill/">
-            <img src="{{root}}assets/photos/potrero/IMG_2926.jpg" alt="The open gym floor at Trainability in Potrero Hill" loading="lazy" width="1024" height="768">
+            <div class="location-shots" data-slideshow>
+              <img class="on" src="{{root}}assets/photos/potrero/IMG_2926.jpg" alt="The open gym at Trainability in Potrero Hill" loading="lazy" width="1024" height="768">
+              <img src="{{root}}assets/photos/potrero/IMG_2927.jpg" alt="" loading="lazy" width="1024" height="768">
+              <img src="{{root}}assets/photos/potrero/IMG_2933.jpg" alt="" loading="lazy" width="1024" height="768">
+              <img src="{{root}}assets/photos/potrero/IMG_2928.jpg" alt="" loading="lazy" width="1024" height="768">
+            </div>
             <div class="location-body">
               <p class="location-tag">Potrero Hill</p>
               <h3>Open gym + personal training</h3>
@@ -98,7 +108,23 @@ description: Personal training in private microgyms in the Mission, and an open 
           <p>We have zero tolerance for hate, homophobia, transphobia, sexism, racism, ableism, fatphobia and xenophobia. Our gyms are a safe, respectful and supportive space for all.</p>
           <a href="{{root}}team/" class="btn btn-ghost">Meet the team</a>
         </div>
-        <img src="{{root}}assets/photos/potrero/IMG_2933.jpg" alt="The front desk at Potrero Hill, with stacks of towels and a Welcome sign" loading="lazy" width="1024" height="768">
+        <figure class="welcome">
+          <div class="welcome-top">
+            <img src="{{root}}assets/photos/glenn-welcome.jpg" alt="Glenn Pineda, smiling with his arms crossed at Potrero Hill" loading="lazy" width="480" height="480">
+            <p class="eyebrow gradient-text">A note from our owner</p>
+          </div>
+          <blockquote>
+            <p>Welcome to Trainability. If walking into a gym makes you nervous, you're in the right place. Start as small as you like: showing up is already worth celebrating.</p>
+            <p>We'll learn your name, listen to what you need, and introduce you to the team, so you always have someone in your corner. I can't wait to meet you.</p>
+          </blockquote>
+          <figcaption>
+            <!-- Glenn's own signature (assets/photos/glenn-signature.png, white
+                 on transparent), drawn in the gradient through a CSS mask -->
+            <span class="welcome-signature" role="img" aria-label="Glenn's signature"></span>
+            <span class="welcome-name">Glenn Pineda, owner</span>
+          </figcaption>
+          <a href="{{root}}our-story/" class="link-arrow">Read our story</a>
+        </figure>
       </div>
     </section>
 
