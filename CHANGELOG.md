@@ -90,6 +90,9 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **Full-width text and forms.** The contact and personal training forms sit
   below their text at the full width, and intros, section intros and
   paragraphs are no longer capped narrower than the page.
+- **Our story, reordered and refocused.** "A home for orphan trainers" comes
+  before "For Jon", and the apps chapter is now "Behind the scenes / More
+  time for you", about what clients get rather than the software.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
 - **Magenta and cerulean.** The brand colours are magenta (`#c44e9b`, from
