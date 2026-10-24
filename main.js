@@ -159,12 +159,14 @@ if (login?.showModal) {
   });
 }
 
-// Contact page: "Cancel membership" opens a dialog that sends the request to
-// Studio's contact form (topic "cancel"), where the front desk answers it.
-const cancel = document.querySelector('dialog.cancel-membership');
-if (cancel?.showModal) {
-  const form = cancel.querySelector('form.cancel-form');
-  const problem = cancel.querySelector('.panel-problem');
+// Request dialogs: a button opens a short form that's sent to Studio's contact
+// form, where the front desk answers it in Concierge › Messages. Each says
+// which buttons open it, what to check and what to send; the rest (Studio's
+// spam checks, its errors beside the right field, the thank-you) is shared.
+const studioRequest = (dialog, { opener, check, body }) => {
+  if (!dialog?.showModal) return;
+  const form = dialog.querySelector('form.panel-form');
+  const problem = dialog.querySelector('.panel-problem');
   const send = form.querySelector('button[type="submit"]');
   let openedAt = 0;
   const say = (text, field) => {
@@ -173,12 +175,17 @@ if (cancel?.showModal) {
     if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
   };
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('[data-cancel-membership]')) return;
+    if (!e.target.closest(opener)) return;
     e.preventDefault();
+    dayPass?.close();
     openedAt = Date.now();
-    cancel.showModal();
+    dialog.showModal();
   });
-  cancel.addEventListener('click', (e) => { if (e.target === cancel) cancel.close(); });
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+    // A link to somewhere on this same page (the contact form) closes the dialog first
+    if (e.target.closest('[data-close-dialog]')) dialog.close();
+  });
   form.addEventListener('input', (e) => { problem.hidden = true; e.target.removeAttribute('aria-invalid'); });
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -186,25 +193,23 @@ if (cancel?.showModal) {
     const value = (name) => f[name].value.trim();
     if (!value('firstName')) return say('Enter your first name.', f.firstName);
     if (!value('lastName')) return say('Enter your last name.', f.lastName);
-    if (!/^\S+@\S+\.\S+$/.test(value('email'))) return say('Enter the email address on your membership.', f.email);
-    if (value('phone').replace(/\D/g, '').length < 10) return say('Enter the phone number on your membership.', f.phone);
-    if (!f.agree.checked) return say('Tick "I understand" to send your request.', f.agree);
+    const wrong = check(f, value);
+    if (wrong) return say(...wrong);
     send.disabled = true;
     try {
-      const res = await fetch(cancel.dataset.api, {
+      const res = await fetch(dialog.dataset.api, {
         method: 'POST',
         credentials: 'omit',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           firstName: value('firstName'), lastName: value('lastName'),
-          email: value('email'), phone: value('phone'),
-          topic: 'cancel', message: '', openedAt, website: f.website.value,
+          ...body(f, value), openedAt, website: f.website.value,
         }),
       });
       const answer = await res.json().catch(() => ({}));
       if (res.ok) {
-        cancel.querySelector('.cancel-ask').hidden = true;
-        cancel.querySelector('.cancel-done').hidden = false;
+        dialog.querySelector('[data-ask]').hidden = true;
+        dialog.querySelector('[data-done]').hidden = false;
         return;
       }
       if (res.status === 400 && answer.error) return say(answer.error, f[answer.field]);
@@ -216,7 +221,37 @@ if (cancel?.showModal) {
       send.disabled = false;
     }
   });
-}
+};
+
+// Contact page: "Cancel membership" (topic "cancel")
+studioRequest(document.querySelector('dialog.cancel-membership'), {
+  opener: '[data-cancel-membership]',
+  check: (f, value) => {
+    if (!/^\S+@\S+\.\S+$/.test(value('email'))) return ['Enter the email address on your membership.', f.email];
+    if (value('phone').replace(/\D/g, '').length < 10) return ['Enter the phone number on your membership.', f.phone];
+    if (!f.agree.checked) return ['Tick "I understand" to send your request.', f.agree];
+  },
+  body: (f, value) => ({ email: value('email'), phone: value('phone'), topic: 'cancel', message: '' }),
+});
+
+// Assisted stretching: "Book a session" (topic "other", the answers in the
+// message, headed so the front desk sees at once what it is)
+studioRequest(document.querySelector('dialog.book-stretch'), {
+  opener: '[data-book-stretch]',
+  check: (f, value) => {
+    if (!/^\S+@\S+\.\S+$/.test(value('email'))) return ['Enter your email address.', f.email];
+    if (value('phone').replace(/\D/g, '').length < 10) return ['Enter your phone number.', f.phone];
+    if (![...f.times].some((t) => t.checked)) return ['Tick at least one time of day that works for you.', f.times[0]];
+  },
+  body: (f, value) => {
+    const times = [...f.times].filter((t) => t.checked).map((t) => t.value).join(', ');
+    const note = value('message');
+    return {
+      email: value('email'), phone: value('phone'), topic: 'other',
+      message: `Assisted stretching: booking request\nBest times: ${times}${note ? `\n\n${note}` : ''}`,
+    };
+  },
+});
 
 /* Addresses open in the phone's own maps: Apple Maps on iPhone and iPad,
    Google Maps (which hands off to the app) everywhere else. */

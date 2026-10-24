@@ -73,7 +73,7 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
          front desk sees it in Concierge. -->
     <dialog class="panel cancel-membership" id="cancel" aria-labelledby="cancel-title" data-api="{{studio}}/api/forms/contact">
       <form method="dialog" class="panel-close"><button aria-label="Close">×</button></form>
-      <div class="cancel-ask">
+      <div class="cancel-ask" data-ask>
         <p class="eyebrow gradient-text">Members</p>
         <h2 id="cancel-title">Cancel membership</h2>
         <p>Enter your name, email and phone number as they are on your membership, so we can find you.</p>
@@ -103,10 +103,10 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
           <button class="btn" type="submit">Send cancellation request</button>
         </form>
       </div>
-      <div class="cancel-done" hidden>
+      <div class="cancel-done" data-done hidden>
         <p class="eyebrow gradient-text">Request sent</p>
         <h2>We've got it</h2>
-        <p>Our front desk will confirm your cancellation by email. If you have questions in the meantime, call us at <a href="{{phoneHref}}">{{phone}}</a>.</p>
+        <p>Our front desk will confirm your cancellation by email. If you have questions in the meantime, send us a message with our <a href="#message" data-close-dialog>contact form</a>.</p>
         <form method="dialog" class="hero-actions"><button class="btn">Close</button></form>
       </div>
     </dialog>

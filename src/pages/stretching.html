@@ -8,7 +8,7 @@ description: Hands-on, personalized assisted stretching at Trainability in San F
         <h1>Move better. Feel stronger.</h1>
         <p class="lead">Mobility is the foundation of strength, performance and well-being. Our hands-on sessions help your body move better and recover faster.</p>
         <div class="hero-actions">
-          <a href="{{root}}contact/" class="btn">Book a session</a>
+          <a href="{{root}}contact/#message" class="btn" data-book-stretch>Book a session</a>
         </div>
       </div>
     </section>
@@ -66,7 +66,54 @@ description: Hands-on, personalized assisted stretching at Trainability in San F
         </ol>
         <div class="center">
           <p class="lead">Ready? Get in touch and we'll find a time that works for you.</p>
-          <a href="{{root}}contact/" class="btn">Book a session</a>
+          <a href="{{root}}contact/#message" class="btn" data-book-stretch>Book a session</a>
         </div>
       </div>
     </section>
+
+    <!-- Booking assisted stretching: the Book a session buttons open this, and
+         it's sent to Studio's contact form (main.js), so it lands in Concierge ›
+         Messages for the front desk to pass to a stretch specialist. -->
+    <dialog class="panel book-stretch" aria-labelledby="stretch-title" data-api="{{studio}}/api/forms/contact">
+      <form method="dialog" class="panel-close"><button aria-label="Close">×</button></form>
+      <div data-ask>
+        <p class="eyebrow gradient-text">Assisted stretching</p>
+        <h2 id="stretch-title">Book a session</h2>
+        <p>Tell us how to reach you and when suits you best. A member of our team will get in touch to find a time with one of our stretch specialists.</p>
+        <form class="panel-form" novalidate>
+          <div class="panel-form-row">
+            <div>
+              <label for="stretch-first">First name</label>
+              <input id="stretch-first" name="firstName" autocomplete="given-name" required>
+            </div>
+            <div>
+              <label for="stretch-last">Last name</label>
+              <input id="stretch-last" name="lastName" autocomplete="family-name" required>
+            </div>
+          </div>
+          <label for="stretch-email">Email</label>
+          <input id="stretch-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          <label for="stretch-phone">Phone</label>
+          <input id="stretch-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+          <fieldset class="panel-choices">
+            <legend>Which times work best for you?</legend>
+            <label class="panel-check"><input type="checkbox" name="times" value="Morning"> Morning</label>
+            <label class="panel-check"><input type="checkbox" name="times" value="Early afternoon"> Early afternoon</label>
+            <label class="panel-check"><input type="checkbox" name="times" value="Late afternoon"> Late afternoon</label>
+            <label class="panel-check"><input type="checkbox" name="times" value="Evening"> Evening</label>
+          </fieldset>
+          <label for="stretch-message">Anything we should know? <span class="panel-optional">(optional)</span></label>
+          <textarea id="stretch-message" name="message" rows="4" maxlength="1800"></textarea>
+          <!-- For bots: people never see it, and a filled one is dropped -->
+          <input class="panel-trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="panel-problem" role="alert" hidden></p>
+          <button class="btn" type="submit">Send request</button>
+        </form>
+      </div>
+      <div data-done hidden>
+        <p class="eyebrow gradient-text">Request sent</p>
+        <h2>Thank you</h2>
+        <p>We'll be in touch soon to find a time with one of our stretch specialists. Questions in the meantime? Send us a message with our <a href="{{root}}contact/#message">contact form</a>.</p>
+        <form method="dialog" class="hero-actions"><button class="btn">Close</button></form>
+      </div>
+    </dialog>

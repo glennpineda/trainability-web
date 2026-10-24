@@ -515,6 +515,17 @@ address { font-style: normal; }
 .panel-form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0 12px; }
 .panel-form .panel-check { display: flex; align-items: center; gap: 10px; font-weight: 600; margin: 14px 0 0; cursor: pointer; }
 .panel-check input { width: 20px; height: 20px; accent-color: var(--magenta); }
+.panel-form textarea {
+  width: 100%; padding: 12px 14px; font: inherit; color: var(--text); resize: vertical;
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px;
+}
+.panel-form textarea:focus { outline: 2px solid var(--cerulean-bright); outline-offset: 1px; border-color: transparent; }
+.panel-choices { border: 0; padding: 0; margin: 14px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 4px 12px; }
+.panel-choices legend { font-weight: 600; padding: 0; margin-bottom: 6px; }
+.panel-form .panel-choices .panel-check { margin: 6px 0 0; font-weight: 400; }
+.panel-optional { font-weight: 400; color: var(--muted); }
+.book-stretch [data-done] .hero-actions, .book-stretch [data-done] a { justify-content: center; }
+.book-stretch [data-done] a { color: var(--magenta-bright); }
 .panel-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .panel .panel-problem { color: var(--magenta-bright); font-size: 0.9rem; margin: 12px 0 0; }
 .panel-form .btn { width: 100%; margin-top: 18px; }
