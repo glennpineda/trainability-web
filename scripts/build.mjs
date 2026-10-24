@@ -175,5 +175,28 @@ for (const file of pages) {
   writeFileSync(join(dir, "index.html"), html);
 }
 
+/* Old links still in use (site.json "redirects": old path -> page): a tiny
+   page at the old address that forwards at once, keeping any ?query and
+   #hash. A page, not a server rule, so nothing else in public_html (the other
+   sites' folders) is affected. */
+for (const [from, to] of Object.entries(site.redirects || {})) {
+  const dir = join(OUT, from);
+  const back = "../".repeat(from.split("/").length);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, "index.html"), `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=${back}${to}">
+<link rel="canonical" href="${back}${to}">
+<title>Moved – Trainability</title>
+<script>location.replace("${back}${to}" + location.search + location.hash);</script>
+</head>
+<body><p>This page has moved: <a href="${back}${to}">continue</a>.</p></body>
+</html>
+`);
+}
+
 for (const f of ["styles.css", "main.js", "assets"]) cpSync(join(ROOT, f), join(OUT, f), { recursive: true });
 console.log(`Built ${pages.length} pages into dist/ (${version})`);

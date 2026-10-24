@@ -72,6 +72,10 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **Fresh styles after every change.** Pages link to styles.css, main.js and
   hexes.js with a fingerprint of the file, so browsers never mix a new page
   with old styles.
+- **Join online with Studio.** The membership page's Buy online buttons go to
+  Studio's Join page (trainabilitystudio.com/forms/join) instead of Glofox.
+- **Old links still work.** `/t2/bookstudio` forwards to Reserve a studio;
+  more old addresses can be listed under `redirects` in src/site.json.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
 - **Magenta and cerulean.** The brand colours are magenta (`#c44e9b`, from
