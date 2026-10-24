@@ -11,7 +11,7 @@
   <meta name="theme-color" content="#0a0a0f">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&display=swap">
   <link rel="stylesheet" href="{{root}}styles.css?v={{cssV}}">
   <script src="{{root}}main.js?v={{jsV}}" defer></script>
   <script src="{{root}}assets/hexes.js?v={{hexesV}}" defer></script>
@@ -88,21 +88,28 @@
         <p>{{potreroHoursBr}}</p>
         {{potreroSpecial}}
       </div>
-      <nav class="footer-links" aria-label="Footer">
+      <nav class="footer-links" aria-labelledby="footer-train">
+        <h2 class="footer-heading" id="footer-train">Train with us</h2>
         <a href="{{root}}personal-training/">Personal training</a>
         <a href="{{root}}membership/">Membership</a>
         <a href="{{root}}reserve-a-studio/">Reserve a studio</a>
-        <a href="{{root}}our-story/">Our story</a>
-        <a href="{{root}}team/">Our team</a>
-        <a href="{{root}}contact/">Contact</a>
+      </nav>
+
+      <nav class="footer-links" aria-labelledby="footer-members">
+        <h2 class="footer-heading" id="footer-members">Members &amp; apps</h2>
         <a href="{{memberPortal}}" data-member-login>Member login</a>
         <a href="{{root}}studio/">Trainability® Studio</a>
         <a href="{{root}}coach/">Trainability® Coach</a>
-        <a href="{{root}}privacy/">Privacy policy</a>
+      </nav>
+      <nav class="footer-links" aria-labelledby="footer-about">
+        <h2 class="footer-heading" id="footer-about">About us</h2>
+        <a href="{{root}}our-story/">Our story</a>
+        <a href="{{root}}team/">Our team</a>
+        <a href="{{root}}contact/">Contact</a>
       </nav>
     </div>
     <div class="container footer-legal">
-      <p>&copy; <span id="year">2026</span> Trainability LLC and Trainability Strength LLC. <span class="site-version">{{version}}</span></p>
+      <p>&copy; <span id="year">2026</span> Trainability LLC and Trainability Strength LLC. <a href="{{root}}privacy/">Privacy policy</a> <span class="site-version">{{version}}</span></p>
     </div>
   </footer>
 

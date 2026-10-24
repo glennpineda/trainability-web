@@ -253,7 +253,7 @@ main, .site-footer { position: relative; z-index: 1; }
 @keyframes cue-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
 @media (prefers-reduced-motion: reduce) { .scroll-cue { animation: none; } }
 .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.85rem; font-weight: 700; }
-.lead { font-size: 1.2rem; color: var(--muted); max-width: 38em; }
+.lead { font-size: 1.2rem; color: var(--muted); }
 .hero .lead, .page-hero .lead { color: var(--text); opacity: 0.88; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 
@@ -277,7 +277,7 @@ main, .site-footer { position: relative; z-index: 1; }
 /* Sections */
 .section { padding: clamp(56px, 8vw, 96px) 0; }
 .section-alt { background: color-mix(in srgb, var(--bg-alt) 72%, transparent); }
-.section-head { max-width: 40em; margin-bottom: 40px; }
+.section-head { margin-bottom: 40px; }
 .section-head p { color: var(--muted); font-size: 1.1rem; }
 .center { text-align: center; margin-top: 40px; }
 .center .lead { margin: 0 auto 20px; }
@@ -285,7 +285,6 @@ main, .site-footer { position: relative; z-index: 1; }
 .footnote { color: var(--muted); font-size: 0.9rem; margin-top: 20px; }
 
 /* Comfortable line length, left-aligned with the other sections (not a narrow centred column). */
-.prose > * { max-width: 46rem; }
 .prose h2 { margin-top: 1.4em; }
 .prose h2:first-child { margin-top: 0; }
 .prose h3 { margin-top: 1.2em; }
@@ -309,6 +308,9 @@ a.service:hover, a.location-card:hover { border-color: color-mix(in srgb, var(--
 .service p { overflow-wrap: anywhere; }   /* a long email address wraps inside its card */
 .services { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .contact-options { display: grid; gap: 20px; }
+/* Send us a message: the words above, the form below at the full width. */
+.message-stack > div:first-child { margin-bottom: 28px; }
+.message-stack > div:first-child p { margin-bottom: 0; }
 /* Four cards: one column on phones, two by two, then all four in a row. */
 @media (min-width: 600px) { .contact-options { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1100px) { .contact-options { grid-template-columns: repeat(4, 1fr); } }
@@ -455,18 +457,32 @@ address { font-style: normal; }
 .person-body p:last-child { margin-bottom: 0; }
 
 /* Studio's PT inquiry form, embedded (docs/FORMS-API.md in Studio). */
-.pt-start { display: grid; gap: 40px; align-items: start; }
-@media (min-width: 1000px) { .pt-start { grid-template-columns: 1fr 1.3fr; } }
+/* Personal training: the words above, the form below at the full width. */
+.pt-start { display: grid; gap: 28px; }
 .embed { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 .embed iframe { display: block; width: 100%; border: 0; min-height: 600px; background: #fff; }
 
 /* Footer */
 .site-footer { border-top: 1px solid var(--border); padding: 48px 0 24px; color: var(--muted); font-size: 0.95rem; background: color-mix(in srgb, var(--bg-alt) 80%, transparent); }
-.footer-grid { display: grid; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+/* Two rows of three: the slogan and the two places, then the three groups of
+   links, with a thin line between. One column on phones. */
+.footer-grid { display: grid; gap: 32px 28px; }
+@media (min-width: 640px) {
+  .footer-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-links { padding-top: 28px; border-top: 1px solid var(--border); }
+  /* Mission and Potrero Hill start on the slogan's line, under the logo: the
+     logo (28px) and the slogan's top margin (14px), plus the difference in
+     size so the two lines share a baseline. */
+  .footer-grid > div:nth-child(2), .footer-grid > div:nth-child(3) { padding-top: 50px; }
+}
 .footer-grid p, .footer-grid address { margin: 0 0 8px; }
-.footer-heading { font-size: 1.1rem; color: var(--text); margin-bottom: 10px; }
-.footer-slogan { font-family: var(--display); font-weight: 800; font-size: 1.6rem; text-transform: uppercase; margin: 14px 0 6px !important; }
+/* Not bold: the same condensed face at medium weight, so the titles sit
+   quietly over their links. */
+.footer-heading { font-size: 1.15rem; font-weight: 500; letter-spacing: 0.04em; color: var(--text); margin-bottom: 10px; }
+.footer-slogan { font-family: var(--display); font-weight: 800; font-size: 1.6rem; line-height: 1; text-transform: uppercase; margin: 14px 0 12px !important; }
 .footer-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-links .footer-heading { margin-bottom: 4px; }
+.footer-legal a { margin: 0 10px; }
 .site-footer a { color: var(--muted); text-decoration: none; }
 .site-footer a:hover { color: var(--magenta-bright); }
 .footer-legal { border-top: 1px solid var(--border); margin-top: 32px; padding-top: 20px; font-size: 0.85rem; }

@@ -83,6 +83,13 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   details for Google (addresses, phone, Potrero Hill's hours from Studio).
 - **A friendly "page not found".** src/pages/404.html, written as 404.shtml
   and 404.html, with links that start from the site's top.
+- **A tidier footer.** Two rows of three: the slogan, Mission and Potrero
+  Hill (their titles on the slogan's line), then the links grouped under Train
+  with us, Members & apps and About us, in lighter titles. Privacy policy sits
+  on the bottom line.
+- **Full-width text and forms.** The contact and personal training forms sit
+  below their text at the full width, and intros, section intros and
+  paragraphs are no longer capped narrower than the page.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
 - **Magenta and cerulean.** The brand colours are magenta (`#c44e9b`, from
