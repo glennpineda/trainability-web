@@ -213,7 +213,7 @@ main, .site-footer { position: relative; z-index: 1; }
      centred in it, so the picture is the size of what it holds. */
   min-height: calc(100vh - 64px); min-height: calc(100svh - 64px);
   display: grid; align-items: center;
-  padding: clamp(40px, 6vh, 72px) 0 clamp(56px, 9vh, 96px);
+  padding: clamp(56px, 9vh, 96px) 0;
 }
 /* Heroes fade into the page over their last stretch, so there's no hard line
    where the hexagons begin. Only the backgrounds fade: the words stay solid. */
@@ -227,11 +227,31 @@ main, .site-footer { position: relative; z-index: 1; }
     radial-gradient(ellipse at top right, color-mix(in srgb, var(--cerulean) 35%, transparent), transparent 60%),
     radial-gradient(ellipse at bottom left, color-mix(in srgb, var(--magenta) 35%, transparent), transparent 55%);
 }
-.hero-content { max-width: 64rem; margin-left: auto; margin-right: auto; text-align: center; }
+/* Its own layer above the video: Safari can paint a playing, masked video
+   over the words that should sit on top of it. */
+.hero-content { position: relative; z-index: 1; max-width: 64rem; margin-left: auto; margin-right: auto; text-align: center; }
 .hero-content .lead { margin-left: auto; margin-right: auto; }
 .hero-content .hero-actions { justify-content: center; }
 /* The slogan, under the name: smaller than the wordmark, so the name leads. */
-.hero h1 { font-size: clamp(2rem, 6vw, 4.5rem); margin: clamp(28px, 5vh, 56px) 0 clamp(24px, 4.5vh, 48px); }
+.hero h1 { font-size: clamp(2rem, 6vw, 4.5rem); margin: clamp(28px, 5vh, 56px) 0 0; }
+/* The intro and buttons, just below the home hero, so the first screen is
+   only the name and the slogan. */
+.section.hero-intro { padding-top: clamp(4px, 1.5vh, 16px); padding-bottom: 0; }
+.hero-intro .center { margin-top: 0; }
+.hero-intro .lead { margin-left: auto; margin-right: auto; }
+/* A bouncing chevron at the foot of the home hero: there's more below.
+   main.js fades it out once the visitor starts scrolling. */
+.scroll-cue {
+  position: absolute; z-index: 1; left: 50%; bottom: clamp(16px, 4vh, 36px); translate: -50% 0;
+  display: grid; place-items: center; width: 48px; height: 48px;
+  color: var(--text); opacity: 0.85; border-radius: 50%;
+  animation: cue-bounce 1.8s ease-in-out infinite;
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+.scroll-cue:hover { opacity: 1; }
+.scroll-cue.gone { opacity: 0; visibility: hidden; }
+@keyframes cue-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) { .scroll-cue { animation: none; } }
 .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.85rem; font-weight: 700; }
 .lead { font-size: 1.2rem; color: var(--muted); max-width: 38em; }
 .hero .lead, .page-hero .lead { color: var(--text); opacity: 0.88; }

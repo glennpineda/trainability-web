@@ -305,3 +305,14 @@ if (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'Mac
   if (links.writeAReviewUri) section.querySelector('.reviews-write').href = links.writeAReviewUri;
   section.hidden = false;
 })();
+
+// Home: hide the "more below" chevron once the visitor starts scrolling.
+(() => {
+  const cue = document.querySelector('.scroll-cue');
+  if (!cue) return;
+  const check = () => {
+    if (window.scrollY > 40) { cue.classList.add('gone'); window.removeEventListener('scroll', check); }
+  };
+  window.addEventListener('scroll', check, { passive: true });
+  check();
+})();
