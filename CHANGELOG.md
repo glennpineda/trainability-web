@@ -118,6 +118,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   box asks for it in their own words instead.
 - **Stretching requests by topic.** Book a session sends topic "stretch" with
   its times, so Messages lists it under Stretching for assigning.
+- **Powered by Studio.** Member login ends with "Powered by" and the Studio
+  logo and wordmark, linking to the Studio page.
 - **Services menu:** Open gym membership first, then Personal training.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
