@@ -98,6 +98,13 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   open a dialog (name, email, phone, best times of day, a note) that's sent
   to Concierge › Messages. It and Cancel membership share one request-dialog
   script, and their thank-yous point to the contact form, not the phone.
+- **Terms and conditions.** Moved from trnblt.com/terms word for word, its
+  contact lines pointing to the contact form and trainability.org; linked
+  beside Privacy policy in the footer.
+- **Pause and cancel in one step.** The membership page's links open the
+  contact form set to a pause, or the Cancel membership dialog; the contact
+  page passes ?topic= and ?place= to Studio's form and opens #cancel.
+- **More old addresses forward:** /t1, /t2, /t2/stretching, /pt and /main/pt.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
 - **Magenta and cerulean.** The brand colours are magenta (`#c44e9b`, from

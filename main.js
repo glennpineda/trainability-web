@@ -159,6 +159,17 @@ if (login?.showModal) {
   });
 }
 
+// Contact page: a link with ?topic=pause (or any topic) and ?place= starts
+// Studio's form on it, and #cancel opens Cancel membership straight away
+// (both from the membership page's pause and cancel links).
+const contactFrame = document.querySelector('iframe[data-form="contact"]');
+if (contactFrame) {
+  const asked = new URLSearchParams(location.search);
+  const pass = new URLSearchParams();
+  for (const key of ['topic', 'place']) if (asked.get(key)) pass.set(key, asked.get(key));
+  if ([...pass].length) contactFrame.src = contactFrame.src.split('?')[0] + '?' + pass;
+}
+
 // Request dialogs: a button opens a short form that's sent to Studio's contact
 // form, where the front desk answers it in Concierge › Messages. Each says
 // which buttons open it, what to check and what to send; the rest (Studio's
@@ -233,6 +244,8 @@ studioRequest(document.querySelector('dialog.cancel-membership'), {
   },
   body: (f, value) => ({ email: value('email'), phone: value('phone'), topic: 'cancel', message: '' }),
 });
+
+if (location.hash === '#cancel') document.querySelector('[data-cancel-membership]')?.click();
 
 // Assisted stretching: "Book a session" (topic "other", the answers in the
 // message, headed so the front desk sees at once what it is)

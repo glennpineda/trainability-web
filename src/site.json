@@ -17,6 +17,11 @@
   "reserveForm": "https://trainabilitystudio.com/forms/reserve?place=plc047jcr287",
   "potreroHours": [[480, 1080], [360, 1260], [360, 1260], [360, 1260], [360, 1260], [360, 1260], [480, 1080]],
   "redirects": {
-    "t2/bookstudio": "reserve-a-studio/"
+    "t1": "mission/",
+    "t2": "potrero-hill/",
+    "t2/bookstudio": "reserve-a-studio/",
+    "t2/stretching": "stretching/",
+    "pt": "personal-training/",
+    "main/pt": "personal-training/"
   }
 }
