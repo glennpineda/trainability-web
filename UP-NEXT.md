@@ -9,10 +9,6 @@ list and go in CHANGELOG.md.
 
 ## Waiting on Studio or Coach
 
-- **A reason on Cancel membership.** Built as a picker from Studio's
-  `choices.cancelReasons` (Other asks for their words, `reasonCode` and
-  `reason`). Live Studio was still 3.1.1935 without the list; the question
-  stays hidden until Studio sends it, so it appears by itself once live.
 - **Coach page wording.** src/pages/coach.html is a draft from Coach's manual;
   replace it with the "What this is" section from Coach's sign-in page once
   that's live at trainabilitycoach.com.
@@ -21,7 +17,7 @@ list and go in CHANGELOG.md.
   bar shows it from 12 Nov, two weeks ahead; check it then. Glenn tries
   Member login end to end.
 - **Real tests on the live site.** One message through the Contact form, one
-  Cancel membership request (both to Concierge › Messages, with the receipt
+  Cancel membership request with a reason picked (both to Concierge › Messages, with the receipt
   email), and the online Join up to the payment step.
 
 ## Open questions
@@ -29,7 +25,6 @@ list and go in CHANGELOG.md.
 - Staff with no location in Studio: give them a default place, or show them
   under every location in the team filter?
 - Fade the edges of the alternating section bands?
-- "Meet the team here" links on the location pages?
 - A better landscape hero video, and newer Mission photos.
 - Confirm Mission's "sanitized every hour" and current prices.
 - Should Mark Mian appear on the team page?
