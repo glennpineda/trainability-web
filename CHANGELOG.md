@@ -112,6 +112,12 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   file (htaccess → dist/.htaccess) sends http and www to
   https://trainability.org and lets browsers keep files, acting only on
   trainability.org addresses.
+- **Why are you cancelling?** Cancel membership asks an optional reason,
+  picked from Studio's list (choices.cancelReasons), with their own words for
+  Other; hidden until Studio sends the list.
+- **Stretching requests by topic.** Book a session sends topic "stretch" with
+  its times, so Messages lists it under Stretching for assigning.
+- **Services menu:** Open gym membership first, then Personal training.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
 - **Magenta and cerulean.** The brand colours are magenta (`#c44e9b`, from

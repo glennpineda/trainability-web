@@ -9,10 +9,10 @@ list and go in CHANGELOG.md.
 
 ## Waiting on Studio or Coach
 
-- **Stretching requests in Studio.** Prompt: studio-prompts/stretching-requests.md
-  (a `stretch` topic and an Assign button in Concierge › Messages). The
-  website's Book a session dialog works now with `topic: "other"`; once
-  Studio is live, switch it to `topic: "stretch"` and send `times`.
+- **A reason on Cancel membership.** Built as a picker from Studio's
+  `choices.cancelReasons` (Other asks for their words, `reasonCode` and
+  `reason`). Live Studio was still 3.1.1935 without the list; the question
+  stays hidden until Studio sends it, so it appears by itself once live.
 - **Coach page wording.** src/pages/coach.html is a draft from Coach's manual;
   replace it with the "What this is" section from Coach's sign-in page once
   that's live at trainabilitycoach.com.

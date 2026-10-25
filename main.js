@@ -181,23 +181,37 @@ const studioRequest = (dialog, { opener, check, body }) => {
   const send = form.querySelector('button[type="submit"]');
   let openedAt = 0;
   const say = (text, field) => {
-    problem.textContent = text;
-    problem.hidden = false;
-    if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
+    // a group of choices comes as a list: point at its first one
+    const el = field && (field.setAttribute ? field : field[0]);
+    const own = el?.name && dialog.querySelector(`[data-problem-for~="${el.name}"]`);
+    const where = own || problem;
+    where.textContent = text;
+    where.hidden = false;
+    if (el) { el.setAttribute('aria-invalid', 'true'); el.focus(); }
   };
+  // "N / 500" under a text box with a limit
+  dialog.querySelectorAll('[data-count]').forEach((box) => {
+    const shown = box.nextElementSibling?.querySelector('span');
+    box.addEventListener('input', () => { if (shown) shown.textContent = box.value.length; });
+  });
   document.addEventListener('click', (e) => {
     if (!e.target.closest(opener)) return;
     e.preventDefault();
     dayPass?.close();
     openedAt = Date.now();
     dialog.showModal();
+    dialog.dispatchEvent(new Event('studio-request-open'));
   });
   dialog.addEventListener('click', (e) => {
     if (e.target === dialog) dialog.close();
     // A link to somewhere on this same page (the contact form) closes the dialog first
     if (e.target.closest('[data-close-dialog]')) dialog.close();
   });
-  form.addEventListener('input', (e) => { problem.hidden = true; e.target.removeAttribute('aria-invalid'); });
+  form.addEventListener('input', (e) => {
+    problem.hidden = true;
+    dialog.querySelectorAll('[data-problem-for]').forEach((p) => { p.hidden = true; });
+    e.target.removeAttribute('aria-invalid');
+  });
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const f = form.elements;
@@ -232,23 +246,62 @@ const studioRequest = (dialog, { opener, check, body }) => {
       send.disabled = false;
     }
   });
+  return { opened: (fn) => dialog.addEventListener('studio-request-open', fn, { once: true }) };
 };
 
-// Contact page: "Cancel membership" (topic "cancel")
-studioRequest(document.querySelector('dialog.cancel-membership'), {
+// Contact page: "Cancel membership" (topic "cancel"), with an optional
+// reason picked from Studio's list (choices.cancelReasons), and their own
+// words when it's Other
+const cancelDialog = document.querySelector('dialog.cancel-membership');
+const picked = () => cancelDialog?.querySelector('input[name="reasonCode"]:checked')?.value || '';
+const cancelRequest = studioRequest(cancelDialog, {
   opener: '[data-cancel-membership]',
   check: (f, value) => {
     if (!/^\S+@\S+\.\S+$/.test(value('email'))) return ['Enter the email address on your membership.', f.email];
     if (value('phone').replace(/\D/g, '').length < 10) return ['Enter the phone number on your membership.', f.phone];
+    if (picked() === 'other' && !value('reason')) return ['Tell us the reason, or pick another one.', f.reason];
     if (!f.agree.checked) return ['Tick "I understand" to send your request.', f.agree];
   },
-  body: (f, value) => ({ email: value('email'), phone: value('phone'), topic: 'cancel', message: '' }),
+  body: (f, value) => ({
+    email: value('email'), phone: value('phone'), topic: 'cancel',
+    reasonCode: picked(), reason: picked() === 'other' ? value('reason') : '', message: '',
+  }),
+});
+cancelRequest?.opened(async () => {
+  const question = cancelDialog.querySelector('[data-cancel-reasons]');
+  const list = question.querySelector('.panel-pill-list');
+  const other = question.querySelector('.cancel-other');
+  try {
+    const form = await fetch(cancelDialog.dataset.api, { credentials: 'omit' }).then((r) => r.json());
+    const reasons = form.choices?.cancelReasons || [];
+    if (!reasons.length) return;
+    if (form.reasonMax) {
+      const box = other.querySelector('textarea');
+      box.maxLength = form.reasonMax;
+      other.querySelector('[data-count-max]').textContent = form.reasonMax;
+    }
+    for (const [value, label] of reasons) {
+      const pill = document.createElement('label');
+      pill.className = 'panel-pill';
+      const input = document.createElement('input');
+      input.type = 'checkbox'; input.name = 'reasonCode'; input.value = value;
+      pill.append(input, document.createTextNode(label));
+      list.append(pill);
+    }
+    // One at a time: picking one unpicks the rest, and picking it again unpicks it
+    list.addEventListener('change', (e) => {
+      list.querySelectorAll('input').forEach((i) => { if (i !== e.target) i.checked = false; });
+      other.hidden = picked() !== 'other';
+      if (!other.hidden) other.querySelector('textarea').focus();
+    });
+    question.hidden = false;
+  } catch { /* the question is optional: without the list it just isn't asked */ }
 });
 
 if (location.hash === '#cancel') document.querySelector('[data-cancel-membership]')?.click();
 
-// Assisted stretching: "Book a session" (topic "other", the answers in the
-// message, headed so the front desk sees at once what it is)
+// Assisted stretching: "Book a session" (topic "stretch": Messages lists it
+// under Stretching, where the front desk assigns it to a specialist)
 studioRequest(document.querySelector('dialog.book-stretch'), {
   opener: '[data-book-stretch]',
   check: (f, value) => {
@@ -256,14 +309,10 @@ studioRequest(document.querySelector('dialog.book-stretch'), {
     if (value('phone').replace(/\D/g, '').length < 10) return ['Enter your phone number.', f.phone];
     if (![...f.times].some((t) => t.checked)) return ['Tick at least one time of day that works for you.', f.times[0]];
   },
-  body: (f, value) => {
-    const times = [...f.times].filter((t) => t.checked).map((t) => t.value).join(', ');
-    const note = value('message');
-    return {
-      email: value('email'), phone: value('phone'), topic: 'other',
-      message: `Assisted stretching: booking request\nBest times: ${times}${note ? `\n\n${note}` : ''}`,
-    };
-  },
+  body: (f, value) => ({
+    email: value('email'), phone: value('phone'), topic: 'stretch',
+    times: [...f.times].filter((t) => t.checked).map((t) => t.value), message: value('message'),
+  }),
 });
 
 /* Addresses open in the phone's own maps: Apple Maps on iPhone and iPad,

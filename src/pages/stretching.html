@@ -72,8 +72,9 @@ description: Hands-on, personalized assisted stretching at Trainability in San F
     </section>
 
     <!-- Booking assisted stretching: the Book a session buttons open this, and
-         it's sent to Studio's contact form (main.js), so it lands in Concierge ›
-         Messages for the front desk to pass to a stretch specialist. -->
+         it's sent to Studio's contact form as topic "stretch" (main.js), so it
+         lands under Stretching in Concierge › Messages, where the front desk
+         assigns it to a stretch specialist. -->
     <dialog class="panel book-stretch" aria-labelledby="stretch-title" data-api="{{studio}}/api/forms/contact">
       <form method="dialog" class="panel-close"><button aria-label="Close">×</button></form>
       <div data-ask>
@@ -97,10 +98,10 @@ description: Hands-on, personalized assisted stretching at Trainability in San F
           <input id="stretch-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
           <fieldset class="panel-choices">
             <legend>Which times work best for you?</legend>
-            <label class="panel-check"><input type="checkbox" name="times" value="Morning"> Morning</label>
-            <label class="panel-check"><input type="checkbox" name="times" value="Early afternoon"> Early afternoon</label>
-            <label class="panel-check"><input type="checkbox" name="times" value="Late afternoon"> Late afternoon</label>
-            <label class="panel-check"><input type="checkbox" name="times" value="Evening"> Evening</label>
+            <label class="panel-check"><input type="checkbox" name="times" value="morning"> Morning</label>
+            <label class="panel-check"><input type="checkbox" name="times" value="early-afternoon"> Early afternoon</label>
+            <label class="panel-check"><input type="checkbox" name="times" value="late-afternoon"> Late afternoon</label>
+            <label class="panel-check"><input type="checkbox" name="times" value="evening"> Evening</label>
           </fieldset>
           <label for="stretch-message">Anything we should know? <span class="panel-optional">(optional)</span></label>
           <textarea id="stretch-message" name="message" rows="4" maxlength="1800"></textarea>

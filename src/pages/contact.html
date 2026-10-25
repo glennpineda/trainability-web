@@ -92,6 +92,18 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
           <input id="cancel-email" name="email" type="email" autocomplete="email" inputmode="email" required>
           <label for="cancel-phone">Phone</label>
           <input id="cancel-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+          <!-- The reasons come from Studio (choices.cancelReasons, main.js); the
+               question stays hidden if they can't be read. -->
+          <fieldset class="panel-choices panel-pills" data-cancel-reasons hidden>
+            <legend>Why are you cancelling? <span class="panel-optional">(optional)</span></legend>
+            <div class="panel-pill-list"></div>
+            <div class="cancel-other" hidden>
+              <label for="cancel-reason">Tell us the reason</label>
+              <textarea id="cancel-reason" name="reason" rows="3" maxlength="500" data-count></textarea>
+              <p class="panel-count" aria-live="polite"><span>0</span> / <span data-count-max>500</span></p>
+            </div>
+            <p class="panel-problem panel-problem-field" data-problem-for="reasonCode reason" role="alert" hidden></p>
+          </fieldset>
           <div class="cancel-policy">
             <p>Please give us at least <strong>14 days' notice</strong> before your next payment date.</p>
             <p>Membership fees already charged aren't refunded, so if you ask after your next payment date, that payment stays.</p>

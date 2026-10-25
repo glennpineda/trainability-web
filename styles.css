@@ -524,6 +524,19 @@ address { font-style: normal; }
 .panel-choices legend { font-weight: 600; padding: 0; margin-bottom: 6px; }
 .panel-form .panel-choices .panel-check { margin: 6px 0 0; font-weight: 400; }
 .panel-optional { font-weight: 400; color: var(--muted); }
+.panel .panel-count { margin: 4px 0 0; font-size: 0.8rem; color: var(--muted); text-align: right; }
+/* Reasons to pick from, as pills: one at a time. */
+.panel-choices.panel-pills { display: block; }
+.panel-pill-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.panel-form .panel-pill {
+  display: inline-flex; align-items: center; margin: 0; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  font-weight: 500; font-size: 0.92rem; background: var(--bg-alt); border: 1px solid var(--border);
+}
+.panel-pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.panel-pill:has(input:checked) { border-color: transparent; background: var(--gradient-button) border-box; color: #fff; }
+.panel-pill:has(input:focus-visible) { outline: 2px solid var(--cerulean-bright); outline-offset: 2px; }
+.cancel-other { margin-top: 4px; }
+.panel .panel-problem-field { margin-top: 4px; }
 .book-stretch [data-done] .hero-actions, .book-stretch [data-done] a { justify-content: center; }
 .book-stretch [data-done] a { color: var(--magenta-bright); }
 .panel-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
