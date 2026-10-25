@@ -168,6 +168,7 @@ const openingHours = (week) => week.flatMap((d, i) => d ? [{
 const ORG = {
   "@type": "Organization", "@id": `${SITE}/#org`, name: "Trainability", url: `${SITE}/`,
   logo: `${SITE}/assets/logos/trainability-mark.png`, telephone: "+1-415-594-6019", slogan: "You belong here.",
+  areaServed: { "@type": "City", name: "San Francisco" }, foundingDate: "2020",
 };
 const GYMS = {
   "potrero-hill": {
@@ -193,7 +194,14 @@ const structuredData = (name) => {
   const graph = name === "index" ? [ORG, GYMS.mission, GYMS["potrero-hill"]] : GYMS[name] ? [ORG, GYMS[name]] : null;
   return graph ? `\n  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": graph })}</script>` : "";
 };
-const seo = (name, meta) => {
+/* The first big picture a page shows (its hero photo, or the home video's
+   still), fetched first so the page appears sooner: it's a background image,
+   which a browser otherwise finds late. */
+const firstPicture = (name, raw, root) => {
+  const m = raw.match(/--hero-image: url\('\{\{root\}\}([^']+)'\)/) || raw.match(/poster="\{\{root\}\}([^"]+)"/);
+  return m ? `\n  <link rel="preload" as="image" href="${root}${m[1]}" fetchpriority="high">` : "";
+};
+const seo = (name, meta, picture = "") => {
   const hidden = meta.noindex === "yes";
   return [
     hidden ? `  <meta name="robots" content="noindex">` : `  <link rel="canonical" href="${pageUrl(name)}">`,
@@ -206,7 +214,7 @@ const seo = (name, meta) => {
     `  <meta property="og:image:width" content="1024">`,
     `  <meta property="og:image:height" content="768">`,
     `  <meta name="twitter:card" content="summary_large_image">`,
-  ].filter(Boolean).join("\n") + structuredData(name);
+  ].filter(Boolean).join("\n") + structuredData(name) + picture;
 };
 
 rmSync(OUT, { recursive: true, force: true });
@@ -229,7 +237,7 @@ for (const file of pages) {
   const notFound = name === "404";
   const root = name === "index" ? "./" : notFound ? "/" : "../";
   const fill = (s) => s.replace(/\{\{(\w+)\}\}/g, (all, k) => {
-    const v = generated[k] ? generated[k](root) : { root, version, page: name, seo: seo(name, meta), thisYear: String(new Date().getFullYear()), ...stamps, ...meta, ...site }[k];
+    const v = generated[k] ? generated[k](root) : { root, version, page: name, seo: seo(name, meta, firstPicture(name, raw, root)), thisYear: String(new Date().getFullYear()), ...stamps, ...meta, ...site }[k];
     if (v === undefined) throw new Error(`${file}: unknown {{${k}}}`);
     return v;
   });
@@ -276,4 +284,6 @@ for (const [from, to] of Object.entries(site.redirects || {})) {
 }
 
 for (const f of ["styles.css", "main.js", "assets"]) cpSync(join(ROOT, f), join(OUT, f), { recursive: true });
+/* The server rules (https, no www, caching): see the file itself. */
+cpSync(join(ROOT, "htaccess"), join(OUT, ".htaccess"));
 console.log(`Built ${pages.length} pages into dist/ (${version})`);

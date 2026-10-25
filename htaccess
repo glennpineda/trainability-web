@@ -1,0 +1,25 @@
+# Server rules for trainability.org (copied to dist/.htaccess by the build).
+#
+# public_html also holds other sites' folders (trnblt.com, website2, …), and
+# Apache reads this file for them too, so every rule here only acts when the
+# address is trainability.org or www.trainability.org.
+
+# One address for every page: https://trainability.org/… (no www, no http).
+# Search engines then count each page once instead of four times.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^(www\.)?trainability\.org$ [NC]
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://trainability.org%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# Let browsers keep files for a while, so returning visitors load pages
+# faster. styles.css, main.js and hexes.js are linked with a fingerprint of
+# their contents (?v=…), so they can be kept for a year; photos and video for
+# a week; pages are always checked for a newer version.
+<IfModule mod_headers.c>
+  Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{HTTP_HOST} =~ /trainability\.org$/ && %{REQUEST_URI} =~ /\.(css|js)$/ && %{QUERY_STRING} =~ /^v=/"
+  Header set Cache-Control "public, max-age=604800" "expr=%{HTTP_HOST} =~ /trainability\.org$/ && %{REQUEST_URI} =~ /\.(jpe?g|png|svg|webp|mp4|ico)$/"
+  Header set Cache-Control "no-cache" "expr=%{HTTP_HOST} =~ /trainability\.org$/ && (%{REQUEST_URI} =~ m#/$# || %{REQUEST_URI} =~ /\.html$/)"
+</IfModule>

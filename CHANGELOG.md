@@ -105,6 +105,13 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   contact form set to a pause, or the Cancel membership dialog; the contact
   page passes ?topic= and ?place= to Studio's form and opens #cancel.
 - **More old addresses forward:** /t1, /t2, /t2/stretching, /pt and /main/pt.
+- **Search engine tune-up.** Titles name what and where (e.g. "Private
+  Personal Training in the Mission, SF"), descriptions fit in results, the
+  home heading names the business for search, gallery photos describe the
+  place, and each page's first big picture is fetched first. A server rules
+  file (htaccess → dist/.htaccess) sends http and www to
+  https://trainability.org and lets browsers keep files, acting only on
+  trainability.org addresses.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
 - **Magenta and cerulean.** The brand colours are magenta (`#c44e9b`, from
