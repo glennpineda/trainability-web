@@ -264,7 +264,9 @@ const cancelRequest = studioRequest(cancelDialog, {
   },
   body: (f, value) => ({
     email: value('email'), phone: value('phone'), topic: 'cancel',
-    reasonCode: picked(), reason: picked() === 'other' ? value('reason') : '', message: '',
+    reasonCode: picked(),
+    reason: picked() === 'other' || cancelDialog.dataset.freeReason ? value('reason') : '',
+    message: '',
   }),
 });
 cancelRequest?.opened(async () => {
@@ -274,11 +276,19 @@ cancelRequest?.opened(async () => {
   try {
     const form = await fetch(cancelDialog.dataset.api, { credentials: 'omit' }).then((r) => r.json());
     const reasons = form.choices?.cancelReasons || [];
-    if (!reasons.length) return;
+    if (!form.reasonMax && !reasons.length) return;
     if (form.reasonMax) {
       const box = other.querySelector('textarea');
       box.maxLength = form.reasonMax;
       other.querySelector('[data-count-max]').textContent = form.reasonMax;
+    }
+    // A Studio that takes a reason but has no list yet: just the text box
+    if (!reasons.length) {
+      other.hidden = false;
+      other.querySelector('label').textContent = 'Tell us why, in your own words';
+      cancelDialog.dataset.freeReason = 'yes';
+      question.hidden = false;
+      return;
     }
     for (const [value, label] of reasons) {
       const pill = document.createElement('label');

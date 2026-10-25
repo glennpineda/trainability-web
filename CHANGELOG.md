@@ -114,7 +114,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   trainability.org addresses.
 - **Why are you cancelling?** Cancel membership asks an optional reason,
   picked from Studio's list (choices.cancelReasons), with their own words for
-  Other; hidden until Studio sends the list.
+  Other (live with Studio 3.1.1950). If Studio ever sends no list, a plain
+  box asks for it in their own words instead.
 - **Stretching requests by topic.** Book a session sends topic "stretch" with
   its times, so Messages lists it under Stretching for assigning.
 - **Services menu:** Open gym membership first, then Personal training.
