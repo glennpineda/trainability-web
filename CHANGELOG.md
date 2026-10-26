@@ -167,6 +167,9 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   button, waving and turning like a coin into a chat bubble and back, with an
   "Ask me" label beside it, and in the panel he waves hello, listens while you type, thinks
   while he waits, talks as his answer arrives and looks sad at an error.
+- **Home page wording: private microgyms.** New lines for the Mission and
+  Potrero Hill cards, Reserve a studio and the page description; Our Story
+  opens with "In 2020, we built Trainability around a simple idea…".
 - **Member login links to installing Studio** on a phone or tablet.
 - **No Apps menu.** The top menu is about the gyms now: Studio, Coach and
   Billy are under Members & apps in the footer.
