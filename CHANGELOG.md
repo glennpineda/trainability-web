@@ -171,7 +171,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   the website, Studio, Coach and the phone, in the Apps menu and the footer:
   where he is, what he does for members and for trainers, his moods, and
   what he won't do. "Ask Billy now" opens the chat.
-- **Footer: Install Studio on your phone** (was Put Studio on your phone)
+- **Footer: Install Studio on your phone or tablet** (was Put Studio on your
+  phone; "or tablet" to match Studio's page)
   now comes before Trainability Studio and Trainability Coach, which lose the
   ® in the footer.
 - **Put Studio on your phone.** trnblt.com/app forwards to Studio's
