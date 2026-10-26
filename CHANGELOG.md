@@ -147,6 +147,12 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **Dispute resolution and arbitration** (Terms section 24): the same as
   section 11.2 of the Membership Agreement, (a) to (m), saying "you" for
   "Member"; section 23 points to 24(l).
+- **Analytics with Umami** (cookie-free), on once site.json has the website
+  ID, counting on trnblt.com only: free day pass, member login and code sent,
+  call, directions, buy online, Put Studio on your phone, Meet the team here,
+  cancel and stretching opened and sent, team filter, other sites visited,
+  read to the end, not found, and Studio forms sent (once Studio says so).
+  The privacy policy's cookies section says what it records.
 - **Put Studio on your phone.** trnblt.com/app forwards to Studio's
   install page (trainabilitystudio.com/install, Studio 3.1.2044), for emails;
   linked from the Studio page and the footer.

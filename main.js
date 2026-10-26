@@ -68,12 +68,45 @@ document.querySelectorAll(`[data-nav="${page}"]`).forEach((a) => a.setAttribute(
 document.getElementById('year').textContent = new Date().getFullYear();
 document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
+// Analytics (Umami, cookie-free): the clicks that matter, by name. Nothing
+// happens where its script isn't loaded (no website ID yet, the preview, an
+// ad blocker). Never anything a person typed.
+const track = (name, data) => window.umami?.track(name, data);
+const clicks = [
+  ['[data-day-pass]', 'Free day pass'],
+  ['[data-member-login]', 'Member login'],
+  ['[data-cancel-membership]', 'Cancel membership opened'],
+  ['[data-book-stretch]', 'Book stretching opened'],
+  ['a[href^="tel:"]', 'Call'],
+  ['a[href*="maps.google."], a[href*="maps.apple."]', 'Directions'],
+  ['a[href^="https://trainabilitystudio.com/forms/join"]', 'Buy online'],
+  ['a[href^="https://trainabilitystudio.com/install"]', 'Put Studio on your phone'],
+  ['a[href*="team/?location="]', 'Meet the team here'],
+];
+document.addEventListener('click', (e) => {
+  for (const [selector, name] of clicks) {
+    const el = e.target.closest(selector);
+    if (el) return track(name, { page: document.body.dataset.page });
+  }
+  // Any other link off the site: which site it goes to
+  const out = e.target.closest('a[href^="http"]');
+  if (out && out.host !== location.host) track('Outbound', { to: out.host });
+});
+// Read to the end: the visitor got near the bottom of the page, once
+addEventListener('scroll', function end() {
+  if (scrollY + innerHeight < document.documentElement.scrollHeight * 0.9) return;
+  removeEventListener('scroll', end);
+  track('Read to the end', { page: document.body.dataset.page });
+}, { passive: true });
+if (document.body.dataset.page === '404') track('Not found', { path: location.pathname });
+
 // Studio's embedded forms (personal training, reserve a studio, contact) say how tall they
-// are, so each frame fits with no second scrollbar
+// are, so each frame fits with no second scrollbar, and say when one is sent
 addEventListener('message', (e) => {
   if (e.origin !== 'https://trainabilitystudio.com' || e.data?.source !== 'trainability-form') return;
   const frame = document.querySelector(`iframe[data-form="${e.data.form}"]`);
   if (frame && e.data.type === 'height') frame.style.height = e.data.height + 'px';
+  if (e.data.type === 'sent') track('Form sent', { form: String(e.data.form), ...(e.data.topic ? { topic: String(e.data.topic) } : {}) });
 });
 
 // The team page's filter: everyone, or only those at one location. The choice
@@ -105,6 +138,7 @@ if (filter) {
     const b = e.target.closest('button');
     if (!b) return;
     show(b.dataset.filter);
+    track('Team filter', { location: b.dataset.filter });
     const url = new URL(location.href);
     if (b.dataset.filter === 'all') url.searchParams.delete('location'); else url.searchParams.set('location', b.dataset.filter);
     history.replaceState(null, '', url);
@@ -155,6 +189,7 @@ if (login?.showModal) {
     }
     // In the # so the address never reaches a server log
     const hand = new URLSearchParams({ email: address, send: e.submitter?.value === 'text' ? 'text' : 'email' });
+    track('Member login code', { by: hand.get('send') });
     location.href = form.action + '#' + hand;
   });
 }
@@ -235,6 +270,7 @@ const studioRequest = (dialog, { opener, check, body }) => {
       if (res.ok) {
         dialog.querySelector('[data-ask]').hidden = true;
         dialog.querySelector('[data-done]').hidden = false;
+        track('Request sent', { topic: body(f, value).topic });
         return;
       }
       if (res.status === 400 && answer.error) return say(answer.error, f[answer.field]);

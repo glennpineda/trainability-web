@@ -9,6 +9,9 @@ list and go in CHANGELOG.md.
 
 ## Waiting on Studio or Coach
 
+- **Search Console.** Glenn verifies trnblt.com and submits the sitemap.
+- **Form sent signal from Studio.** Prompt in studio-prompts/form-sent-signal.md;
+  the website already listens and counts "Form sent".
 - **Price lock in the membership agreement.** Tell Studio: agreement 3.6
   (and 2.6) should say dues are locked for the first 12 months, then may
   change with notice 30 days before (not "at least 30": the renewal law caps

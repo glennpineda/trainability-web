@@ -37,6 +37,13 @@ const stamps = { cssV: fingerprint("styles.css"), jsV: fingerprint("main.js"), h
 const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8"));
 const version = pkg.codename ? `${pkg.version} · ${pkg.codename}` : pkg.version;
 const site = JSON.parse(readFileSync(join(SRC, "site.json"), "utf8"));
+
+/* Umami, the site's cookie-free analytics: on only once site.json has the
+   website ID from Umami Cloud, and counting only on trnblt.com (not the
+   preview, not trainability.org before it forwards) */
+const analytics = site.umamiWebsiteId
+  ? `\n  <script defer src="https://cloud.umami.is/script.js" data-website-id="${site.umamiWebsiteId}" data-domains="trnblt.com"></script>`
+  : "";
 const layout = readFileSync(join(SRC, "layout.html"), "utf8");
 
 /* The team page's cards, from src/team.json (npm run team pulls it from Studio). */
@@ -237,7 +244,7 @@ for (const file of pages) {
   const notFound = name === "404";
   const root = name === "index" ? "./" : notFound ? "/" : "../";
   const fill = (s) => s.replace(/\{\{(\w+)\}\}/g, (all, k) => {
-    const v = generated[k] ? generated[k](root) : { root, version, page: name, seo: seo(name, meta, firstPicture(name, raw, root)), thisYear: String(new Date().getFullYear()), ...stamps, ...meta, ...site }[k];
+    const v = generated[k] ? generated[k](root) : { root, version, page: name, seo: seo(name, meta, firstPicture(name, raw, root)), thisYear: String(new Date().getFullYear()), ...stamps, analytics, ...meta, ...site }[k];
     if (v === undefined) throw new Error(`${file}: unknown {{${k}}}`);
     return v;
   });
