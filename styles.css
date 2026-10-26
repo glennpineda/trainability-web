@@ -367,6 +367,7 @@ a.service:hover, a.location-card:hover { border-color: color-mix(in srgb, var(--
 
 .gallery { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin-top: 24px; }
 .gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; }
+.tour-video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; margin-top: 16px; border-radius: 8px; background: #000; }
 
 .two-col { display: grid; gap: 40px; }
 @media (min-width: 800px) { .two-col { grid-template-columns: 1fr 1fr; } }

@@ -56,8 +56,10 @@ const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^
 /* Photos on the team page, or everyone's initials in a circle while the photos
    are being redone (Glenn, 23 Oct 2026): "teamPhotos" in site.json. */
 const photoOf = (t) => (site.teamPhotos === false ? null : t.photo);
+/* Anybody with no location in Studio shows under every location in the
+   team filter (Glenn, 26 Oct 2026), the same as a partner marked allLocations. */
 const cards = (people, root) => people.map((t) => `
-      <article class="person" data-places="${(t.allLocations ? team.places || [] : t.locations).map(slug).join(" ")}">
+      <article class="person" data-places="${(t.allLocations || !t.locations.length ? team.places || [] : t.locations).map(slug).join(" ")}">
         ${photoOf(t) ? `<img src="${root}${photoOf(t)}" alt="${esc(t.name)}" width="400" height="400" loading="lazy">` : `<div class="person-initials" aria-hidden="true">${esc(t.name.split(" ").map((w) => w[0]).join("").slice(0, 2))}</div>`}
         <div class="person-body">
           <h3>${esc(t.name)}</h3>

@@ -167,6 +167,9 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   button, waving and turning like a coin into a chat bubble and back, with an
   "Ask me" label beside it, and in the panel he waves hello, listens while you type, thinks
   while he waits, talks as his answer arrives and looks sad at an error.
+- **Team filter:** anybody with no location in Studio shows under both
+  Mission and Potrero Hill.
+- **Mission page:** no longer says the studios are sanitized every hour.
 - **Home page wording: private microgyms.** New lines for the Mission and
   Potrero Hill cards, Reserve a studio and the page description; Our Story
   opens with "In 2020, we built Trainability around a simple idea…".
@@ -211,3 +214,6 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **The real logos.** The Trainability mark and the TRAINABILITY® wordmark
   (from Studio's lettering) are in the header and footer; the mark is also
   the favicon. `assets/logos/` also holds the Studio and Coach logos.
+- **Potrero Hill tour video.** Glenn's 2½-minute walk-through of the gym sits
+  at the top of Inside the gym on the Potrero Hill page (1080p, 59MB, loads
+  only when played). Umami counts each play as Video played.

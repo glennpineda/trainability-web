@@ -99,6 +99,8 @@ addEventListener('scroll', function end() {
   track('Read to the end', { page: document.body.dataset.page });
 }, { passive: true });
 if (document.body.dataset.page === '404') track('Not found', { path: location.pathname });
+// Video played: once per video per page view
+document.querySelectorAll('video[data-video]').forEach(v => v.addEventListener('play', () => track('Video played', { video: v.dataset.video }), { once: true }));
 
 // Studio's embedded forms (personal training, reserve a studio, contact) say how tall they
 // are, so each frame fits with no second scrollbar, and say when one is sent

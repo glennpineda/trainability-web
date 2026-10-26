@@ -22,11 +22,9 @@ list and go in CHANGELOG.md.
 
 ## Open questions
 
-- Staff with no location in Studio: give them a default place, or show them
-  under every location in the team filter?
 - Fade the edges of the alternating section bands?
 - A better landscape hero video, and newer Mission photos.
-- Confirm Mission's "sanitized every hour" and current prices.
+- Confirm the Mission's current prices.
 - Should Mark Mian appear on the team page?
 - Staff photos and bios in Studio.
 
