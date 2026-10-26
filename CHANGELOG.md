@@ -153,6 +153,16 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   cancel and stretching opened and sent, team filter, other sites visited,
   read to the end, not found, and Studio forms sent (once Studio says so).
   The privacy policy's cookies section says what it records.
+- **IndexNow.** Each deploy tells Bing (and the other IndexNow engines)
+  which pages changed (scripts/indexnow.mjs), with its key file at the
+  site's top.
+- **Ask Billy.** A chat button at the bottom right of every page opens a
+  panel to ask the app's assistant (Studio's /api/forms/billy, no cookies):
+  his greeting, typing indicator, links in his answers, the conversation
+  kept for the visit with Start over, errors in his place (429 waits, 503
+  hides the chat), full screen on phones. Umami counts opening it and
+  questions asked, never what was asked.
+  The privacy policy says where chat questions go (Studio, and Anthropic).
 - **Put Studio on your phone.** trnblt.com/app forwards to Studio's
   install page (trainabilitystudio.com/install, Studio 3.1.2044), for emails;
   linked from the Studio page and the footer.

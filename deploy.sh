@@ -100,3 +100,6 @@ if (( ${#FAILED[@]} )); then
   exit 1
 fi
 echo "Deployed ${#FILES[@]} files to $FTP_HOST$FTP_REMOTE_DIR"
+
+# Tell Bing and the other IndexNow engines which pages changed
+node scripts/indexnow.mjs || true

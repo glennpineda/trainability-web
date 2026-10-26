@@ -265,6 +265,9 @@ writeFileSync(join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 ${listed.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}
 </urlset>
 `);
+/* IndexNow (Bing and others): the key file at the site's top, proving the
+   pings scripts/indexnow.mjs sends after a deploy come from this site */
+if (site.indexNowKey) writeFileSync(join(OUT, `${site.indexNowKey}.txt`), site.indexNowKey);
 writeFileSync(join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
 /* Old links still in use (site.json "redirects": old path -> page, or a full

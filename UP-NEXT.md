@@ -9,7 +9,9 @@ list and go in CHANGELOG.md.
 
 ## Waiting on Studio or Coach
 
-- **Search Console.** Glenn verifies trnblt.com and submits the sitemap.
+- **Billy API live, and Retry-After.** The chat needs Studio's
+  /api/forms/billy deployed (after 3.1.2071); prompt for exposing Retry-After
+  in studio-prompts/billy-retry-after.md.
 - **Form sent signal from Studio.** Prompt in studio-prompts/form-sent-signal.md;
   the website already listens and counts "Form sent".
 - **Price lock in the membership agreement.** Tell Studio: agreement 3.6

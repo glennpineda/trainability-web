@@ -559,3 +559,133 @@ if (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'Mac
     new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(show);
   });
 })();
+
+/* Ask Billy: a chat with the app's assistant, through Studio's
+   /api/forms/billy (it answers from what the app knows, never by reading
+   this site). The conversation lives in sessionStorage, so it follows the
+   visitor from page to page until the tab closes or they start over. */
+const billy = document.querySelector('.billy');
+if (billy) {
+  const api = billy.dataset.billyApi;
+  const button = billy.querySelector('.billy-button');
+  const panel = billy.querySelector('.billy-panel');
+  const list = panel.querySelector('.billy-messages');
+  const typing = panel.querySelector('.billy-typing');
+  const form = panel.querySelector('.billy-form');
+  const box = form.querySelector('textarea');
+  const send = form.querySelector('button[type="submit"]');
+  const GREETING = "Hi, I'm Billy. Ask me about memberships, day passes, hours, our services or how things work.";
+  const UNREACHABLE = "Billy can't be reached just now. Please use our contact page or call the front desk.";
+  const stored = (key) => { try { return sessionStorage.getItem(key); } catch { return null; } };
+  const store = (key, value) => { try { value == null ? sessionStorage.removeItem(key) : sessionStorage.setItem(key, value); } catch { /* private mode */ } };
+  // [{ role: "user" | "assistant", text }], plus { role: "notice" } for his
+  // error messages, which show as his but are never sent back as history
+  let chat = [];
+  try { chat = JSON.parse(stored('billy-chat') || '[]'); } catch { chat = []; }
+  const save = () => store('billy-chat', chat.length ? JSON.stringify(chat) : null);
+  let busy = false;
+  let waitUntil = 0;
+
+  // His answers are plain text: web addresses become links, the rest stays text
+  const ADDRESS = /\b(?:https?:\/\/|www\.)[^\s<>"]+|\b[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|org|net|io|app)(?:\/[^\s<>"]*)?/gi;
+  const linked = (text) => {
+    const out = document.createDocumentFragment();
+    let at = 0;
+    for (const m of text.matchAll(ADDRESS)) {
+      let address = m[0].replace(/[.,;:!?)\]'"]+$/, '');
+      if (text[m.index - 1] === '@') continue;   // part of an email address
+      out.append(text.slice(at, m.index));
+      const a = document.createElement('a');
+      a.href = /^https?:/i.test(address) ? address : 'https://' + address;
+      a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = address;
+      out.append(a);
+      at = m.index + address.length;
+    }
+    out.append(text.slice(at));
+    return out;
+  };
+  const show = (role, text) => {
+    const li = document.createElement('li');
+    li.className = `billy-msg billy-msg-${role === 'user' ? 'user' : 'assistant'}`;
+    const who = document.createElement('span');
+    who.className = 'sr-only';
+    who.textContent = role === 'user' ? 'You: ' : 'Billy: ';
+    li.append(who, role === 'user' ? text : linked(text));
+    list.append(li);
+    list.scrollTop = list.scrollHeight;
+  };
+  const render = () => {
+    list.textContent = '';
+    show('assistant', GREETING);
+    chat.forEach((m) => show(m.role, m.text));
+  };
+  const ready = () => { send.disabled = busy || Date.now() < waitUntil; };
+  const gone = () => { button.hidden = true; store('billy-gone', '1'); };
+
+  const open = () => {
+    if (!list.children.length) render();
+    panel.hidden = false;
+    button.setAttribute('aria-expanded', 'true');
+    list.scrollTop = list.scrollHeight;
+    box.focus();
+    track('Ask Billy opened', { page: document.body.dataset.page });
+  };
+  const close = () => {
+    panel.hidden = true;
+    button.setAttribute('aria-expanded', 'false');
+    if (!button.hidden) button.focus();
+  };
+  button.addEventListener('click', () => (panel.hidden ? open() : close()));
+  panel.querySelector('.billy-close').addEventListener('click', close);
+  panel.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  panel.querySelector('.billy-reset').addEventListener('click', () => {
+    chat = []; save(); render(); box.focus();
+  });
+  // Enter sends; Shift+Enter is a new line
+  box.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); form.requestSubmit(); }
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const question = box.value.trim().slice(0, 500);
+    if (!question || send.disabled) return;
+    // The conversation so far, before this question: the last 8, his answers as they came
+    const history = chat.filter((m) => m.role !== 'notice').slice(-8).map(({ role, text }) => ({ role, text }));
+    chat.push({ role: 'user', text: question }); save();
+    show('user', question);
+    box.value = '';
+    busy = true; ready(); typing.hidden = false;
+    track('Billy question', { page: document.body.dataset.page });
+    const say = (text, role = 'assistant') => { chat.push({ role, text }); save(); show(role, text); };
+    try {
+      const res = await fetch(api, {
+        method: 'POST', credentials: 'omit',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, history }),
+      });
+      const answer = await res.json().catch(() => ({}));
+      if (res.ok && typeof answer.answer === 'string') say(answer.answer);
+      else if ([400, 429, 503].includes(res.status) && answer.error) {
+        say(String(answer.error), 'notice');
+        if (res.status === 429) {
+          // Retry-After, where Studio lets the page read it; else a minute
+          const seconds = Number(res.headers.get('Retry-After')) || 60;
+          waitUntil = Date.now() + seconds * 1000;
+          setTimeout(ready, seconds * 1000 + 50);
+        }
+        if (res.status === 503) gone();
+      } else {
+        say(UNREACHABLE, 'notice');
+        if (res.status === 404) gone();   // a Studio without Billy's address
+      }
+    } catch {
+      say(UNREACHABLE, 'notice');
+    } finally {
+      busy = false; ready(); typing.hidden = true;
+    }
+  });
+
+  if (!stored('billy-gone')) button.hidden = false;
+}
