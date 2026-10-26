@@ -168,7 +168,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   "Ask me" label beside it, and in the panel he waves hello, listens while you type, thinks
   while he waits, talks as his answer arrives and looks sad at an error.
 - **What people say, on the home page**, between "Not a big-box gym" and
-  "Visit us": three short quotes from our Google reviews, word for word, in
+  "Visit us": four short quotes from our Google reviews (Michael Neri, Riley
+  Smith and Karen Madero at Potrero Hill, Brad Stam at the Mission), word for word, in
   the page itself (src/highlights.json, kept by hand, since Google's terms
   don't allow copies of its review data), and each location's live Google
   rating and count as a chip linking to its reviews. "Read Mission reviews"

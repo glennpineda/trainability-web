@@ -3,9 +3,11 @@
   "quotes": [
     { "name": "Michael Neri", "page": "potrero-hill", "place": "Potrero Hill", "rating": 5,
       "quote": "From the moment you walk in, you’re greeted with a sense of warmth and belonging…" },
-    { "name": "GP", "page": "mission", "place": "Mission", "rating": 5,
-      "quote": "She listens to what my goals are, considers my past injury…" },
+    { "name": "Riley Smith", "page": "potrero-hill", "place": "Potrero Hill", "rating": 5,
+      "quote": "I feel safe here as a trans person - all gender restrooms, all gender locker room with changing rooms that actually provide privacy." },
     { "name": "Karen Madero", "page": "potrero-hill", "place": "Potrero Hill", "rating": 5,
-      "quote": "Trainability is small gym that packs a big punch!" }
+      "quote": "Trainability is small gym that packs a big punch!" },
+    { "name": "Brad Stam", "page": "mission", "place": "Mission", "rating": 5,
+      "quote": "What a great training studio! Modern, clean, with individualized training sessions!" }
   ]
 }
