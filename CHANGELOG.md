@@ -144,6 +144,9 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   the Monthly plan renews monthly, its price locked for the first 12
   months, then changeable with 30 days' notice. Privacy
   policy: phone calls answered and transcribed by Billy.
+- **Dispute resolution and arbitration** (Terms section 24): the same as
+  section 11.2 of the Membership Agreement, (a) to (m), saying "you" for
+  "Member"; section 23 points to 24(l).
 - **Put Studio on your phone.** trnblt.com/app forwards to Studio's
   install page (trainabilitystudio.com/install, Studio 3.1.2044), for emails;
   linked from the Studio page and the footer.
