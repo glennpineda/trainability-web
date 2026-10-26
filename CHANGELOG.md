@@ -164,7 +164,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   questions asked, never what was asked.
   The privacy policy says where chat questions go (Studio, and Anthropic).
   Billy's face (Glenn's drawings, from Studio's assets/billy) is the chat
-  button, waving and turning like a coin into a chat bubble and back, and in the panel he waves hello, listens while you type, thinks
+  button, waving and turning like a coin into a chat bubble and back, with an
+  "Ask me" label beside it, and in the panel he waves hello, listens while you type, thinks
   while he waits, talks as his answer arrives and looks sad at an error.
 - **Meet Billy** (billy/): a page about Billy, the personal assistant across
   the website, Studio, Coach and the phone, in the Apps menu and the footer:

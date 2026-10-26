@@ -651,6 +651,7 @@ if (billy) {
     if (!button.hidden) button.focus();
   };
   button.addEventListener('click', () => (panel.hidden ? open() : close()));
+  billy.querySelector('.billy-hint')?.addEventListener('click', () => button.click());
   // "Ask Billy now" links open the chat (or go to the contact page without it)
   document.addEventListener('click', (e) => {
     const link = e.target.closest('[data-ask-billy]');

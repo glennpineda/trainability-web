@@ -762,7 +762,8 @@ address { font-style: normal; }
 .billy-button {
   position: fixed; right: 20px; bottom: 20px; z-index: 60;
   display: grid; place-items: center; width: 72px; height: 72px; padding: 0; border: 0; border-radius: 50%;
-  background: none; cursor: pointer; filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.5)); transition: transform 0.2s;
+  background: none; cursor: pointer; transition: transform 0.2s;
+  filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.6)) drop-shadow(0 0 14px color-mix(in srgb, var(--magenta) 75%, transparent)) drop-shadow(0 0 26px color-mix(in srgb, var(--cerulean) 45%, transparent));
 }
 /* Billy waving and a chat bubble take turns on the button, turning like a
    coin, so it reads as both "Billy" and "chat here". It holds on Billy while
@@ -833,3 +834,23 @@ address { font-style: normal; }
 .billy-moods figure { margin: 0; padding: 18px 12px 16px; text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
 .billy-moods img { width: 110px; height: 110px; }
 .billy-moods figcaption { margin-top: 6px; font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; font-size: 1.1rem; }
+
+/* "Ask me", beside Billy's button, pointing at him. Gone while the chat is
+   open or the button is hidden. */
+.billy-hint {
+  position: fixed; right: 100px; bottom: 39px; z-index: 60;
+  padding: 7px 14px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+  font-family: var(--display); font-weight: 800; font-size: 1rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text);
+  border: 2px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--gradient) border-box;
+  /* A dark halo, then a magenta and blue glow, so it stands out over any text or photo */
+  box-shadow: 0 0 0 4px rgb(10 10 15 / 0.55), 0 6px 20px rgb(0 0 0 / 0.6),
+    0 0 22px color-mix(in srgb, var(--magenta) 70%, transparent), 0 0 44px color-mix(in srgb, var(--cerulean) 45%, transparent);
+}
+.billy-hint::after {
+  content: ""; position: absolute; right: -7px; top: 50%; width: 10px; height: 10px; margin-top: -5px; transform: rotate(45deg);
+  background: var(--surface); border-top: 2px solid var(--cerulean); border-right: 2px solid var(--cerulean);
+}
+.billy:has(.billy-button[hidden]) .billy-hint, .billy:has(.billy-button[aria-expanded="true"]) .billy-hint { display: none; }
+@media (max-width: 479px) {
+  .billy-hint { right: 94px; bottom: 35px; font-size: 0.9rem; padding: 6px 12px; }
+}
