@@ -9,6 +9,10 @@ list and go in CHANGELOG.md.
 
 ## Waiting on Studio or Coach
 
+- **Price lock in the membership agreement.** Tell Studio: agreement 3.6
+  (and 2.6) should say dues are locked for the first 12 months, then may
+  change with notice 30 days before (not "at least 30": the renewal law caps
+  it at 30). The website says this now.
 - **Coach page wording.** src/pages/coach.html is a draft from Coach's manual;
   replace it with the "What this is" section from Coach's sign-in page once
   that's live at trainabilitycoach.com.

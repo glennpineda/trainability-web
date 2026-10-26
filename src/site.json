@@ -1,5 +1,5 @@
 {
-  "siteUrl": "https://trainability.org",
+  "siteUrl": "https://trnblt.com",
   "studio": "https://trainabilitystudio.com",
   "teamPhotos": false,
   "googlePlacesKey": "AIzaSyAO5kUn_1TVWGPX0w_zYxiQo0yw2X13Ul4",
@@ -22,6 +22,7 @@
     "t2/bookstudio": "reserve-a-studio/",
     "t2/stretching": "stretching/",
     "pt": "personal-training/",
-    "main/pt": "personal-training/"
+    "main/pt": "personal-training/",
+    "app": "https://trainabilitystudio.com/install"
   }
 }

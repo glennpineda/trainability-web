@@ -56,7 +56,7 @@ Versions work the way they do in Studio: `MAJOR.MINOR.BUILD` plus a code name fo
 
 ## Deploying (FTP)
 
-`./deploy.sh --check` logs in and lists the remote folder without uploading. `./deploy.sh` builds the site and uploads `dist/` over FTP/FTPS/SFTP using `curl`, all files over one connection. Upload goes to `FTP_REMOTE_DIR`, which is `/`: the FTP login opens in `public_html`, which trainability.org serves (and trnblt.com will). The folders beside the site there (`trnblt.com`, `website2`) are other sites; the deploy never deletes anything except stale files in `assets/team/`. It reads `FTP_HOST`, `FTP_USER`, `FTP_PASS`, `FTP_REMOTE_DIR`, `FTP_PROTOCOL` and `FTP_PORT` from a local `.env` file (copy `.env.example`; `.env` is git-ignored) or from environment variables.
+`./deploy.sh --check` logs in and lists the remote folder without uploading. `./deploy.sh` builds the site and uploads `dist/` over FTP/FTPS/SFTP using `curl`, all files over one connection. Upload goes to `FTP_REMOTE_DIR`, which is `/`: the FTP login opens in `public_html`, which trnblt.com serves (trainability.org forwards to it). The folders beside the site there (`trnblt.com`, `website2`) are other sites; the deploy never deletes anything except stale files in `assets/team/`. It reads `FTP_HOST`, `FTP_USER`, `FTP_PASS`, `FTP_REMOTE_DIR`, `FTP_PROTOCOL` and `FTP_PORT` from a local `.env` file (copy `.env.example`; `.env` is git-ignored) or from environment variables.
 
 When working in Claude Code on the web, set these as environment variables in the cloud environment settings rather than in a file — the container is temporary and `.env` is never committed.
 

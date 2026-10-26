@@ -122,6 +122,31 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   logo and wordmark, linking to the Studio page.
 - **Meet the team here.** Mission and Potrero Hill link to the team page
   filtered to that location.
+- **trnblt.com is the address.** Every page, link preview and search listing
+  names https://trnblt.com; trainability.org (and www, and http) forwards there.
+- **Terms brought up to date** (effective 26 Oct 2026): texting as Studio
+  sends it today (48 and 36 hours, HELP, sign-in codes, Refill by text, opt-in
+  news), independent trainers, phone calls and the assistant, sign-in codes,
+  a Memberships section (automatic renewal, 14 days' notice, no refunds, the
+  $50 early fee, pauses), reservations and no-shows, refills, electronic
+  signatures. The membership page's cancel line now says 14 days too.
+  Checked against California law: the five-business-day right, every way to
+  cancel (app, form, email, mail, in person), refunds for moving, disability,
+  death and reduced facilities, 7-30 days' notice of a price change, the
+  annual reminder, calls with the assistant transcribed (said so), and no
+  release of gross negligence.
+- **Membership policy of 26 Oct 2026.** 48 hours' notice before the next
+  payment (Contact's card and Cancel membership dialog, the membership page,
+  the Terms); a payment taken after a request that came in time is refunded.
+  Five business days to change your mind, with a full refund; the $50 fee
+  after only one billing cycle, with no fee for moving, disability or a
+  reduced facility; pauses of 14 days to 2 months, twice a membership year;
+  the Monthly plan renews monthly, its price locked for the first 12
+  months, then changeable with 30 days' notice. Privacy
+  policy: phone calls answered and transcribed by Billy.
+- **Put Studio on your phone.** trnblt.com/app forwards to Studio's
+  install page (trainabilitystudio.com/install, Studio 3.1.2044), for emails;
+  linked from the Studio page and the footer.
 - **Services menu:** Open gym membership first, then Personal training.
 - **Versioning.** The site carries a version, build and code name, the same
   way Studio does.
