@@ -761,11 +761,38 @@ address { font-style: normal; }
    Under 480px wide the panel fills the screen. */
 .billy-button {
   position: fixed; right: 20px; bottom: 20px; z-index: 60;
-  display: grid; place-items: center; width: 58px; height: 58px; border: 0; border-radius: 50%;
-  color: var(--on-gradient); background: var(--gradient-button); box-shadow: var(--shadow), var(--glow); cursor: pointer;
+  display: grid; place-items: center; width: 72px; height: 72px; padding: 0; border: 0; border-radius: 50%;
+  background: none; cursor: pointer; filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.5)); transition: transform 0.2s;
+}
+/* Billy waving and a chat bubble take turns on the button, turning like a
+   coin, so it reads as both "Billy" and "chat here". It holds on Billy while
+   the panel is open, and for anyone who asks for less motion. */
+.billy-button { perspective: 400px; }
+.billy-button > * { grid-area: 1 / 1; backface-visibility: hidden; }
+.billy-button-face { width: 72px; height: 72px; display: block; animation: billy-turn-face 9s ease-in-out infinite; }
+.billy-button-chat {
+  display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
+  color: var(--on-gradient); background: var(--gradient-button); box-shadow: var(--glow);
+  opacity: 0; animation: billy-turn-chat 9s ease-in-out infinite;
+}
+@keyframes billy-turn-face {
+  0%, 60% { opacity: 1; transform: rotateY(0); }
+  66%, 94% { opacity: 0; transform: rotateY(-90deg); }
+  100% { opacity: 1; transform: rotateY(0); }
+}
+@keyframes billy-turn-chat {
+  0%, 60% { opacity: 0; transform: rotateY(90deg); }
+  66%, 94% { opacity: 1; transform: rotateY(0); }
+  100% { opacity: 0; transform: rotateY(90deg); }
+}
+.billy-button[aria-expanded="true"] > * { animation: none; }
+.billy-button[aria-expanded="true"] .billy-button-chat { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .billy-button > * { animation: none; }
+  .billy-button-chat { opacity: 0; }
 }
 .billy-button[hidden] { display: none; }
-.billy-button:hover { background: var(--gradient-button-hover); }
+.billy-button:hover { transform: translateY(-2px) scale(1.04); }
 .billy-button:focus-visible, .billy-panel :focus-visible { outline: 2px solid var(--cerulean-bright); outline-offset: 2px; }
 .billy-panel {
   position: fixed; right: 20px; bottom: 90px; z-index: 61;
@@ -775,7 +802,8 @@ address { font-style: normal; }
   box-shadow: var(--shadow), var(--glow);
 }
 .billy-panel[hidden] { display: none; }
-.billy-head { display: flex; align-items: center; gap: 12px; padding: 14px 12px 12px 18px; border-bottom: 1px solid var(--border); }
+.billy-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px 8px 8px; border-bottom: 1px solid var(--border); }
+.billy-face { width: 64px; height: 64px; flex-shrink: 0; margin: -4px 0; }
 .billy-head h2 { flex: 1; margin: 0; font-size: 1.6rem; }
 .billy-reset { background: none; border: 0; padding: 4px; font: inherit; font-size: 0.85rem; color: var(--brand); text-decoration: underline; cursor: pointer; }
 .billy-close { background: none; border: 0; color: var(--muted); font-size: 1.8rem; line-height: 1; cursor: pointer; padding: 0 6px; }
@@ -798,3 +826,10 @@ address { font-style: normal; }
   .billy-button { right: 16px; bottom: 16px; }
   .billy-panel { inset: 0; width: auto; height: auto; border-radius: 0; border-width: 0; }
 }
+
+/* The Billy page: his face waving in the hero, and a row of his moods */
+.billy-hero-face { display: block; width: clamp(150px, 22vw, 220px); height: auto; margin: 0 auto 8px; filter: drop-shadow(0 18px 40px color-mix(in srgb, var(--magenta) 40%, transparent)); }
+.billy-moods { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px; }
+.billy-moods figure { margin: 0; padding: 18px 12px 16px; text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.billy-moods img { width: 110px; height: 110px; }
+.billy-moods figcaption { margin-top: 6px; font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; font-size: 1.1rem; }

@@ -163,6 +163,16 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   hides the chat), full screen on phones. Umami counts opening it and
   questions asked, never what was asked.
   The privacy policy says where chat questions go (Studio, and Anthropic).
+  Billy's face (Glenn's drawings, from Studio's assets/billy) is the chat
+  button, waving and turning like a coin into a chat bubble and back, and in the panel he waves hello, listens while you type, thinks
+  while he waits, talks as his answer arrives and looks sad at an error.
+- **Meet Billy** (billy/): a page about Billy, the personal assistant across
+  the website, Studio, Coach and the phone, in the Apps menu and the footer:
+  where he is, what he does for members and for trainers, his moods, and
+  what he won't do. "Ask Billy now" opens the chat.
+- **Footer: Install Studio on your phone** (was Put Studio on your phone)
+  now comes before Trainability Studio and Trainability Coach, which lose the
+  ® in the footer.
 - **Put Studio on your phone.** trnblt.com/app forwards to Studio's
   install page (trainabilitystudio.com/install, Studio 3.1.2044), for emails;
   linked from the Studio page and the footer.

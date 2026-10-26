@@ -80,7 +80,7 @@ const clicks = [
   ['a[href^="tel:"]', 'Call'],
   ['a[href*="maps.google."], a[href*="maps.apple."]', 'Directions'],
   ['a[href^="https://trainabilitystudio.com/forms/join"]', 'Buy online'],
-  ['a[href^="https://trainabilitystudio.com/install"]', 'Put Studio on your phone'],
+  ['a[href^="https://trainabilitystudio.com/install"]', 'Install Studio on your phone'],
   ['a[href*="team/?location="]', 'Meet the team here'],
 ];
 document.addEventListener('click', (e) => {
@@ -574,6 +574,19 @@ if (billy) {
   const form = panel.querySelector('.billy-form');
   const box = form.querySelector('textarea');
   const send = form.querySelector('button[type="submit"]');
+  // His face in the panel's corner, in the mood of the moment: waving hello,
+  // listening while they type, thinking while he waits, talking as an answer
+  // arrives, sad when something went wrong (the drawings are Studio's)
+  const face = panel.querySelector('.billy-face');
+  const faces = face.src.replace(/[^/]+$/, '');
+  const MOODS = ['normal', 'waving', 'listening', 'thinking', 'talking', 'happy', 'sad'];
+  let moodTimer;
+  const mood = (name, ms) => {
+    clearTimeout(moodTimer);
+    if (face.dataset.mood !== name) { face.src = `${faces}${name}.svg`; face.dataset.mood = name; }
+    if (ms) moodTimer = setTimeout(() => mood(box.value.trim() && document.activeElement === box ? 'listening' : 'normal'), ms);
+  };
+  let preloaded = false;
   const GREETING = "Hi, I'm Billy. Ask me about memberships, day passes, hours, our services or how things work.";
   const UNREACHABLE = "Billy can't be reached just now. Please use our contact page or call the front desk.";
   const stored = (key) => { try { return sessionStorage.getItem(key); } catch { return null; } };
@@ -624,7 +637,8 @@ if (billy) {
   const gone = () => { button.hidden = true; store('billy-gone', '1'); };
 
   const open = () => {
-    if (!list.children.length) render();
+    if (!preloaded) { MOODS.forEach((m) => { new Image().src = `${faces}${m}.svg`; }); preloaded = true; }
+    if (!list.children.length) { render(); mood('waving', 2500); }
     panel.hidden = false;
     button.setAttribute('aria-expanded', 'true');
     list.scrollTop = list.scrollHeight;
@@ -637,11 +651,21 @@ if (billy) {
     if (!button.hidden) button.focus();
   };
   button.addEventListener('click', () => (panel.hidden ? open() : close()));
+  // "Ask Billy now" links open the chat (or go to the contact page without it)
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-ask-billy]');
+    if (!link || button.hidden) return;
+    e.preventDefault();
+    if (panel.hidden) open(); else box.focus();
+  });
   panel.querySelector('.billy-close').addEventListener('click', close);
   panel.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
   panel.querySelector('.billy-reset').addEventListener('click', () => {
-    chat = []; save(); render(); box.focus();
+    chat = []; save(); render(); mood('waving', 2500); box.focus();
   });
+  // He listens while they type, and stops when they stop
+  box.addEventListener('input', () => { if (!busy) mood(box.value.trim() ? 'listening' : 'normal'); });
+  box.addEventListener('blur', () => { if (!busy && face.dataset.mood === 'listening') mood('normal'); });
   // Enter sends; Shift+Enter is a new line
   box.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); form.requestSubmit(); }
@@ -656,9 +680,14 @@ if (billy) {
     chat.push({ role: 'user', text: question }); save();
     show('user', question);
     box.value = '';
-    busy = true; ready(); typing.hidden = false;
+    busy = true; ready(); typing.hidden = false; mood('thinking');
     track('Billy question', { page: document.body.dataset.page });
-    const say = (text, role = 'assistant') => { chat.push({ role, text }); save(); show(role, text); };
+    const say = (text, role = 'assistant') => {
+      chat.push({ role, text }); save(); show(role, text);
+      // Talking for about as long as it takes to read, or sad for an error
+      if (role === 'notice') mood('sad', 4000);
+      else mood('talking', Math.min(7000, Math.max(1500, text.split(/\s+/).length * 250)));
+    };
     try {
       const res = await fetch(api, {
         method: 'POST', credentials: 'omit',
