@@ -576,6 +576,8 @@ address { font-style: normal; }
 .panel .member-login-note { font-size: 0.9rem; color: var(--muted); margin: 14px 0 0; }
 .panel .member-login-join { font-size: 0.9rem; margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--border); }
 .member-login-join a { color: var(--magenta-bright); }
+.panel .member-login-install { font-size: 0.9rem; margin: 14px 0 0; }
+.member-login-install a { color: var(--magenta-bright); }
 .powered-by { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 22px;
   color: var(--muted); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; opacity: 0.75; transition: opacity 0.2s; }
 .powered-by:hover, .powered-by:focus-visible { opacity: 1; }

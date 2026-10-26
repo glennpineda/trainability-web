@@ -167,6 +167,9 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   button, waving and turning like a coin into a chat bubble and back, with an
   "Ask me" label beside it, and in the panel he waves hello, listens while you type, thinks
   while he waits, talks as his answer arrives and looks sad at an error.
+- **Member login links to installing Studio** on a phone or tablet.
+- **No Apps menu.** The top menu is about the gyms now: Studio, Coach and
+  Billy are under Members & apps in the footer.
 - **What people say, on the home page**, between "Not a big-box gym" and
   "Visit us": four short quotes from our Google reviews (Michael Neri, Riley
   Smith and Karen Madero at Potrero Hill, Brad Stam at the Mission), word for word, in
