@@ -113,7 +113,7 @@ const potrero = hoursLines(team.hours?.["Potrero Hill"] || site.potreroHours);
    fills from Google (Places API) on each visit. Left out until site.json has
    the key and the place's Google id. */
 const reviews = (place, name) => site.googlePlacesKey && place ? `
-    <section class="section reviews" data-google-place="${esc(place)}" hidden>
+    <section class="section reviews" id="reviews" data-google-place="${esc(place)}" hidden>
       <div class="container">
         <header class="section-head reviews-head">
           <h2>What people say</h2>
@@ -129,7 +129,42 @@ const reviews = (place, name) => site.googlePlacesKey && place ? `
     </section>
 ` : "";
 
+/* Home: "What people say", three short quotes from our Google reviews
+   (src/highlights.json, written into the page), and each location's rating
+   and count, which main.js fills in live from Google like the location pages
+   (nothing of Google's is kept here). Their space is held from the start. */
+const highlights = JSON.parse(readFileSync(join(SRC, "highlights.json"), "utf8")).quotes;
+const ratingChip = (place, name, page) => `
+          <a class="rating-chip" href="https://search.google.com/local/reviews?placeid=${esc(place)}" data-rating-place="${esc(place)}" target="_blank" rel="noopener">
+            <span class="rating-chip-place">${esc(name)}</span>
+            <span class="stars" role="img" aria-label="5 out of 5 stars" hidden>★★★★★</span>
+            <span class="rating-chip-figures">Reviews on Google</span>
+          </a>`;
+const homeReviews = (root) => `
+    <section class="section home-reviews">
+      <div class="container">
+        <header class="section-head reviews-head">
+          <p class="eyebrow gradient-text">From our Google reviews</p>
+          <h2>What people say</h2>
+          <div class="rating-chips">${site.googlePlacesKey ? ratingChip(site.missionGooglePlace, "Mission") + ratingChip(site.potreroGooglePlace, "Potrero Hill") : ""}
+          </div>
+        </header>
+        <div class="reviews-list home-reviews-list">${highlights.map((q) => `
+          <figure class="review">
+            <span class="stars" role="img" aria-label="${q.rating} out of 5 stars" style="--rating: ${q.rating}">★★★★★</span>
+            <blockquote><p>“${esc(q.quote)}”</p></blockquote>
+            <figcaption><span class="review-who"><span>${esc(q.name)}</span><span class="review-when">${esc(q.place)}</span></span></figcaption>
+          </figure>`).join("")}
+        </div>
+        <div class="hero-actions reviews-actions">
+          <a class="btn btn-ghost" href="${root}mission/#reviews">Read Mission reviews</a>
+          <a class="btn btn-ghost" href="${root}potrero-hill/#reviews">Read Potrero Hill reviews</a>
+        </div>
+      </div>
+    </section>`;
+
 const generated = {
+  homeReviews,
   missionReviews: () => reviews(site.missionGooglePlace, "the Mission"),
   potreroReviews: () => reviews(site.potreroGooglePlace, "Potrero Hill"),
   /* "Mon–Fri 6 AM – 9 PM · Sat–Sun 8 AM – 6 PM", on one line, on separate lines,

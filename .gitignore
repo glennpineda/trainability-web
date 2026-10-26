@@ -5,3 +5,4 @@ dist/
 *.log
 backups/
 .indexnow-sent.json
+review-watch.json

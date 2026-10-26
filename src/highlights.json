@@ -1,0 +1,11 @@
+{
+  "_note": "Home page 'What people say': short quotes from our Google reviews, word for word as the reviewer wrote them, '…' where cut. Typed here, not copied from Google's API (its terms don't allow keeping copies). If a reviewer edits or removes their review, change or drop it here. Checked against Google on 26 Oct 2026.",
+  "quotes": [
+    { "name": "Michael Neri", "page": "potrero-hill", "place": "Potrero Hill", "rating": 5,
+      "quote": "From the moment you walk in, you’re greeted with a sense of warmth and belonging…" },
+    { "name": "GP", "page": "mission", "place": "Mission", "rating": 5,
+      "quote": "She listens to what my goals are, considers my past injury…" },
+    { "name": "Karen Madero", "page": "potrero-hill", "place": "Potrero Hill", "rating": 5,
+      "quote": "Trainability is small gym that packs a big punch!" }
+  ]
+}

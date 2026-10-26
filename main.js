@@ -509,7 +509,36 @@ if (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'Mac
   if (links.reviewsUri) section.querySelector('.reviews-all').href = links.reviewsUri;
   if (links.writeAReviewUri) section.querySelector('.reviews-write').href = links.writeAReviewUri;
   section.hidden = false;
+  // Arrived from the home page's "Read … reviews": they're here now
+  if (location.hash === '#reviews') section.scrollIntoView();
 })();
+
+/* Home: each location's Google rating and how many reviews, live from Google
+   (the same request as the location pages, rating and count only), into the
+   chips under "What people say". The chips keep their "Reviews on Google"
+   wording, and their link, if Google can't be reached. */
+document.querySelectorAll('.rating-chip[data-rating-place]').forEach(async (chip) => {
+  const key = document.body.dataset.googleKey;
+  if (!key) return;
+  try {
+    const r = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(chip.dataset.ratingPlace)}?languageCode=en&key=${encodeURIComponent(key)}`, {
+      headers: { 'X-Goog-FieldMask': 'rating,userRatingCount,googleMapsLinks' },
+    });
+    if (!r.ok) return;
+    const place = await r.json();
+    if (!place.rating) return;
+    const stars = chip.querySelector('.stars');
+    stars.style.setProperty('--rating', String(place.rating));
+    stars.setAttribute('aria-label', `${place.rating.toFixed(1)} out of 5 stars`);
+    stars.hidden = false;
+    const figures = chip.querySelector('.rating-chip-figures');
+    const count = place.userRatingCount || 0;
+    figures.textContent = '';
+    figures.append(Object.assign(document.createElement('strong'), { textContent: place.rating.toFixed(1) }),
+      ` · ${count.toLocaleString('en-US')} review${count === 1 ? '' : 's'}`);
+    if (place.googleMapsLinks?.reviewsUri) chip.href = place.googleMapsLinks.reviewsUri;
+  } catch { /* stays "Reviews on Google" */ }
+});
 
 // Home: hide the "more below" chevron once the visitor starts scrolling.
 (() => {

@@ -167,6 +167,15 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   button, waving and turning like a coin into a chat bubble and back, with an
   "Ask me" label beside it, and in the panel he waves hello, listens while you type, thinks
   while he waits, talks as his answer arrives and looks sad at an error.
+- **What people say, on the home page**, between "Not a big-box gym" and
+  "Visit us": three short quotes from our Google reviews, word for word, in
+  the page itself (src/highlights.json, kept by hand, since Google's terms
+  don't allow copies of its review data), and each location's live Google
+  rating and count as a chip linking to its reviews. "Read Mission reviews"
+  and "Read Potrero Hill reviews" go to the location pages' reviews
+  (#reviews), which now scroll into view once loaded.
+  A monthly check (scheduled task monthly-review-check, 1st of the month)
+  looks for new reviews and suggests better quotes; it never changes the site.
 - **Meet Billy** (billy/): a page about Billy, the personal assistant across
   the website, Studio, Coach and the phone, in the Apps menu and the footer:
   where he is, what he does for members and for trainers, his moods, and
