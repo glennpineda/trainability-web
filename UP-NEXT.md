@@ -7,6 +7,12 @@ list and go in CHANGELOG.md.
 
 - Nothing queued.
 
+## Waiting on Glenn
+- **Momentum page, when Glenn says it's live.** `src/pages/momentum.html` is
+  `draft: yes`, so deploys leave it out (preview with `DRAFTS=1 npm run build`).
+  To publish: remove the `draft: yes` line, and add it to the menu or footer
+  where Glenn wants it.
+
 ## Waiting on Studio or Coach
 
 - **Coach page wording.** src/pages/coach.html is a draft from Coach's manual;

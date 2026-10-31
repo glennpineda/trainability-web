@@ -879,3 +879,59 @@ address { font-style: normal; }
 @media (max-width: 479px) {
   .billy-hint { right: 94px; bottom: 35px; font-size: 0.9rem; padding: 6px 12px; }
 }
+
+/* Momentum (members' page): green for gains, a muted red for losses, a bar
+   that fills to 16 when it comes into view, the Flex Pass perks and the FAQ. */
+.momentum-counts { --gain: #4cc38a; --loss: #d9797b; list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.momentum-counts li { display: flex; align-items: center; gap: 16px; padding: 18px 20px; background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--c); border-radius: var(--radius); --c: var(--gain); }
+.momentum-counts .loss { --c: var(--loss); }
+.momentum-counts strong { display: block; color: var(--text); font-size: 1.05rem; }
+.momentum-counts li > span:last-child { color: var(--muted); font-size: 0.95rem; }
+.momentum-value { flex: none; width: 56px; font-family: var(--display); font-weight: 800; font-size: 2.2rem; line-height: 1; color: var(--c); text-align: center; }
+
+.momentum-bar { max-width: 760px; }
+.momentum-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(16, 1fr); gap: 4px; }
+.momentum-steps li { height: 28px; border-radius: 4px; background: var(--border); position: relative; overflow: hidden; }
+.momentum-steps li::after { content: ""; position: absolute; inset: 0; background: var(--gradient-bright); background-size: 1600% 100%; background-position: calc((var(--i) - 1) * 100% / 15) 0; transform: scaleX(1); transform-origin: left; }
+.momentum-steps li:first-child { border-radius: 8px 4px 4px 8px; }
+.momentum-steps li:last-child { border-radius: 4px 8px 8px 4px; box-shadow: var(--glow); }
+.momentum-scale { display: flex; justify-content: space-between; margin-top: 8px; color: var(--muted); font-size: 0.9rem; }
+.momentum-goal { font-weight: 700; color: var(--accent); }
+.momentum-example { max-width: 760px; margin-top: 28px; color: color-mix(in srgb, var(--text) 85%, var(--muted)); }
+@media (prefers-reduced-motion: no-preference) {
+  .momentum-bar[data-fill] .momentum-steps li::after { transform: scaleX(0); }
+  .momentum-bar.is-filled .momentum-steps li::after { transform: scaleX(1); transition: transform 0.18s ease-out calc(var(--i) * 0.09s); }
+}
+
+.perks { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(max(240px, 30%), 1fr)); }   /* at most 3 across, so the six sit in two even rows */
+.perk { padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.perk svg { width: 40px; height: 40px; fill: none; stroke: var(--cerulean-bright); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px; }
+.perk h3 { font-size: 1.3rem; margin: 0 0 6px; }
+.perk p { color: var(--muted); margin: 0; }
+
+.momentum-cta { margin-top: 0; }
+.faq { max-width: 760px; display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0 20px; }
+.faq summary { cursor: pointer; padding: 18px 0; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--accent); font-size: 1.3rem; line-height: 1; transition: transform 0.2s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { color: var(--muted); margin: 0 0 18px; }
+@media (max-width: 479px) {
+  .momentum-steps { gap: 2px; }
+  .momentum-steps li { height: 22px; }
+}
+/* The Momentum title: the Flex Pass mark beside MOMENTUM in the wordmark's
+   lettering (scripts/momentum-wordmark.mjs), centred over the hero's picture. */
+.momentum-hero { text-align: center; }
+.momentum-hero .lead { max-width: 40rem; margin-left: auto; margin-right: auto; }
+.momentum-hero .momentum-subhead { font-size: clamp(1.35rem, 3.2vw, 1.75rem); line-height: 1.3; max-width: 44rem; }
+.momentum-hero .momentum-intro { font-size: 1.05rem; max-width: 34rem; margin-top: 28px; }
+.momentum-hero::before { background-position: center, center bottom, top right, bottom left; background-size: auto, auto 100%, auto, auto; }
+.momentum-title { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 2vw, 20px); margin: 12px 0 20px; }
+.momentum-title > img { height: clamp(40px, 7vw, 64px); width: auto; filter: drop-shadow(0 6px 18px rgb(216 27 122 / 0.45)); }
+/* TRAINABILITY® small over MOMENTUM, starting where it starts, like the Studio lockup. */
+.momentum-words { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(5px, 0.9vw, 8px); min-width: 0; }
+.momentum-words img:first-child { height: clamp(7px, 1.1vw, 11px); width: auto; opacity: 0.85; }
+.momentum-words img:last-child { height: clamp(26px, 4.6vw, 44px); width: auto; max-width: 100%; }
+.momentum-goal img { height: 1.1em; width: auto; vertical-align: -0.2em; margin-right: 4px; }

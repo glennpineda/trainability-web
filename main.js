@@ -750,3 +750,14 @@ if (billy) {
 
   if (!stored('billy-gone')) button.hidden = false;
 }
+
+// Momentum page: the bar fills to 16 the first time it comes into view
+document.querySelectorAll('[data-fill]').forEach(bar => {
+  if (!('IntersectionObserver' in window)) return bar.classList.add('is-filled');
+  const seen = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    bar.classList.add('is-filled');
+    seen.disconnect();
+  }, { threshold: 0.6 });
+  seen.observe(bar);
+});

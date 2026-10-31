@@ -17,6 +17,9 @@
  * with {{root}} in front ({{root}}team/), which becomes the right number of
  * "../" for the page's depth — the site then works from any folder on the host.
  *
+ * "draft: yes" in the settings keeps a page offline: it's built only with
+ * DRAFTS=1, and then kept out of search engines and the sitemap.
+ *
  * styles.css, main.js and assets/ are copied as they are. Pages link to
  * styles.css, main.js and hexes.js with a fingerprint of the file
  * (styles.css?v=1a2b3c4d), so a browser fetches the new one as soon as it
@@ -274,6 +277,9 @@ for (const file of pages) {
     head[1].trim().split("\n").map((l) => l.match(/^\s*(\w+):\s*(.*)$/)).filter(Boolean).map((m) => [m[1], m[2].trim()])
   );
   for (const key of ["title", "description"]) if (!meta[key]) throw new Error(`${file}: no ${key}`);
+  /* A page marked "draft: yes" is built only for a local preview
+     (DRAFTS=1 npm run build), so a deploy never puts it online. */
+  if (meta.draft === "yes") { if (!process.env.DRAFTS) continue; meta.noindex = "yes"; }
 
   const name = file.replace(/\.html$/, "");
   /* The not-found page is shown at whatever address was mistyped, so its
