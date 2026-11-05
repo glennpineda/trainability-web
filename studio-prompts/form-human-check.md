@@ -8,7 +8,7 @@ The quiet checks in `server/forms.js` (the unseen `website` field, the
 after them, in the same one place, so every public form gets it at once.
 
 **Keys** (the widget is made in Cloudflare; I'll put them on the host)
-- `TURNSTILE_SITE_KEY`: public, sent to pages. It's `0x4AAAAAAF1RcZkGO1xOuC6d`.
+- `TURNSTILE_SITE_KEY`: public, sent to pages.
 - `TURNSTILE_SECRET_KEY`: secret, server only. Never sent to a page or logged.
 - If either is missing, forms work exactly as today, with no check (so
   nothing breaks before the keys are on the host, or in development).
@@ -52,7 +52,7 @@ after them, in the same one place, so every public form gets it at once.
   wording that forms use Cloudflare Turnstile.
 
 The website (trnblt.com) has two forms of its own that post here, cancel a
-membership and book stretching. They already show the box (same site key)
+membership and book stretching. They already show the box (with the site key from `GET /api/forms/contact`)
 and send `turnstileToken` with the rest, from `trnblt.com`, so they need
 nothing more from Studio than the check above.
 

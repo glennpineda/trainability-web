@@ -208,8 +208,9 @@ if (contactFrame) {
 }
 
 // Cloudflare Turnstile ("Verify you are human"), loaded only when a form that
-// has the box is opened. If it can't load, the form is sent without it and
-// Studio decides.
+// has the box is opened, with the site key Studio gives in the form's
+// description (turnstileSiteKey; none while Studio's check is off). If it
+// can't load, the form is sent without it and Studio decides.
 let turnstileLoad;
 const loadTurnstile = () => turnstileLoad ||= new Promise((resolve) => {
   const s = document.createElement('script');
@@ -235,13 +236,14 @@ const studioRequest = (dialog, { opener, check, body }) => {
   let humanId = null;
   let humanReady = false;
   const drawHuman = () => {
-    if (!human?.dataset.turnstile || humanId !== null) return;
+    if (!human || humanId !== null) return;
     humanId = false;
-    loadTurnstile().then((t) => {
+    fetch(dialog.dataset.api, { credentials: 'omit' }).then((r) => r.json()).then(async ({ turnstileSiteKey: sitekey }) => {
+      const t = sitekey && await loadTurnstile();
       if (!t) return;
-      humanId = t.render(human, { sitekey: human.dataset.turnstile, theme: 'dark', size: 'flexible', action: 'website-request' });
+      humanId = t.render(human, { sitekey, theme: 'dark', size: 'flexible', action: 'website-request' });
       humanReady = true;
-    });
+    }).catch(() => { humanId = null; });
   };
   const humanToken = () => (humanReady ? window.turnstile.getResponse(humanId) || '' : '');
   const resetHuman = () => { if (humanReady) window.turnstile.reset(humanId); };
