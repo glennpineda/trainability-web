@@ -207,6 +207,19 @@ if (contactFrame) {
   if ([...pass].length) contactFrame.src = contactFrame.src.split('?')[0] + '?' + pass;
 }
 
+// Cloudflare Turnstile ("Verify you are human"), loaded only when a form that
+// has the box is opened. If it can't load, the form is sent without it and
+// Studio decides.
+let turnstileLoad;
+const loadTurnstile = () => turnstileLoad ||= new Promise((resolve) => {
+  const s = document.createElement('script');
+  s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  s.async = true;
+  s.onload = () => resolve(window.turnstile);
+  s.onerror = () => resolve(null);
+  document.head.append(s);
+});
+
 // Request dialogs: a button opens a short form that's sent to Studio's contact
 // form, where the front desk answers it in Concierge › Messages. Each says
 // which buttons open it, what to check and what to send; the rest (Studio's
@@ -217,6 +230,21 @@ const studioRequest = (dialog, { opener, check, body }) => {
   const problem = dialog.querySelector('.panel-problem');
   const send = form.querySelector('button[type="submit"]');
   let openedAt = 0;
+  // The human check: its widget once drawn, and whether it could be
+  const human = dialog.querySelector('[data-turnstile]');
+  let humanId = null;
+  let humanReady = false;
+  const drawHuman = () => {
+    if (!human?.dataset.turnstile || humanId !== null) return;
+    humanId = false;
+    loadTurnstile().then((t) => {
+      if (!t) return;
+      humanId = t.render(human, { sitekey: human.dataset.turnstile, theme: 'dark', size: 'flexible', action: 'website-request' });
+      humanReady = true;
+    });
+  };
+  const humanToken = () => (humanReady ? window.turnstile.getResponse(humanId) || '' : '');
+  const resetHuman = () => { if (humanReady) window.turnstile.reset(humanId); };
   const say = (text, field) => {
     // a group of choices comes as a list: point at its first one
     const el = field && (field.setAttribute ? field : field[0]);
@@ -237,6 +265,7 @@ const studioRequest = (dialog, { opener, check, body }) => {
     dayPass?.close();
     openedAt = Date.now();
     dialog.showModal();
+    drawHuman();
     dialog.dispatchEvent(new Event('studio-request-open'));
   });
   dialog.addEventListener('click', (e) => {
@@ -257,6 +286,8 @@ const studioRequest = (dialog, { opener, check, body }) => {
     if (!value('lastName')) return say('Enter your last name.', f.lastName);
     const wrong = check(f, value);
     if (wrong) return say(...wrong);
+    const turnstileToken = humanToken();
+    if (humanReady && !turnstileToken) return say('Please tick “Verify you are human” and send it again.');
     send.disabled = true;
     try {
       const res = await fetch(dialog.dataset.api, {
@@ -266,6 +297,7 @@ const studioRequest = (dialog, { opener, check, body }) => {
         body: JSON.stringify({
           firstName: value('firstName'), lastName: value('lastName'),
           ...body(f, value), openedAt, website: f.website.value,
+          ...(turnstileToken && { turnstileToken }),
         }),
       });
       const answer = await res.json().catch(() => ({}));
@@ -275,10 +307,13 @@ const studioRequest = (dialog, { opener, check, body }) => {
         track('Request sent', { topic: body(f, value).topic });
         return;
       }
+      // A check is used once: a new one for the next try
+      resetHuman();
       if (res.status === 400 && answer.error) return say(answer.error, f[answer.field]);
       if (res.status === 429) return say('Too many requests from here just now. Please try again in a few minutes, or call us.');
       say('We couldn\'t send your request. Please try again, or call us at the front desk.');
     } catch {
+      resetHuman();
       say('We couldn\'t send your request. Please check your connection and try again, or call us.');
     } finally {
       send.disabled = false;

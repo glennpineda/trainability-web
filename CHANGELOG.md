@@ -217,3 +217,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **Potrero Hill tour video.** Glenn's 2½-minute walk-through of the gym sits
   at the top of Inside the gym on the Potrero Hill page (1080p, 59MB, loads
   only when played). Umami counts each play as Video played.
+- **"Verify you are human" on our own forms.** Cancel membership and Book a
+  session (stretching) show Cloudflare Turnstile above Send. It loads only
+  when the form is opened, and the form won't send until it's ticked (if
+  Cloudflare can't load, it sends without it). Studio checks the token. The
+  privacy policy says so under Spam protection.

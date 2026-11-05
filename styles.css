@@ -541,6 +541,7 @@ address { font-style: normal; }
 .book-stretch [data-done] .hero-actions, .book-stretch [data-done] a { justify-content: center; }
 .book-stretch [data-done] a { color: var(--magenta-bright); }
 .panel-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.panel-turnstile { margin-top: 16px; }
 .panel .panel-problem { color: var(--magenta-bright); font-size: 0.9rem; margin: 12px 0 0; }
 .panel-form .btn { width: 100%; margin-top: 18px; }
 .cancel-policy { margin-top: 18px; padding: 14px 16px; background: var(--bg-alt); border: 1px solid var(--border); border-left: 3px solid var(--magenta); border-radius: 8px; }

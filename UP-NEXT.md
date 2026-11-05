@@ -14,6 +14,11 @@ list and go in CHANGELOG.md.
   where Glenn wants it.
 
 ## Waiting on Studio or Coach
+- **Human check on forms (Cloudflare Turnstile).** The website side is done
+  (box on the cancel and stretching dialogs, privacy policy). Waiting on
+  Studio to check it: `studio-prompts/form-human-check.md`, plus the secret
+  key from Cloudflare on the Studio host as `TURNSTILE_SECRET_KEY`. Then send
+  one real request from trnblt.com to confirm.
 
 - **Coach page wording.** src/pages/coach.html is a draft from Coach's manual;
   replace it with the "What this is" section from Coach's sign-in page once

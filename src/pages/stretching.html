@@ -107,6 +107,9 @@ description: Hands-on, personalized assisted stretching at Trainability in San F
           <textarea id="stretch-message" name="message" rows="4" maxlength="1800"></textarea>
           <!-- For bots: people never see it, and a filled one is dropped -->
           <input class="panel-trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <!-- Cloudflare Turnstile, "Verify you are human": drawn when the
+               dialog opens (main.js), checked by Studio -->
+          <div class="panel-turnstile" data-turnstile="{{turnstileSiteKey}}"></div>
           <p class="panel-problem" role="alert" hidden></p>
           <button class="btn" type="submit">Send request</button>
         </form>

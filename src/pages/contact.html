@@ -111,6 +111,9 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
           <label class="panel-check"><input type="checkbox" name="agree" required> I understand</label>
           <!-- For bots: people never see it, and a filled one is dropped -->
           <input class="panel-trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <!-- Cloudflare Turnstile, "Verify you are human": drawn when the
+               dialog opens (main.js), checked by Studio -->
+          <div class="panel-turnstile" data-turnstile="{{turnstileSiteKey}}"></div>
           <p class="panel-problem" role="alert" hidden></p>
           <button class="btn" type="submit">Send cancellation request</button>
         </form>
