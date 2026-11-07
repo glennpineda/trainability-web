@@ -244,3 +244,6 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **Studio's forms are dark.** The contact form, training inquiry, studio
   reservation and cancel page are framed with `theme=dark`, so they match
   the site instead of standing out as white boxes.
+- **Call us through Billy.** The contact page's Call us card now calls Billy
+  at (415) 800-1425, in bold; the front desk at Potrero Hill, (415) 594-6019,
+  is a link of its own in the text below.

@@ -14,12 +14,6 @@ list and go in CHANGELOG.md.
   where Glenn wants it.
 
 ## Waiting on Studio or Coach
-- **Human check on forms (Cloudflare Turnstile).** The website side is done
-  (box on the cancel and stretching dialogs, privacy policy). Waiting on
-  Studio to check it: `studio-prompts/form-human-check.md`, plus the secret
-  key from Cloudflare on the Studio host as `TURNSTILE_SECRET_KEY`. Then send
-  one real request from trnblt.com to confirm.
-
 - **Coach page wording.** src/pages/coach.html is a draft from Coach's manual;
   replace it with the "What this is" section from Coach's sign-in page once
   that's live at trainabilitycoach.com.
@@ -27,9 +21,14 @@ list and go in CHANGELOG.md.
   (done). Thanksgiving (26 Nov, closed) is set for Potrero Hill: the holiday
   bar shows it from 12 Nov, two weeks ahead; check it then. Glenn tries
   Member login end to end.
-- **Real tests on the live site.** One message through the Contact form, one
-  Cancel membership request with a reason picked (both to Concierge › Messages, with the receipt
-  email), and the online Join up to the payment step.
+- **Real tests on the live site.** Glenn sends, from trnblt.com:
+  - one message through the Contact form, and one Book a session
+    (stretching) request, each ticking "Verify you are human" if asked
+    (both to Concierge › Messages, with the receipt email);
+  - Cancel membership up to the code step (Studio's own page in the dialog);
+  - two questions to Ask Billy: the box goes after the first answer, and the
+    second goes straight through;
+  - the online Join up to the payment step.
 
 ## Open questions
 
