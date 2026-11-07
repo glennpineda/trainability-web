@@ -461,7 +461,7 @@ address { font-style: normal; }
 /* Personal training: the words above, the form below at the full width. */
 .pt-start { display: grid; gap: 28px; }
 .embed { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.embed iframe { display: block; width: 100%; border: 0; min-height: 600px; background: #fff; }
+.embed iframe { display: block; width: 100%; border: 0; min-height: 600px; background: var(--surface); }   /* Studio's forms, dark (theme=dark) */
 
 /* Footer */
 .site-footer { border-top: 1px solid var(--border); padding: 48px 0 24px; color: var(--muted); font-size: 0.95rem; background: color-mix(in srgb, var(--bg-alt) 80%, transparent); }
@@ -814,6 +814,8 @@ address { font-style: normal; }
 .billy-face { width: 64px; height: 64px; flex-shrink: 0; margin: -4px 0; }
 .billy-head h2 { flex: 1; margin: 0; font-size: 1.6rem; }
 /* BiLLY's wordmark where his name stands in a heading: as tall as the heading's capitals, on its baseline */
+.billy-human { padding: 0 12px; }
+.billy-human:not(:empty) { padding-top: 8px; }
 .billy-word { display: inline; height: 0.72em; width: auto; vertical-align: baseline; margin-left: 0.06em; }
 .billy-reset { background: none; border: 0; padding: 4px; font: inherit; font-size: 0.85rem; color: var(--brand); text-decoration: underline; cursor: pointer; }
 .billy-close { background: none; border: 0; color: var(--muted); font-size: 1.8rem; line-height: 1; cursor: pointer; padding: 0 6px; }

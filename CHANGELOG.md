@@ -236,3 +236,11 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   the dialog opens, sizes itself from the page's height messages, and Umami
   counts each finish as Form sent (cancel). The membership page's link says
   "cancel your membership online".
+- **Billy's chat checks for a person, once.** When the chat opens it draws
+  Cloudflare Turnstile in its "only when needed" mode, so most visitors never
+  see a box. The first question carries its token; Studio answers with a pass
+  that the rest of the conversation uses instead, and the box goes once it's
+  given, so nobody ticks twice.
+- **Studio's forms are dark.** The contact form, training inquiry, studio
+  reservation and cancel page are framed with `theme=dark`, so they match
+  the site instead of standing out as white boxes.

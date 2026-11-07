@@ -168,6 +168,9 @@
       </header>
       <ol class="billy-messages" aria-live="polite"></ol>
       <p class="billy-typing" role="status" hidden>Billy is typing…</p>
+      <!-- Cloudflare Turnstile, once per conversation: drawn when the chat
+           opens, and seen only when Cloudflare needs a tick (main.js) -->
+      <div class="billy-human"></div>
       <form class="billy-form">
         <label class="sr-only" for="billy-question">Your question</label>
         <textarea id="billy-question" rows="2" maxlength="500" placeholder="Ask a question"></textarea>

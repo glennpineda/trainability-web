@@ -202,9 +202,11 @@ if (login?.showModal) {
 const contactFrame = document.querySelector('iframe[data-form="contact"]');
 if (contactFrame) {
   const asked = new URLSearchParams(location.search);
-  const pass = new URLSearchParams();
-  for (const key of ['topic', 'place']) if (asked.get(key)) pass.set(key, asked.get(key));
-  if ([...pass].length) contactFrame.src = contactFrame.src.split('?')[0] + '?' + pass;
+  const [base, query] = contactFrame.src.split('?');
+  const pass = new URLSearchParams(query);   // keeps the frame's own, such as theme=dark
+  let more = false;
+  for (const key of ['topic', 'place']) if (asked.get(key)) { pass.set(key, asked.get(key)); more = true; }
+  if (more) contactFrame.src = base + '?' + pass;
 }
 
 // Cloudflare Turnstile ("Verify you are human"), loaded only when a form that
@@ -613,6 +615,7 @@ if (billy) {
   };
   let preloaded = false;
   const GREETING = "Hi, I'm Billy. Ask me about memberships, day passes, hours, our services or how things work.";
+  const HUMAN = 'Please tick “Verify you are human” below, then send your question again.';
   const UNREACHABLE = "Billy can't be reached just now. Please use our contact page or call the front desk.";
   const stored = (key) => { try { return sessionStorage.getItem(key); } catch { return null; } };
   const store = (key, value) => { try { value == null ? sessionStorage.removeItem(key) : sessionStorage.setItem(key, value); } catch { /* private mode */ } };
@@ -623,6 +626,24 @@ if (billy) {
   const save = () => store('billy-chat', chat.length ? JSON.stringify(chat) : null);
   let busy = false;
   let waitUntil = 0;
+
+  // The human check, once per conversation: Studio's pass after the first
+  // answer (humanPass, kept for the tab), or until then a Turnstile token.
+  // The box is drawn when the chat opens, in Cloudflare's "only when needed"
+  // mode, with the forms' site key; none while Studio's check is off.
+  const human = panel.querySelector('.billy-human');
+  let humanId = null;
+  let humanReady = false;
+  const drawHuman = () => {
+    if (humanId !== null || stored('billy-pass')) return;
+    humanId = false;
+    fetch(api.replace(/billy$/, 'contact'), { credentials: 'omit' }).then((r) => r.json()).then(async ({ turnstileSiteKey: sitekey }) => {
+      const t = sitekey && await loadTurnstile();
+      if (!t) return;
+      humanId = t.render(human, { sitekey, theme: 'dark', size: 'flexible', appearance: 'interaction-only', action: 'billy' });
+      humanReady = true;
+    }).catch(() => { humanId = null; });
+  };
 
   // His answers are plain text: web addresses become links, the rest stays text
   const ADDRESS = /\b(?:https?:\/\/|www\.)[^\s<>"]+|\b[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|org|net|io|app)(?:\/[^\s<>"]*)?/gi;
@@ -669,6 +690,7 @@ if (billy) {
     list.scrollTop = list.scrollHeight;
     box.focus();
     track('Ask Billy opened', { page: document.body.dataset.page });
+    drawHuman();
   };
   const close = () => {
     panel.hidden = true;
@@ -701,6 +723,21 @@ if (billy) {
     e.preventDefault();
     const question = box.value.trim().slice(0, 500);
     if (!question || send.disabled) return;
+    const pass = stored('billy-pass');
+    // Without a pass, the box's token: Cloudflare may still be working on it,
+    // so wait a few seconds; past that, it needs the visitor's tick
+    let turnstileToken = '';
+    if (!pass && humanReady) {
+      send.disabled = true;
+      for (let i = 0; i < 20 && !(turnstileToken = window.turnstile.getResponse(humanId) || ''); i++) await new Promise((r) => setTimeout(r, 250));
+      ready();
+      if (!turnstileToken) {
+        // said once, not again for each try
+        if (chat.at(-1)?.text !== HUMAN) { chat.push({ role: 'notice', text: HUMAN }); save(); show('notice', HUMAN); }
+        mood('sad', 4000);
+        return;
+      }
+    }
     // The conversation so far, before this question: the last 8, his answers as they came
     const history = chat.filter((m) => m.role !== 'notice').slice(-8).map(({ role, text }) => ({ role, text }));
     chat.push({ role: 'user', text: question }); save();
@@ -718,9 +755,20 @@ if (billy) {
       const res = await fetch(api, {
         method: 'POST', credentials: 'omit',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, history }),
+        body: JSON.stringify({ question, history, ...(pass ? { humanPass: pass } : turnstileToken ? { turnstileToken } : {}) }),
       });
       const answer = await res.json().catch(() => ({}));
+      // A token is good once; a pass from Studio stands in for it from now on
+      if (turnstileToken) window.turnstile.reset(humanId);
+      // Verified: the box goes, to give the chat its room back
+      if (typeof answer.humanPass === 'string') {
+        store('billy-pass', answer.humanPass);
+        if (humanReady) { window.turnstile.remove(humanId); humanId = null; humanReady = false; }
+      }
+      if (res.status === 400 && answer.field === 'turnstile') {
+        store('billy-pass', null);
+        drawHuman();
+      }
       if (res.ok && typeof answer.answer === 'string') say(answer.answer);
       else if ([400, 429, 503].includes(res.status) && answer.error) {
         say(String(answer.error), 'notice');
