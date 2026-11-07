@@ -829,6 +829,8 @@ address { font-style: normal; }
 .billy-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px 8px 8px; border-bottom: 1px solid var(--border); }
 .billy-face { width: 64px; height: 64px; flex-shrink: 0; margin: -4px 0; }
 .billy-head h2 { flex: 1; margin: 0; font-size: 1.6rem; }
+/* BiLLY's wordmark where his name stands in a heading: as tall as the heading's capitals, on its baseline */
+.billy-word { display: inline; height: 0.72em; width: auto; vertical-align: baseline; margin-left: 0.06em; }
 .billy-reset { background: none; border: 0; padding: 4px; font: inherit; font-size: 0.85rem; color: var(--brand); text-decoration: underline; cursor: pointer; }
 .billy-close { background: none; border: 0; color: var(--muted); font-size: 1.8rem; line-height: 1; cursor: pointer; padding: 0 6px; }
 .billy-close:hover { color: var(--text); }

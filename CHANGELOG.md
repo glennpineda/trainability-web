@@ -226,4 +226,6 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   and became its own section after the buttons: an introduction to the apps,
   with cards for Studio, Coach and Billy linking to their pages. Billy has a
   wordmark to match Studio's, BiLLY, in the TRAINABILITY® lettering with a
-  lowercase i and a purple to blue gradient (scripts/billy-wordmark.mjs).
+  lowercase i and a purple to blue gradient (scripts/billy-wordmark.mjs). The
+  word alone stands for his name in "Ask BiLLY" on the chat and "Meet BiLLY."
+  on his page.

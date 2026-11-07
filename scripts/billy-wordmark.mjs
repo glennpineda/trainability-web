@@ -6,6 +6,9 @@
  * lockup uses too, with a lowercase i drawn to match; all in a purple to blue
  * gradient.
  *
+ * Also assets/billy/billy-wordmark.svg, the word alone, for where his name
+ * stands in a heading ("Ask BiLLY" on the chat, "Meet BiLLY." on his page).
+ *
  *   node scripts/billy-wordmark.mjs
  */
 import { readFileSync, writeFileSync } from "node:fs";
@@ -41,6 +44,7 @@ const parts = [..."BiLLY"].map((ch) => {
   return g;
 });
 
+const gradient = (id) => `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${x}" y2="0"><stop offset="0" stop-color="#A54BC9"/><stop offset="0.25" stop-color="#A54BC9"/><stop offset="1" stop-color="#3D9DE6"/></linearGradient>`;
 /* As in Studio's lockup: the badge 228 tall, the letters 92 tall (scale 0.12432) on a baseline at 166, starting 268 in. */
 const S = 0.12432, LEFT = 268, width = r(LEFT + x * S + 8);
 /* Billy's face, its head cropped to fill the badge's square, animations and all. */
@@ -48,7 +52,11 @@ const face = readFileSync(join(ROOT, "assets/billy/normal.svg"), "utf8")
   .replace(/^<svg[^>]*>/, '<svg x="0" y="0" width="228" height="228" viewBox="4 4 92 92" overflow="visible">');
 writeFileSync(join(ROOT, "assets/billy/billy-lockup.svg"),
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} 228" role="img" aria-label="Billy"><title>Billy</title>` +
-  `<defs><linearGradient id="billy-word" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${x}" y2="0"><stop offset="0" stop-color="#A54BC9"/><stop offset="0.25" stop-color="#A54BC9"/><stop offset="1" stop-color="#3D9DE6"/></linearGradient></defs>` +
+  `<defs>${gradient("billy-word")}</defs>` +
   face.trim() +
   `<g transform="translate(${LEFT} 74) scale(${S})" fill="url(#billy-word)" fill-rule="evenodd">${parts.join("")}</g></svg>\n`);
 console.log(`assets/billy/billy-lockup.svg: ${width} × 228`);
+writeFileSync(join(ROOT, "assets/billy/billy-wordmark.svg"),
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -4 ${x + 12} 744" role="img" aria-label="Billy"><title>Billy</title><defs>${gradient("billy-word")}</defs>` +
+  `<g fill="url(#billy-word)" fill-rule="evenodd">${parts.join("")}</g></svg>\n`);
+console.log(`assets/billy/billy-wordmark.svg: ${x + 12} × 744`);
