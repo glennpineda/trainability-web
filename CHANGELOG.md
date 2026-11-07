@@ -245,6 +245,6 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   reservation and cancel page are framed with `theme=dark`, so they match
   the site instead of standing out as white boxes.
 - **Call us reaches Billy.** The contact page's Call us card now calls Billy
-  at (415) 800-1425, in bold, and says he picks up 24 hours a day for most
+  at (415) 800-1425, shown in its title, and says he picks up 24 hours a day for most
   common questions; the front desk at Potrero Hill, (415) 594-6019, is a blue
   link of its own in the text below.

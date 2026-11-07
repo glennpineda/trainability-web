@@ -311,7 +311,7 @@ a.service:hover, a.location-card:hover { border-color: color-mix(in srgb, var(--
 .service-cover h3 a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
 .service-cover p a { position: relative; z-index: 1; color: var(--cerulean-bright); font-weight: 600; text-decoration: none; white-space: nowrap; }
 .service-cover p a:hover { text-decoration: underline; }
-.service-cover p strong { color: var(--text); }
+.service-cover .service-phone { white-space: nowrap; }
 .service p, .fact p, .price p, .reason p { color: var(--muted); }
 .service p { overflow-wrap: anywhere; }   /* a long email address wraps inside its card */
 .services { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
