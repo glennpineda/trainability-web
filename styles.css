@@ -936,3 +936,8 @@ address { font-style: normal; }
 .momentum-words img:first-child { height: clamp(7px, 1.1vw, 11px); width: auto; opacity: 0.85; }
 .momentum-words img:last-child { height: clamp(26px, 4.6vw, 44px); width: auto; max-width: 100%; }
 .momentum-goal img { height: 1.1em; width: auto; vertical-align: -0.2em; margin-right: 4px; }
+
+/* Our Story: the apps, after the timeline */
+.app-intro-story { max-width: 46rem; }
+.app-intro-cards { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); margin-top: 32px; }
+.app-intro-cards > a > img { display: block; height: 44px; width: auto; max-width: 100%; margin-bottom: 16px; }

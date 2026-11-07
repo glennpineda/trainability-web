@@ -222,3 +222,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   when the form is opened, and the form won't send until it's ticked (if
   Cloudflare can't load, it sends without it). Studio checks the token. The
   privacy policy says so under Spam protection.
+- **Our Story: Built by us, for you.** The software chapter left the timeline
+  and became its own section after the buttons: an introduction to the apps,
+  with cards for Studio, Coach and Billy linking to their pages. Billy has a
+  wordmark to match Studio's, BiLLY, in the TRAINABILITY® lettering with a
+  lowercase i and a purple to blue gradient (scripts/billy-wordmark.mjs).
