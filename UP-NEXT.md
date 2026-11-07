@@ -20,6 +20,11 @@ list and go in CHANGELOG.md.
   key from Cloudflare on the Studio host as `TURNSTILE_SECRET_KEY`. Then send
   one real request from trnblt.com to confirm.
 
+- **Billy's chat: human check.** Website side built (box in Cloudflare's
+  "only when needed" mode when the chat opens; token on the first question,
+  then Studio's `humanPass`). Studio prompt: `studio-prompts/billy-human-check.md`.
+  Deploy with or after Studio's change.
+
 - **Coach page wording.** src/pages/coach.html is a draft from Coach's manual;
   replace it with the "What this is" section from Coach's sign-in page once
   that's live at trainabilitycoach.com.

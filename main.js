@@ -324,64 +324,21 @@ const studioRequest = (dialog, { opener, check, body }) => {
   return { opened: (fn) => dialog.addEventListener('studio-request-open', fn, { once: true }) };
 };
 
-// Contact page: "Cancel membership" (topic "cancel"), with an optional
-// reason picked from Studio's list (choices.cancelReasons), and their own
-// words when it's Other
+// Contact page: "Cancel membership" opens Studio's own cancel page in a
+// dialog. The frame loads only when it's first opened; its height and its
+// "sent" come through the embedded forms' messages above.
 const cancelDialog = document.querySelector('dialog.cancel-membership');
-const picked = () => cancelDialog?.querySelector('input[name="reasonCode"]:checked')?.value || '';
-const cancelRequest = studioRequest(cancelDialog, {
-  opener: '[data-cancel-membership]',
-  check: (f, value) => {
-    if (!/^\S+@\S+\.\S+$/.test(value('email'))) return ['Enter the email address on your membership.', f.email];
-    if (value('phone').replace(/\D/g, '').length < 10) return ['Enter the phone number on your membership.', f.phone];
-    if (picked() === 'other' && !value('reason')) return ['Tell us the reason, or pick another one.', f.reason];
-    if (!f.agree.checked) return ['Tick "I understand" to send your request.', f.agree];
-  },
-  body: (f, value) => ({
-    email: value('email'), phone: value('phone'), topic: 'cancel',
-    reasonCode: picked(),
-    reason: picked() === 'other' || cancelDialog.dataset.freeReason ? value('reason') : '',
-    message: '',
-  }),
-});
-cancelRequest?.opened(async () => {
-  const question = cancelDialog.querySelector('[data-cancel-reasons]');
-  const list = question.querySelector('.panel-pill-list');
-  const other = question.querySelector('.cancel-other');
-  try {
-    const form = await fetch(cancelDialog.dataset.api, { credentials: 'omit' }).then((r) => r.json());
-    const reasons = form.choices?.cancelReasons || [];
-    if (!form.reasonMax && !reasons.length) return;
-    if (form.reasonMax) {
-      const box = other.querySelector('textarea');
-      box.maxLength = form.reasonMax;
-      other.querySelector('[data-count-max]').textContent = form.reasonMax;
-    }
-    // A Studio that takes a reason but has no list yet: just the text box
-    if (!reasons.length) {
-      other.hidden = false;
-      other.querySelector('label').textContent = 'Tell us why, in your own words';
-      cancelDialog.dataset.freeReason = 'yes';
-      question.hidden = false;
-      return;
-    }
-    for (const [value, label] of reasons) {
-      const pill = document.createElement('label');
-      pill.className = 'panel-pill';
-      const input = document.createElement('input');
-      input.type = 'checkbox'; input.name = 'reasonCode'; input.value = value;
-      pill.append(input, document.createTextNode(label));
-      list.append(pill);
-    }
-    // One at a time: picking one unpicks the rest, and picking it again unpicks it
-    list.addEventListener('change', (e) => {
-      list.querySelectorAll('input').forEach((i) => { if (i !== e.target) i.checked = false; });
-      other.hidden = picked() !== 'other';
-      if (!other.hidden) other.querySelector('textarea').focus();
-    });
-    question.hidden = false;
-  } catch { /* the question is optional: without the list it just isn't asked */ }
-});
+if (cancelDialog?.showModal) {
+  const frame = cancelDialog.querySelector('iframe[data-src]');
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-cancel-membership]')) return;
+    e.preventDefault();
+    dayPass?.close();
+    if (!frame.src) frame.src = frame.dataset.src;
+    cancelDialog.showModal();
+  });
+  cancelDialog.addEventListener('click', (e) => { if (e.target === cancelDialog) cancelDialog.close(); });
+}
 
 if (location.hash === '#cancel') document.querySelector('[data-cancel-membership]')?.click();
 

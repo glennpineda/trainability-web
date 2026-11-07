@@ -229,3 +229,10 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   lowercase i and a purple to blue gradient (scripts/billy-wordmark.mjs). The
   word alone stands for his name in "Ask BiLLY" on the chat and "Meet BiLLY."
   on his page.
+- **Cancel membership is Studio's own page.** The contact page's dialog no
+  longer asks for name, phone and a reason and sends a message: it shows
+  trainabilitystudio.com/forms/cancel, where the member confirms who they are
+  with a code and cancels from their member page. The frame loads only when
+  the dialog opens, sizes itself from the page's height messages, and Umami
+  counts each finish as Form sent (cancel). The membership page's link says
+  "cancel your membership online".

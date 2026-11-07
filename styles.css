@@ -504,7 +504,7 @@ address { font-style: normal; }
 .panel-close button { background: none; border: 0; color: var(--muted); font-size: 1.8rem; line-height: 1; cursor: pointer; padding: 4px 8px; }
 .panel-close button:hover { color: var(--text); }
 
-/* Forms inside a dialog: the cancel membership request. */
+/* Forms inside a dialog: book a stretching session. */
 .panel-form { margin-top: 20px; }
 .panel-form label { display: block; font-weight: 600; margin: 14px 0 6px; }
 .panel-form input:not([type="checkbox"]) {
@@ -526,17 +526,6 @@ address { font-style: normal; }
 .panel-form .panel-choices .panel-check { margin: 6px 0 0; font-weight: 400; }
 .panel-optional { font-weight: 400; color: var(--muted); }
 .panel .panel-count { margin: 4px 0 0; font-size: 0.8rem; color: var(--muted); text-align: right; }
-/* Reasons to pick from, as pills: one at a time. */
-.panel-choices.panel-pills { display: block; }
-.panel-pill-list { display: flex; flex-wrap: wrap; gap: 8px; }
-.panel-form .panel-pill {
-  display: inline-flex; align-items: center; margin: 0; padding: 8px 14px; border-radius: 999px; cursor: pointer;
-  font-weight: 500; font-size: 0.92rem; background: var(--bg-alt); border: 1px solid var(--border);
-}
-.panel-pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.panel-pill:has(input:checked) { border-color: transparent; background: var(--gradient-button) border-box; color: #fff; }
-.panel-pill:has(input:focus-visible) { outline: 2px solid var(--cerulean-bright); outline-offset: 2px; }
-.cancel-other { margin-top: 4px; }
 .panel .panel-problem-field { margin-top: 4px; }
 .book-stretch [data-done] .hero-actions, .book-stretch [data-done] a { justify-content: center; }
 .book-stretch [data-done] a { color: var(--magenta-bright); }
@@ -544,11 +533,6 @@ address { font-style: normal; }
 .panel-turnstile { margin-top: 16px; }
 .panel .panel-problem { color: var(--magenta-bright); font-size: 0.9rem; margin: 12px 0 0; }
 .panel-form .btn { width: 100%; margin-top: 18px; }
-.cancel-policy { margin-top: 18px; padding: 14px 16px; background: var(--bg-alt); border: 1px solid var(--border); border-left: 3px solid var(--magenta); border-radius: 8px; }
-.panel .cancel-policy p { margin: 0; font-size: 0.95rem; }
-.panel .cancel-policy p + p { margin-top: 8px; }
-.cancel-done .hero-actions { justify-content: center; }
-.cancel-done a { color: var(--magenta-bright); }
 
 /* The free day pass dialog, opened by [data-day-pass] buttons. */
 .day-pass-hours { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0 12px; }
@@ -943,3 +927,5 @@ address { font-style: normal; }
 .app-intro-story { max-width: 46rem; }
 .app-intro-cards { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); margin-top: 32px; }
 .app-intro-cards > a > img { display: block; height: 44px; width: auto; max-width: 100%; margin-bottom: 16px; }
+.cancel-membership .embed { margin-top: 8px; }
+.cancel-membership .embed iframe { min-height: 0; }   /* sized by the page's own height messages */

@@ -19,7 +19,7 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
         </a>
         <a class="service" href="#cancel" data-cancel-membership>
           <h3>Canceling your membership?</h3>
-          <p>Send us your request and we'll take care of it. Please give us at least 48 hours' notice before your next payment date.</p>
+          <p>Cancel online with the email or phone number on your membership. Please give us at least 48 hours' notice before your next payment date.</p>
           <span class="link-arrow">Cancel membership</span>
         </a>
         <a class="service" href="{{phoneHref}}">
@@ -68,61 +68,15 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
       </div>
     </section>
 
-    <!-- Canceling a membership: the card above opens this, and it's sent to
-         Studio's contact form with the topic "cancel" (main.js), where the
-         front desk sees it in Concierge. -->
-    <dialog class="panel cancel-membership" id="cancel" aria-labelledby="cancel-title" data-api="{{studio}}/api/forms/contact">
+    <!-- Canceling a membership: the card above opens this, with Studio's own
+         cancel page in it (main.js). The member confirms who they are with a
+         code, then cancels from their member page, all inside the frame. -->
+    <dialog class="panel cancel-membership" id="cancel" aria-labelledby="cancel-title">
       <form method="dialog" class="panel-close"><button aria-label="Close">×</button></form>
-      <div class="cancel-ask" data-ask>
-        <p class="eyebrow gradient-text">Members</p>
-        <h2 id="cancel-title">Cancel membership</h2>
-        <p>Enter your name, email and phone number as they are on your membership, so we can find you.</p>
-        <form class="panel-form cancel-form" novalidate>
-          <div class="panel-form-row">
-            <div>
-              <label for="cancel-first">First name</label>
-              <input id="cancel-first" name="firstName" autocomplete="given-name" required>
-            </div>
-            <div>
-              <label for="cancel-last">Last name</label>
-              <input id="cancel-last" name="lastName" autocomplete="family-name" required>
-            </div>
-          </div>
-          <label for="cancel-email">Email</label>
-          <input id="cancel-email" name="email" type="email" autocomplete="email" inputmode="email" required>
-          <label for="cancel-phone">Phone</label>
-          <input id="cancel-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
-          <!-- The reasons come from Studio (choices.cancelReasons, main.js); the
-               question stays hidden if they can't be read. -->
-          <fieldset class="panel-choices panel-pills" data-cancel-reasons hidden>
-            <legend>Why are you cancelling? <span class="panel-optional">(optional)</span></legend>
-            <div class="panel-pill-list"></div>
-            <div class="cancel-other" hidden>
-              <label for="cancel-reason">Tell us the reason</label>
-              <textarea id="cancel-reason" name="reason" rows="3" maxlength="500" data-count></textarea>
-              <p class="panel-count" aria-live="polite"><span>0</span> / <span data-count-max>500</span></p>
-            </div>
-            <p class="panel-problem panel-problem-field" data-problem-for="reasonCode reason" role="alert" hidden></p>
-          </fieldset>
-          <div class="cancel-policy">
-            <p>Please give us at least 48 hours' notice before your next payment date.</p>
-            <p>If we have your request at least 48 hours before your next payment, your membership ends before that payment and it isn't charged. With less notice, that payment is still charged, and your membership ends at the close of the period it covers. Your request counts from when it reaches us: if a payment is taken after a request that came in time, we refund it.</p>
-          </div>
-          <label class="panel-check"><input type="checkbox" name="agree" required> I understand</label>
-          <!-- For bots: people never see it, and a filled one is dropped -->
-          <input class="panel-trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <!-- Cloudflare Turnstile, "Verify you are human": drawn when the
-               dialog opens (main.js), checked by Studio -->
-          <div class="panel-turnstile" data-turnstile></div>
-          <p class="panel-problem" role="alert" hidden></p>
-          <button class="btn" type="submit">Send cancellation request</button>
-        </form>
-      </div>
-      <div class="cancel-done" data-done hidden>
-        <p class="eyebrow gradient-text">Request sent</p>
-        <h2>We've got it</h2>
-        <p>Our front desk will confirm your cancellation by email. If you have questions in the meantime, send us a message with our <a href="#message" data-close-dialog>contact form</a>.</p>
-        <form method="dialog" class="hero-actions"><button class="btn">Close</button></form>
+      <p class="eyebrow gradient-text">Members</p>
+      <h2 id="cancel-title">Cancel membership</h2>
+      <div class="embed">
+        <iframe data-form="cancel" data-src="{{cancelForm}}" title="Cancel your membership" height="340"></iframe>
       </div>
     </dialog>
 
