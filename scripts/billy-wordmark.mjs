@@ -1,13 +1,12 @@
 /**
- * Draws assets/billy/billy-lockup.svg: Billy's face beside BiLLY, laid out like
+ * Draws assets/billy/billy-lockup.svg: Billy's face beside BILLY, laid out like
  * the Studio 3 lockup (assets/logos/studio-lockup.svg) so the three app cards
- * on Our Story match. The B, L and Y are the TRAINABILITY® wordmark's own
+ * on Our Story match. The letters are the TRAINABILITY® wordmark's own
  * (assets/logos/trainability-wordmark-white.svg), the lettering Studio's
- * lockup uses too, with a lowercase i drawn to match; all in a purple to blue
- * gradient.
+ * lockup uses too, in a purple to blue gradient.
  *
  * Also assets/billy/billy-wordmark.svg, the word alone, for where his name
- * stands in a heading ("Ask BiLLY" on the chat, "Meet BiLLY." on his page).
+ * stands in a heading ("Ask BILLY" on the chat, "Meet BILLY." on his page).
  *
  *   node scripts/billy-wordmark.mjs
  */
@@ -24,18 +23,14 @@ const lift = (path, dx) => path.replace(/(-?\d+(?:\.\d+)?)[ ,]?(-?\d+(?:\.\d+)?)
 
 const glyphs = {
   B: { w: 599, path: word[9] + word[10] + word[11], left: 4778 },
-  /* A lowercase i, drawn to match (y from 0 at the top to 740 on the baseline): the I's stem cut down to a lowercase
-     letter's height, with the lettering's 45-unit rounded corners, and over it a round dot a little wider than the
-     stem (a circle looks smaller than a square of the same width). */
-  i: { w: 189, drawn: "M94.5 -4C149.7 -4 194.5 40.8 194.5 96C194.5 151.2 149.7 196 94.5 196C39.3 196 -5.5 151.2 -5.5 96C-5.5 40.8 39.3 -4 94.5 -4Z" +
-    "M45 260H144C174 260 189 275 189 305V695C189 725 174 740 144 740H45C15 740 0 725 0 695V305C0 275 15 260 45 260Z" },
+  I: { w: 189, path: word[12], left: 5601 },
   L: { w: 499, path: word[13], left: 6059 },
   Y: { w: 653, path: word[16], left: 8033 },
 };
-/* The wordmark's own spacing where it has the pair (B I, I L); 215 elsewhere, less before the Y, whose arms reach out over the L's open side. */
-const gap = { Bi: 224, iL: 269, LL: 215, LY: 140 };
+/* The wordmark's own spacing where it has the pair (B I, I L); 215 between the L's, less before the Y, whose arms reach out over the L's open side. */
+const gap = { BI: 224, IL: 269, LL: 215, LY: 140 };
 let x = 0, prev = "";
-const parts = [..."BiLLY"].map((ch) => {
+const parts = [..."BILLY"].map((ch) => {
   if (prev) x += gap[prev + ch];
   /* Moved in its own outline, not by a transform, so the gradient runs across the whole word rather than starting again in each letter. */
   const { path, left, drawn } = glyphs[ch];

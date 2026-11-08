@@ -248,3 +248,16 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   at (415) 800-1425, shown in its title, and says he picks up 24 hours a day for most
   common questions; the front desk at Potrero Hill, (415) 594-6019, is a blue
   link of its own in the text below.
+- **BILLY in capitals again.** The wordmark's i is the TRAINABILITY® wordmark's
+  own capital I, in the Our Story card, "Meet BILLY." and "Ask BILLY".
+- **Links without underlines.** Links in the text are known by their colour
+  and underline only under the pointer.
+- **Terms and Privacy match Studio.** Both checked against Studio's code and
+  updated, effective 7 November 2026: what's kept of Billy's calls (a short
+  summary, no recording or transcript) and who carries them (Twilio, Anthropic,
+  ElevenLabs); the full list of texts, STOP stopping all of them, news by email
+  only, and quiet hours for scheduled messages; Anthropic beyond the website
+  chat; sign-up photos; Turnstile on Billy's chat; the cancel page and the fee
+  charged when you cancel; saved-card limits; Refill automatically only once
+  the client accepts; what's shared with your trainer; under-18s only with a
+  parent or guardian; and no email address in the arbitration opt-out.
