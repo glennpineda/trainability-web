@@ -261,3 +261,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   charged when you cancel; saved-card limits; Refill automatically only once
   the client accepts; what's shared with your trainer; under-18s only with a
   parent or guardian; and no email address in the arbitration opt-out.
+- **Membership prices say more.** Monthly mentions the $50 fee for cancelling
+  after only the first month (instead of the 12-month price lock); Single
+  month is now Prepaid, from $149: one month at $149, or two or three at $129
+  a month, with no commitment; With a trainer goes back to the regular
+  monthly rate when you stop training with them.
