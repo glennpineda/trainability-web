@@ -266,3 +266,6 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   month is now Prepaid, from $149: one month at $149, or two or three at $129
   a month, with no commitment; With a trainer goes back to the regular
   monthly rate when you stop training with them.
+- **Gift cards.** A new page at /gift-cards/: how a gift card works, what it
+  pays for, and buttons to Studio's gift card form. Linked from the Services
+  menu, the Membership page and the footer.

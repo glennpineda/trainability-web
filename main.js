@@ -80,6 +80,7 @@ const clicks = [
   ['a[href^="tel:"]', 'Call'],
   ['a[href*="maps.google."], a[href*="maps.apple."]', 'Directions'],
   ['a[href^="https://trainabilitystudio.com/forms/join"]', 'Buy online'],
+  ['a[href^="https://trainabilitystudio.com/forms/giftcard"]', 'Buy a gift card'],
   ['a[href^="https://trainabilitystudio.com/install"]', 'Install Studio on your phone'],
   ['a[href*="team/?location="]', 'Meet the team here'],
 ];
