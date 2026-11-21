@@ -269,3 +269,9 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **Gift cards.** A new page at /gift-cards/: how a gift card works, what it
   pays for, and buttons to Studio's gift card form. Linked from the Services
   menu, the Membership page and the footer.
+- **How busy is it?** Each location page has a new section that shows how
+  busy the place usually is, hour by hour, for today and the next six days:
+  Quiet, Steady or Busy, never a head count. It also says how busy it is
+  right now. It reads Studio's `/api/forms/busy` on every visit and shows
+  only the hours the place is open. It stays hidden for a place Studio has
+  no estimate for, or when Studio doesn't answer.

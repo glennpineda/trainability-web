@@ -375,19 +375,24 @@ if (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'Mac
    next 14 days they show in a bar under the header, next to the opening hours
    ([data-special-for]) and, on the day, in the day pass dialog. When Studio
    can't be reached the page just keeps its usual hours. */
-(async () => {
-  let api = document.body.dataset.teamApi;
-  if (!api) return;
-  /* For trying it out locally: ?team-api=/a-file.json, only on this machine. */
-  const test = new URL(location.href).searchParams.get('team-api');
+/* Studio's public JSON, read once per page: the team list here, and How busy
+   below. ?team-api=/a-file.json or ?busy-api=… swap in a local file for
+   trying it out, only on this machine. */
+const studioPlaces = (name) => {
+  let api = document.body.dataset[`${name}Api`];
+  const test = new URL(location.href).searchParams.get(`${name}-api`);
   if (test?.startsWith('/') && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) api = test;
-  let places;
-  try {
-    const r = await fetch(api, { credentials: 'omit' });
-    if (!r.ok) return;
-    places = (await r.json()).places;
-  } catch { return; }
-  if (!Array.isArray(places)) return;
+  if (!api) return Promise.resolve(null);
+  return fetch(api, { credentials: 'omit' })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => (Array.isArray(d?.places) ? d.places : null))
+    .catch(() => null);
+};
+const teamPlaces = studioPlaces('team');
+
+(async () => {
+  const places = await teamPlaces;
+  if (!places) return;
 
   const AHEAD = 14;
   const zone = 'America/Los_Angeles';
@@ -443,6 +448,104 @@ if (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'Mac
       : `Today we're open ${hours(d)}${what}.`;
     el.hidden = false;
   });
+})();
+
+/* How busy is it?, on the location pages (section[data-busy-for]), from
+   Studio's /api/forms/busy: a level for each hour (quiet, steady, busy),
+   never a head count. Today and the six days after it, as a forecast from
+   past visits and what's booked; "right now" is the real count's level.
+   Only the hours the place is open show, from the team list (holiday hours
+   included). A place Studio has no levels for keeps the section hidden, as
+   does Studio not answering. */
+(async () => {
+  const section = document.querySelector('section[data-busy-for]');
+  if (!section) return;
+  const [busy, team] = await Promise.all([studioPlaces('busy'), teamPlaces]);
+  const name = section.dataset.busyFor;
+  const place = busy?.find((p) => p?.name === name);
+  const days = (Array.isArray(place?.days) ? place.days : [])
+    .filter((d) => typeof d?.date === 'string')
+    .map((d) => ({ date: d.date, levels: Array.isArray(d.levels) && d.levels.length === 24 ? d.levels : null }))
+    .slice(0, 7);
+  if (!days.some((d) => d.levels)) return;
+
+  const LEVELS = { quiet: 1, steady: 2, busy: 3 };
+  const WORD = { quiet: 'Quiet', steady: 'Steady', busy: 'Busy' };
+  const info = team?.find((p) => p?.name === name);
+  const openOn = (date) => {
+    const special = (info?.specialHours || []).find((d) => d?.date === date);
+    if (special) return special.open == null || special.close == null ? null : special;
+    const weekday = new Date(`${date}T12:00:00Z`).getUTCDay();
+    return (info?.hours || []).find((h) => h?.weekday === weekday) || { open: 360, close: 1320 };
+  };
+  const hourLabel = (h) => `${h % 12 || 12} ${h < 12 ? 'AM' : 'PM'}`;
+  const short = (h) => `${h % 12 || 12}${h < 12 ? 'a' : 'p'}`;
+  const dayTab = (d, i) => (i === 0 ? 'Today' : i === 1 ? 'Tomorrow'
+    : new Date(`${d.date}T12:00:00Z`).toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'short' }));
+  const dayLong = (d, i) => (i === 0 ? 'today' : i === 1 ? 'tomorrow'
+    : new Date(`${d.date}T12:00:00Z`).toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'long' }));
+  const isToday = (d) => d.date === place.today;
+  const hourNow = Number.isInteger(place.hourNow) ? place.hourNow : -1;
+
+  const now = section.querySelector('.busy-now');
+  const todayHours = openOn(days[0].date);
+  const openNow = isToday(days[0]) && todayHours && hourNow * 60 >= todayHours.open && hourNow * 60 < todayHours.close;
+  if (openNow && LEVELS[place.now]) {
+    now.innerHTML = '';
+    const tag = document.createElement('span');
+    tag.className = 'busy-tag';
+    tag.dataset.level = place.now;
+    tag.textContent = WORD[place.now];
+    now.append('Right now: ', tag);
+  } else if (isToday(days[0]) && !openNow) {
+    now.textContent = 'Closed right now.';
+  } else now.remove();
+
+  const tabs = section.querySelector('.busy-days');
+  const chart = section.querySelector('.busy-chart');
+  const show = (i) => {
+    const d = days[i];
+    tabs.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-selected', String(j === i)));
+    chart.innerHTML = '';
+    const hours = openOn(d.date);
+    if (hours && !d.levels) {
+      chart.innerHTML = '<p class="busy-closed">No estimate for that day yet.</p>';
+      chart.setAttribute('aria-label', `No estimate ${dayLong(d, i)}`);
+      return;
+    }
+    if (!hours) {
+      chart.innerHTML = '<p class="busy-closed">Closed that day.</p>';
+      chart.setAttribute('aria-label', `Closed ${dayLong(d, i)}`);
+      return;
+    }
+    const first = Math.floor(hours.open / 60), last = Math.ceil(hours.close / 60) - 1;
+    const said = [];
+    for (let h = first; h <= last; h++) {
+      const level = LEVELS[d.levels[h]] ? d.levels[h] : null;
+      const bar = document.createElement('div');
+      bar.className = 'busy-bar';
+      if (level) { bar.dataset.level = level; said.push(`${hourLabel(h)} ${WORD[level].toLowerCase()}`); }
+      if (isToday(d) && h === hourNow) bar.classList.add('is-now');
+      if (isToday(d) && h < hourNow) bar.classList.add('is-past');
+      bar.style.setProperty('--h', String(LEVELS[level] || 0));
+      bar.title = `${hourLabel(h)}: ${level ? WORD[level] : 'no estimate'}`;
+      const label = document.createElement('span');
+      label.textContent = (h - first) % 3 === 0 ? short(h) : '';
+      bar.append(document.createElement('i'), label);
+      chart.append(bar);
+    }
+    chart.setAttribute('aria-label', `How busy it usually is ${dayLong(d, i)}: ${said.join(', ')}`);
+  };
+  days.forEach((d, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('role', 'tab');
+    b.textContent = dayTab(d, i);
+    b.addEventListener('click', () => show(i));
+    tabs.append(b);
+  });
+  show(0);
+  section.hidden = false;
 })();
 
 /* Google reviews on the location pages (section.reviews, built when site.json

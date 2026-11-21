@@ -940,3 +940,39 @@ address { font-style: normal; }
 .app-intro-cards > a > img { display: block; height: 44px; width: auto; max-width: 100%; margin-bottom: 16px; }
 .cancel-membership .embed { margin-top: 8px; }
 .cancel-membership .embed iframe { min-height: 0; }   /* sized by the page's own height messages */
+
+/* How busy is it?, on the location pages (main.js): a bar for each open hour,
+   its height and colour the level Studio gives (quiet, steady, busy). */
+.busy { --quiet: #3fb68b; --steady: #e0b341; --busy: var(--magenta-bright); }
+.busy [data-level="quiet"] { --c: var(--quiet); }
+.busy [data-level="steady"] { --c: var(--steady); }
+.busy [data-level="busy"] { --c: var(--busy); }
+.busy-now { margin: 8px 0 0; font-size: 1.15rem; color: var(--muted); }
+.busy-tag { color: var(--c); font-weight: 700; }
+.busy-days { display: flex; gap: 6px; overflow-x: auto; margin: 0 0 20px; padding-bottom: 4px; scrollbar-width: none; }
+.busy-days button {
+  flex: none; font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  padding: 7px 14px; border-radius: 999px; color: var(--muted);
+  background: transparent; border: 1px solid var(--border);
+}
+.busy-days button:hover { color: var(--text); }
+.busy-days button[aria-selected="true"] { color: var(--on-gradient); background: var(--gradient-button); border-color: transparent; }
+.busy-chart {
+  display: flex; align-items: flex-end; gap: 4px; height: 170px;
+  padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.busy-bar { flex: 1 1 0; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px; }
+.busy-bar i {
+  display: block; width: 100%; max-width: 34px; border-radius: 5px 5px 2px 2px;
+  height: calc((var(--h) / 3) * (100% - 22px)); min-height: 4px;
+  background: var(--c, var(--border));
+}
+.busy-bar span { height: 16px; font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+.busy-bar.is-past i { opacity: 0.35; }
+.busy-bar.is-now i { outline: 2px solid var(--text); outline-offset: 2px; }
+.busy-bar.is-now span { color: var(--text); font-weight: 700; }
+.busy-closed { margin: auto; color: var(--muted); }
+.busy-key { display: flex; gap: 18px; list-style: none; padding: 0; margin: 14px 0 0; font-size: 0.9rem; color: var(--muted); }
+.busy-key li::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; background: var(--c); }
+.busy-note { margin: 8px 0 0; font-size: 0.85rem; color: var(--muted); }
+@media (max-width: 600px) { .busy-chart { gap: 2px; padding: 12px 10px; } }
