@@ -275,3 +275,9 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   right now. It reads Studio's `/api/forms/busy` on every visit and shows
   only the hours the place is open. It stays hidden for a place Studio has
   no estimate for, or when Studio doesn't answer.
+- **Holiday hours on the Potrero Hill page.** Under the opening hours in
+  Find us, a list of every holiday and special day Studio has coming up
+  (the next 60 days): the date, the holiday's name, and "Closed" or the
+  hours. It's read from Studio on each visit, so a day saved in Studio shows
+  right away and drops off once it's past. With none coming up, the list
+  doesn't show.

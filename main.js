@@ -412,6 +412,28 @@ const teamPlaces = studioPlaces('team');
       .filter((d) => typeof d?.date === 'string' && d.date >= today && d.date <= last)
       .sort((a, b) => a.date.localeCompare(b.date)) }))
     .filter((p) => p.days.length);
+
+  // The full list on a location page: every special day Studio has coming up
+  document.querySelectorAll('[data-holiday-list]').forEach((el) => {
+    const p = places.find((x) => x?.name === el.dataset.holidayList);
+    const days = (Array.isArray(p?.specialHours) ? p.specialHours : [])
+      .filter((d) => typeof d?.date === 'string' && d.date >= today)
+      .sort((a, b) => a.date.localeCompare(b.date));
+    if (!days.length) return;
+    const list = el.querySelector('dl');
+    days.forEach((d) => {
+      const row = document.createElement('div');
+      const dt = document.createElement('dt');
+      const dd = document.createElement('dd');
+      dt.textContent = `${dayName(d.date)}${d.label ? ` · ${d.label}` : ''}`;
+      dd.textContent = hours(d) === 'closed' ? 'Closed' : hours(d);
+      if (hours(d) === 'closed') dd.className = 'is-closed';
+      row.append(dt, dd);
+      list.append(row);
+    });
+    el.hidden = false;
+  });
+
   if (!soon.length) return;
 
   // The bar under the header

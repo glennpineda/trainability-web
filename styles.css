@@ -976,3 +976,12 @@ address { font-style: normal; }
 .busy-key li::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; background: var(--c); }
 .busy-note { margin: 8px 0 0; font-size: 0.85rem; color: var(--muted); }
 @media (max-width: 600px) { .busy-chart { gap: 2px; padding: 12px 10px; } }
+
+/* The holiday hours list on a location page (main.js, [data-holiday-list]). */
+.holiday-list { margin-top: 20px; max-width: 440px; }
+.holiday-list h3 { margin: 0 0 8px; font-size: 1.15rem; }
+.holiday-list dl { margin: 0; }
+.holiday-list dl div { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.holiday-list dt { color: var(--text); }
+.holiday-list dd { margin: 0; color: var(--muted); white-space: nowrap; }
+.holiday-list dd.is-closed { color: var(--magenta-bright); font-weight: 600; }
