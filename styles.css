@@ -268,7 +268,7 @@ main, .site-footer { position: relative; z-index: 1; }
   content: ""; position: absolute; inset: 0; z-index: -1;
   background:
     linear-gradient(to top, var(--bg) 0%, color-mix(in srgb, var(--bg) 62%, transparent) 55%, color-mix(in srgb, var(--bg) 75%, transparent) 100%),
-    var(--hero-image, none) center / cover no-repeat,
+    var(--hero-image, none) var(--hero-position, center) / cover no-repeat,
     radial-gradient(ellipse at top right, color-mix(in srgb, var(--cerulean) 35%, transparent), transparent 60%),
     radial-gradient(ellipse at bottom left, color-mix(in srgb, var(--magenta) 30%, transparent), transparent 55%),
     var(--bg);
@@ -985,3 +985,9 @@ address { font-style: normal; }
 .holiday-list dt { color: var(--text); }
 .holiday-list dd { margin: 0; color: var(--muted); white-space: nowrap; }
 .holiday-list dd.is-closed { color: var(--magenta-bright); font-weight: 600; }
+
+/* The wide team photo between the trainers and the staff on Our team. */
+.team-banner img {
+  display: block; width: 100%; height: auto; aspect-ratio: 1600 / 666; object-fit: cover;
+  border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow);
+}

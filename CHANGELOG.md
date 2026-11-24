@@ -281,3 +281,6 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   hours. It's read from Studio on each visit, so a day saved in Studio shows
   right away and drops off once it's past. With none coming up, the list
   doesn't show.
+- **A team photo on Our team.** The page's hero background is now the
+  team's holiday group photo, instead of the Potrero Hill gym. Between the
+  trainers and the staff, a wide photo of the team together outside.
