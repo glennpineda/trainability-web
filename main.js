@@ -103,6 +103,26 @@ if (document.body.dataset.page === '404') track('Not found', { path: location.pa
 // Video played: once per video per page view
 document.querySelectorAll('video[data-video]').forEach(v => v.addEventListener('play', () => track('Video played', { video: v.dataset.video }), { once: true }));
 
+// Billy's tip (contact page, dialog.billy-tip): the first time Studio's cancel
+// or pause page shows, in the contact form's frame or the Cancel membership
+// dialog, Billy pops up in the middle to say the easy way is the member
+// portal, and how it goes. Once per topic per visit; "Do it here instead"
+// or × goes back to the form.
+const tipped = new Set();
+function billyTip(topic) {
+  const tip = document.querySelector('dialog.billy-tip');
+  if (!tip?.showModal || tipped.has(topic) || tip.open) return;
+  tipped.add(topic);
+  tip.querySelectorAll('[data-tip]').forEach((el) => { el.hidden = el.dataset.tip !== topic; });
+  tip.showModal();
+  track('Billy tip shown', { topic });
+}
+// Member login from the tip closes it (and the cancel dialog) before the login opens
+document.querySelector('dialog.billy-tip [data-member-login]')?.addEventListener('click', () => {
+  document.querySelectorAll('dialog.billy-tip, dialog.cancel-membership').forEach((d) => d.open && d.close());
+}, true);
+document.querySelector('dialog.billy-tip')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+
 // Studio's embedded forms (personal training, reserve a studio, contact) say how tall they
 // are, so each frame fits with no second scrollbar, and say when one is sent
 addEventListener('message', (e) => {
@@ -112,6 +132,7 @@ addEventListener('message', (e) => {
   const frame = [...document.querySelectorAll('iframe[data-form]')].find((f) => f.contentWindow === e.source)
     || document.querySelector(`iframe[data-form="${e.data.form}"]`);
   if (frame && e.data.type === 'height') frame.style.height = e.data.height + 'px';
+  if (frame && (e.data.form === 'cancel' || e.data.form === 'pause')) billyTip(e.data.form);
   if (e.data.type === 'sent') track('Form sent', { form: String(e.data.form), ...(e.data.topic ? { topic: String(e.data.topic) } : {}) });
 });
 // When a form moves on to a page of its own inside the frame (Contact's

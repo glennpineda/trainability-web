@@ -68,6 +68,38 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
       </div>
     </section>
 
+    <!-- Billy's tip: when Studio's cancel or pause page opens (in the contact
+         form's frame or the Cancel membership dialog), Billy pops up once to
+         say the easy way is the member portal, and how it goes (main.js). -->
+    <dialog class="panel billy-tip" aria-label="Billy">
+      <form method="dialog" class="panel-close"><button aria-label="Close">×</button></form>
+      <img class="billy-tip-face" src="{{root}}assets/billy/waving.svg" alt="" width="88" height="88">
+      <div data-tip="cancel">
+        <p class="lead">You can cancel right here on this page, or in your member portal. Here’s how it goes here:</p>
+        <ol class="billy-tip-steps">
+          <li>Type the email on your membership and choose <strong>Email me a code</strong> or <strong>Text me a code</strong>.</li>
+          <li>Enter the 6-digit code. That’s how we know it’s you, and nothing of yours shows before it.</li>
+          <li>Your membership shows. Tap <strong>Cancel membership</strong>, and you’ll see the day it ends and any cancellation fee before you confirm.</li>
+        </ol>
+        <p class="billy-tip-note">Tell us at least 48 hours before your next payment and that payment isn’t charged. With less notice it’s still charged, and your membership ends when the period it covers is over. Changed your mind? <strong>Keep my membership</strong> takes it back.</p>
+        <p class="billy-tip-note">In your member portal it’s the <strong>Membership</strong> tab, then <strong>Cancel membership</strong>.</p>
+      </div>
+      <div data-tip="pause">
+        <p class="lead">You can pause right here on this page, or in your member portal. Here’s how it goes here:</p>
+        <ol class="billy-tip-steps">
+          <li>Type the email on your membership and choose <strong>Email me a code</strong> or <strong>Text me a code</strong>.</li>
+          <li>Enter the 6-digit code. That’s how we know it’s you, and nothing of yours shows before it.</li>
+          <li>Your membership shows. Tap <strong>Pause</strong>, then pick the day it starts and the day you’re back. You’ll see how many of this year’s pauses you’ve used.</li>
+        </ol>
+        <p class="billy-tip-note">Back early? <strong>End the pause</strong> starts your membership again, and <strong>Call off the pause</strong> cancels one that hasn’t started. A membership can’t be paused while a payment is owed.</p>
+        <p class="billy-tip-note">In your member portal it’s the <strong>Membership</strong> tab, then <strong>Pause</strong>.</p>
+      </div>
+      <div class="billy-tip-actions">
+        <form method="dialog"><button class="btn">Got it</button></form>
+        <a href="{{memberPortal}}" class="btn btn-ghost" data-member-login>Go to my member portal</a>
+      </div>
+    </dialog>
+
     <!-- Canceling a membership: the card above opens this, with Studio's own
          cancel page in it (main.js). The member confirms who they are with a
          code, then cancels from their member page, all inside the frame. -->

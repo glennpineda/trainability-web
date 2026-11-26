@@ -289,3 +289,12 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   The page now scrolls back up to the top of the frame, so the new page's
   title shows, and the frame shrinks to fit that page instead of staying as
   tall as the contact form.
+- **Billy's tip on cancelling and pausing.** On the contact page, the first
+  time Studio's cancel or pause page opens (from the contact form's
+  Membership (cancel) or (pause), or the Cancel membership box), Billy pops
+  up in the middle and explains how it goes on that page: the email, a code
+  by email or text, then Cancel membership or Pause, with the notice rule
+  for cancelling and the pause rules. He adds that it can also be done in
+  the member portal. **Got it** goes back to the form, and **Go to my
+  member portal** opens the sign-in. It shows once per topic per
+  visit.

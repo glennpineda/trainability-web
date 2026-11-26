@@ -991,3 +991,15 @@ address { font-style: normal; }
   display: block; width: 100%; height: auto; aspect-ratio: 1600 / 666; object-fit: cover;
   border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow);
 }
+
+/* Billy's tip on the contact page (main.js): the easy way to cancel or pause. */
+.billy-tip { text-align: left; }
+.billy-tip-face { display: block; width: 88px; height: 88px; margin: -8px auto 14px; }
+.billy-tip .lead { font-size: 1.05rem; color: var(--text); text-align: center; }
+.billy-tip-steps { margin: 16px 0; padding-left: 1.4em; display: grid; gap: 8px; }
+.billy-tip-steps li { color: color-mix(in srgb, var(--text) 88%, var(--muted)); }
+.billy-tip-steps li::marker { color: var(--accent); font-weight: 700; }
+.billy-tip-note { font-size: 0.9rem; }
+.billy-tip-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 12px; margin-top: 22px; }
+.billy-tip-actions form { margin: 0; }
+.billy-tip-actions .btn { text-align: center; white-space: nowrap; }
