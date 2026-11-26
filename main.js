@@ -119,7 +119,7 @@ function billyTip(topic) {
 }
 // Member login from the tip closes it (and the cancel dialog) before the login opens
 document.querySelector('dialog.billy-tip [data-member-login]')?.addEventListener('click', () => {
-  document.querySelectorAll('dialog.billy-tip, dialog.cancel-membership').forEach((d) => d.open && d.close());
+  document.querySelectorAll('dialog.billy-tip, dialog.membership-form').forEach((d) => d.open && d.close());
 }, true);
 document.querySelector('dialog.billy-tip')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) e.currentTarget.close(); });
 
@@ -131,8 +131,17 @@ addEventListener('message', (e) => {
      form (cancel, pause) that names itself, not "contact". */
   const frame = [...document.querySelectorAll('iframe[data-form]')].find((f) => f.contentWindow === e.source)
     || document.querySelector(`iframe[data-form="${e.data.form}"]`);
+  /* Contact's Membership (cancel) and (pause) open Studio's cancel or pause
+     page in the contact form's own frame. Instead: the contact form comes
+     back, and the page opens in its own pop-up, as the Canceling card's. */
+  const topic = e.data.form === 'cancel' || e.data.form === 'pause' ? e.data.form : null;
+  if (frame?.dataset.form === 'contact' && topic && openMembershipForm(topic)) {
+    frame.src = frame.dataset.home || frame.src;
+    formAway(frame, topic);
+    return;
+  }
   if (frame && e.data.type === 'height') frame.style.height = e.data.height + 'px';
-  if (frame && (e.data.form === 'cancel' || e.data.form === 'pause')) billyTip(e.data.form);
+  if (frame && topic) billyTip(topic);
   if (e.data.type === 'sent') track('Form sent', { form: String(e.data.form), ...(e.data.topic ? { topic: String(e.data.topic) } : {}) });
 });
 // When a form moves on to a page of its own inside the frame (Contact's
@@ -142,7 +151,7 @@ addEventListener('message', (e) => {
 document.querySelectorAll('iframe[data-form]').forEach((frame) => {
   let loads = 0;
   frame.addEventListener('load', () => {
-    if (frame.src === 'about:blank' || !frame.src) return;
+    if (frame.src === 'about:blank' || !frame.src || frame.hidden) return;
     if (loads++ === 0) return;
     const top = frame.getBoundingClientRect().top;
     if (top < 72) frame.scrollIntoView({ block: 'start' });
@@ -364,23 +373,53 @@ const studioRequest = (dialog, { opener, check, body }) => {
   return { opened: (fn) => dialog.addEventListener('studio-request-open', fn, { once: true }) };
 };
 
-// Contact page: "Cancel membership" opens Studio's own cancel page in a
-// dialog. The frame loads only when it's first opened; its height and its
+// Contact page: "Cancel membership" (and the contact form's Membership
+// (cancel) and (pause), above) open Studio's own cancel or pause page in a
+// dialog. Each frame loads only when it's first opened; its height and its
 // "sent" come through the embedded forms' messages above.
-const cancelDialog = document.querySelector('dialog.cancel-membership');
-if (cancelDialog?.showModal) {
-  const frame = cancelDialog.querySelector('iframe[data-src]');
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('[data-cancel-membership]')) return;
-    e.preventDefault();
-    dayPass?.close();
-    if (!frame.src) frame.src = frame.dataset.src;
-    cancelDialog.showModal();
-  });
-  cancelDialog.addEventListener('click', (e) => { if (e.target === cancelDialog) cancelDialog.close(); });
+function openMembershipForm(topic) {
+  const dialog = document.querySelector(`dialog.membership-form[data-topic="${topic}"]`);
+  if (!dialog?.showModal) return false;
+  const frame = dialog.querySelector('iframe[data-src]');
+  dayPass?.close();
+  document.querySelectorAll('dialog.membership-form').forEach((d) => d !== dialog && d.open && d.close());
+  if (!frame.src) frame.src = frame.dataset.src;
+  if (!dialog.open) dialog.showModal();
+  return true;
 }
+document.querySelectorAll('dialog.membership-form').forEach((dialog) => {
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('[data-cancel-membership]')) return;
+  if (openMembershipForm('cancel')) e.preventDefault();
+});
+// While it's open in the pop-up, the contact form's frame makes way for a
+// note: Open it again, or Back to the contact form (put back already, behind).
+function formAway(frame, topic) {
+  const away = frame.parentElement.querySelector('.form-away');
+  if (!away) return;
+  const verb = topic === 'pause' ? 'Pausing' : 'Canceling';
+  away.querySelector('.form-away-title').textContent = `${verb} your membership`;
+  away.querySelector('.form-away-text').textContent = `It’s open in its own window. Closed it by mistake? Open it again. Need something else? Go back to the contact form.`;
+  away.dataset.topic = topic;
+  frame.hidden = true;
+  away.hidden = false;
+}
+document.querySelectorAll('.form-away').forEach((away) => away.addEventListener('click', (e) => {
+  const button = e.target.closest('[data-away]');
+  if (!button) return;
+  if (button.dataset.away === 'again') { openMembershipForm(away.dataset.topic); return; }
+  away.hidden = true;
+  const frame = away.parentElement.querySelector('iframe[data-form="contact"]');
+  frame.hidden = false;
+  frame.scrollIntoView({ block: 'start' });
+}));
+// The contact form's own address, to put it back after it opens cancel or pause
+document.querySelectorAll('iframe[data-form="contact"]').forEach((f) => { f.dataset.home = f.getAttribute('src'); });
 
-if (location.hash === '#cancel') document.querySelector('[data-cancel-membership]')?.click();
+if (location.hash === '#cancel') openMembershipForm('cancel');
+if (location.hash === '#pause') openMembershipForm('pause');
 
 // Assisted stretching: "Book a session" (topic "stretch": Messages lists it
 // under Stretching, where the front desk assigns it to a specialist)

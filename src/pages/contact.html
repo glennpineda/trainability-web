@@ -44,6 +44,17 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
         </div>
         <div class="embed">
           <iframe data-form="contact" src="{{contactForm}}" title="Send us a message" height="760" loading="lazy"></iframe>
+          <!-- In the frame's place while Membership (cancel) or (pause) is open
+               in its pop-up (main.js): open it again, or back to the form. -->
+          <div class="form-away" hidden>
+            <img src="{{root}}assets/billy/happy.svg" alt="" width="72" height="72">
+            <h3 class="form-away-title"></h3>
+            <p class="form-away-text"></p>
+            <div class="form-away-actions">
+              <button type="button" class="btn" data-away="again">Open it again</button>
+              <button type="button" class="btn btn-ghost" data-away="back">← Back to the contact form</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -100,15 +111,25 @@ description: Get in touch with Trainability in San Francisco: call (415) 594-601
       </div>
     </dialog>
 
-    <!-- Canceling a membership: the card above opens this, with Studio's own
-         cancel page in it (main.js). The member confirms who they are with a
-         code, then cancels from their member page, all inside the frame. -->
-    <dialog class="panel cancel-membership" id="cancel" aria-labelledby="cancel-title">
+    <!-- Canceling or pausing a membership: the Canceling card, and the contact
+         form's Membership (cancel) and (pause), open these, with Studio's own
+         cancel or pause page in them (main.js). The member confirms who they
+         are with a code, then cancels or pauses, all inside the frame. -->
+    <dialog class="panel cancel-membership membership-form" data-topic="cancel" id="cancel" aria-labelledby="cancel-title">
       <form method="dialog" class="panel-close"><button aria-label="Close">×</button></form>
       <p class="eyebrow gradient-text">Members</p>
       <h2 id="cancel-title">Cancel membership</h2>
       <div class="embed">
         <iframe data-form="cancel" data-src="{{cancelForm}}" title="Cancel your membership" height="340"></iframe>
+      </div>
+    </dialog>
+
+    <dialog class="panel cancel-membership membership-form" data-topic="pause" id="pause" aria-labelledby="pause-title">
+      <form method="dialog" class="panel-close"><button aria-label="Close">×</button></form>
+      <p class="eyebrow gradient-text">Members</p>
+      <h2 id="pause-title">Pause membership</h2>
+      <div class="embed">
+        <iframe data-form="pause" data-src="{{pauseForm}}" title="Pause your membership" height="340"></iframe>
       </div>
     </dialog>
 

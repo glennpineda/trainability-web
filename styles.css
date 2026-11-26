@@ -1003,3 +1003,12 @@ address { font-style: normal; }
 .billy-tip-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 12px; margin-top: 22px; }
 .billy-tip-actions form { margin: 0; }
 .billy-tip-actions .btn { text-align: center; white-space: nowrap; }
+
+/* In the contact form's place while cancel or pause is open in its pop-up (main.js). */
+.embed iframe[hidden] { display: none; }
+.form-away { padding: clamp(32px, 6vw, 56px) 24px; text-align: center; }
+.form-away img { display: block; margin: 0 auto 12px; }
+.form-away-title { margin: 0 0 8px; font-size: 1.6rem; }
+.form-away-text { max-width: 420px; margin: 0 auto; color: var(--muted); }
+.form-away-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 12px; margin-top: 22px; }
+.form-away-actions .btn { text-align: center; }

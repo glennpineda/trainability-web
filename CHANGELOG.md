@@ -298,3 +298,9 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   the member portal. **Got it** goes back to the form, and **Go to my
   member portal** opens the sign-in. It shows once per topic per
   visit.
+- **Membership (cancel) and (pause) open in a pop-up.** Picking either in
+  the contact form now opens Studio's cancel or pause page in a pop-up, as
+  the Canceling your membership? card does (a new **Pause membership** one
+  for pausing). In the contact form's place, a note says it's open in its
+  own window, with **Open it again** and **← Back to the contact form**. trnblt.com/contact/#pause
+  opens the pause one directly, as #cancel does the cancel one.
