@@ -107,9 +107,25 @@ document.querySelectorAll('video[data-video]').forEach(v => v.addEventListener('
 // are, so each frame fits with no second scrollbar, and say when one is sent
 addEventListener('message', (e) => {
   if (e.origin !== 'https://trainabilitystudio.com' || e.data?.source !== 'trainability-form') return;
-  const frame = document.querySelector(`iframe[data-form="${e.data.form}"]`);
+  /* The frame the message came from: Contact's frame can move on to another
+     form (cancel, pause) that names itself, not "contact". */
+  const frame = [...document.querySelectorAll('iframe[data-form]')].find((f) => f.contentWindow === e.source)
+    || document.querySelector(`iframe[data-form="${e.data.form}"]`);
   if (frame && e.data.type === 'height') frame.style.height = e.data.height + 'px';
   if (e.data.type === 'sent') track('Form sent', { form: String(e.data.form), ...(e.data.topic ? { topic: String(e.data.topic) } : {}) });
+});
+// When a form moves on to a page of its own inside the frame (Contact's
+// "Membership (cancel)" opens Studio's cancel page), bring the frame's top
+// back into view if the visitor had scrolled down past it, so the new page's
+// title shows. The frame's first load doesn't count.
+document.querySelectorAll('iframe[data-form]').forEach((frame) => {
+  let loads = 0;
+  frame.addEventListener('load', () => {
+    if (frame.src === 'about:blank' || !frame.src) return;
+    if (loads++ === 0) return;
+    const top = frame.getBoundingClientRect().top;
+    if (top < 72) frame.scrollIntoView({ block: 'start' });
+  });
 });
 
 // The team page's filter: everyone, or only those at one location. The choice

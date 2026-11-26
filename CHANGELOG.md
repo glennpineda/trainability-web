@@ -284,3 +284,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **A team photo on Our team.** The page's hero background is now the
   team's holiday group photo, instead of the Potrero Hill gym. Between the
   trainers and the staff, a wide photo of the team together outside.
+- **Contact form: Membership (cancel) and (pause) open at the top.** Picking
+  either opens Studio's cancel or pause page inside the contact form's frame.
+  The page now scrolls back up to the top of the frame, so the new page's
+  title shows, and the frame shrinks to fit that page instead of staying as
+  tall as the contact form.
