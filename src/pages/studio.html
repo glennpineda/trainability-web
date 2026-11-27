@@ -13,7 +13,7 @@ description: Trainability Studio is the member portal for members and clients of
       </div>
       <div class="container">
         <img class="app-logo" src="{{root}}assets/logos/studio-lockup.svg" alt="Trainability Studio" width="908" height="228">
-        <p class="eyebrow gradient-text">For members and clients of Trainability</p>
+        <p class="eyebrow gradient-text">For members, clients and trainers at Trainability</p>
         <h1>Your training, booked and kept on track.</h1>
         <p class="lead">See what you have booked, reserve a studio, and watch your visits add up.</p>
         <div class="hero-actions">
@@ -23,9 +23,93 @@ description: Trainability Studio is the member portal for members and clients of
       </div>
     </section>
 
-    <section class="section">
+    <section class="section roles" data-roles>
       <div class="container">
-        <header class="section-head">
+        <div class="role-tabs" role="tablist" aria-label="Who it is for">
+          <button type="button" role="tab" id="role-members" aria-controls="for-members" aria-selected="true">For members</button>
+          <button type="button" role="tab" id="role-clients" aria-controls="for-clients" aria-selected="false">For clients</button>
+          <button type="button" role="tab" id="role-trainers" aria-controls="for-trainers" aria-selected="false">For trainers</button>
+        </div>
+        <p class="role-hint" aria-hidden="true">Swipe for the next one →</p>
+      </div>
+      <div class="role-track" tabindex="0" aria-label="Studio for members, clients and trainers">
+      <section class="role-panel" id="for-members" aria-labelledby="role-members">
+        <p class="role-lead">Book a studio, check in, and watch your visits add up.</p>
+        <div class="demo-row">
+          <div>
+            <h3>Reserve a studio in three taps</h3>
+          <p>A member picks today or tomorrow, a studio and a time, and it is held for them.</p>
+          <ul class="checks">
+            <li><strong>You see what is free.</strong> Times already taken have a line through them.</li>
+            <li><strong>You move it or cancel it.</strong> One reservation a day, and it is yours to change.</li>
+            <li><strong>Your trainer books your sessions.</strong> A session with a trainer appears in your member portal as soon as it is booked.</li>
+          </ul>
+          </div>
+          <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/01-reserve-phone-wide.png" data-phone-poster="{{root}}assets/studio-demos/01-reserve-phone-phone.png" aria-label="A member reserves a studio hour from their phone in a few taps, sees it confirmed, then cancels it." style="--w:400;--h:422;--pw:358;--ph:400">
+            <source src="{{root}}assets/studio-demos/01-reserve-phone-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+            <source src="{{root}}assets/studio-demos/01-reserve-phone-wide.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="demo-row demo-row-flip">
+          <div>
+            <h3>Show up and see it count</h3>
+          <p>Every check-in at the front door is a visit, and your member portal keeps the count.</p>
+          <ul class="checks">
+            <li><strong>Visits and weeks in a row.</strong> How many times you have come in, and how many weeks running.</li>
+            <li><strong>Milestones are marked.</strong> Your 10th, 25th, 50th and 100th visit, and 4, 8, 12, 26 and 52 weeks in a row.</li>
+            <li><strong>Sessions left, and why.</strong> How many sessions you have with your trainer, and how each one was counted.</li>
+          </ul>
+          </div>
+          <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/04-momentum-wide.png" data-phone-poster="{{root}}assets/studio-demos/04-momentum-phone.png" aria-label="A member's visits fill their Momentum ring through November, and at 16 they earn the Flex Pass for December." style="--w:400;--h:422;--pw:358;--ph:400">
+            <source src="{{root}}assets/studio-demos/04-momentum-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+            <source src="{{root}}assets/studio-demos/04-momentum-wide.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="demo-row">
+          <div>
+            <h3>One scan at the front door</h3>
+          <p>Scan your key tag at the kiosk: no typing, and you are welcomed by name.</p>
+          </div>
+          <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/03-kiosk-wide.png" data-phone-poster="{{root}}assets/studio-demos/03-kiosk-phone.png" aria-label="A member scans their key tag at the kiosk, is welcomed by name and checked in, and their Momentum goes up by one." style="--w:760;--h:480;--pw:358;--ph:436">
+          <source src="{{root}}assets/studio-demos/03-kiosk-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+          <source src="{{root}}assets/studio-demos/03-kiosk-wide.mp4" type="video/mp4">
+        </video>
+        </div>
+        <div class="demo-row demo-row-flip">
+          <div>
+            <h3>No key tag? Your name and PIN</h3>
+          <p>At the kiosk, find your name, enter your PIN, check in and reserve a studio, all without the front desk.</p>
+          </div>
+          <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/08-self-serve-wide.png" data-phone-poster="{{root}}assets/studio-demos/08-self-serve-phone.png" aria-label="A member with no key tag signs in at the kiosk by name and PIN, checks in, and reserves a studio." style="--w:760;--h:480;--pw:358;--ph:436">
+          <source src="{{root}}assets/studio-demos/08-self-serve-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+          <source src="{{root}}assets/studio-demos/08-self-serve-wide.mp4" type="video/mp4">
+        </video>
+        </div>
+        <div class="demo-row">
+          <div>
+            <h3>Every studio, at a glance</h3>
+          <p>The screen in the foyer shows every studio side by side: what is on now, how long is left, and the rest of the day. It moves on by itself as sessions end.</p>
+          </div>
+          <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/09-foyer-screen-wide.png" data-phone-poster="{{root}}assets/studio-demos/09-foyer-screen-phone.png" aria-label="The foyer screen shows four studios side by side and moves on by itself as one session ends and the next begins." style="--w:944;--h:559;--pw:358;--ph:452">
+          <source src="{{root}}assets/studio-demos/09-foyer-screen-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+          <source src="{{root}}assets/studio-demos/09-foyer-screen-wide.mp4" type="video/mp4">
+        </video>
+        </div>
+        <div class="demo-row demo-row-flip">
+          <div>
+            <h3>Fresh music, every night</h3>
+          <p>The studio's playlist is rebuilt each night, and Billy, our assistant, writes what is in it. The same words show on the screens, with a code to scan and listen.</p>
+          </div>
+          <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/07-billy-mix-wide.png" data-phone-poster="{{root}}assets/studio-demos/07-billy-mix-phone.png" aria-label="Each night the studio's playlist is rebuilt and Billy writes its description, which also shows on the gym's screens." style="--w:800;--h:470;--pw:358;--ph:614">
+          <source src="{{root}}assets/studio-demos/07-billy-mix-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+          <source src="{{root}}assets/studio-demos/07-billy-mix-wide.mp4" type="video/mp4">
+        </video>
+        </div>
+      </section>
+      <section class="role-panel" id="for-clients" aria-labelledby="role-clients">
+        <p class="role-lead">Training with one of our trainers? Every appointment and your account, in one place.</p>
+        <div class="role-block">
+          <header class="section-head">
           <h2>Keep every appointment in one place</h2>
           <p>Your member portal lists what is booked for the next 12 weeks, day by day, with who it is with and where.</p>
         </header>
@@ -43,64 +127,9 @@ description: Trainability Studio is the member portal for members and clients of
             <p>Up to 24 hours before, cancel in your member portal and your trainer is told. After that, contact your trainer.</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container demo-row">
-        <div>
-          <h2>Reserve a studio in three taps</h2>
-          <p>A member picks today or tomorrow, a studio and a time, and it is held for them.</p>
-          <ul class="checks">
-            <li><strong>You see what is free.</strong> Times already taken have a line through them.</li>
-            <li><strong>You move it or cancel it.</strong> One reservation a day, and it is yours to change.</li>
-            <li><strong>Your trainer books your sessions.</strong> A session with a trainer appears in your member portal as soon as it is booked.</li>
-          </ul>
         </div>
-        <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/01-reserve-phone-wide.png" data-phone-poster="{{root}}assets/studio-demos/01-reserve-phone-phone.png" aria-label="A member reserves a studio hour from their phone in a few taps, sees it confirmed, then cancels it." style="--w:400;--h:422;--pw:358;--ph:400">
-            <source src="{{root}}assets/studio-demos/01-reserve-phone-phone.mp4" type="video/mp4" media="(max-width: 600px)">
-            <source src="{{root}}assets/studio-demos/01-reserve-phone-wide.mp4" type="video/mp4">
-          </video>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container demo-row demo-row-flip">
-        <div>
-          <h2>Show up and see it count</h2>
-          <p>Every check-in at the front door is a visit, and your member portal keeps the count.</p>
-          <ul class="checks">
-            <li><strong>Visits and weeks in a row.</strong> How many times you have come in, and how many weeks running.</li>
-            <li><strong>Milestones are marked.</strong> Your 10th, 25th, 50th and 100th visit, and 4, 8, 12, 26 and 52 weeks in a row.</li>
-            <li><strong>Sessions left, and why.</strong> How many sessions you have with your trainer, and how each one was counted.</li>
-          </ul>
-        </div>
-        <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/04-momentum-wide.png" data-phone-poster="{{root}}assets/studio-demos/04-momentum-phone.png" aria-label="A member's visits fill their Momentum ring through November, and at 16 they earn the Flex Pass for December." style="--w:400;--h:422;--pw:358;--ph:400">
-            <source src="{{root}}assets/studio-demos/04-momentum-phone.mp4" type="video/mp4" media="(max-width: 600px)">
-            <source src="{{root}}assets/studio-demos/04-momentum-wide.mp4" type="video/mp4">
-          </video>
-      </div>
-      <div class="container demo-wide">
-        <h3>One scan at the front door</h3>
-        <p>Scan your key tag at the kiosk: no typing, and you are welcomed by name.</p>
-        <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/03-kiosk-wide.png" data-phone-poster="{{root}}assets/studio-demos/03-kiosk-phone.png" aria-label="A member scans their key tag at the kiosk, is welcomed by name and checked in, and their Momentum goes up by one." style="--w:760;--h:480;--pw:358;--ph:436">
-            <source src="{{root}}assets/studio-demos/03-kiosk-phone.mp4" type="video/mp4" media="(max-width: 600px)">
-            <source src="{{root}}assets/studio-demos/03-kiosk-wide.mp4" type="video/mp4">
-          </video>
-      </div>
-      <div class="container demo-wide">
-        <h3>No key tag? Your name and PIN</h3>
-        <p>At the kiosk, find your name, enter your PIN, check in and reserve a studio, all without the front desk.</p>
-        <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/08-self-serve-wide.png" data-phone-poster="{{root}}assets/studio-demos/08-self-serve-phone.png" aria-label="A member with no key tag signs in at the kiosk by name and PIN, checks in, and reserves a studio." style="--w:760;--h:480;--pw:358;--ph:436">
-            <source src="{{root}}assets/studio-demos/08-self-serve-phone.mp4" type="video/mp4" media="(max-width: 600px)">
-            <source src="{{root}}assets/studio-demos/08-self-serve-wide.mp4" type="video/mp4">
-          </video>
-      </div>
-    </section>
-
-    <section class="section section-alt">
-      <div class="container">
-        <header class="section-head">
+        <div class="role-block">
+          <header class="section-head">
           <h2>Look after your account yourself</h2>
           <p>Your card, your receipts and how we reach you are in your member portal, for you to change.</p>
         </header>
@@ -118,67 +147,48 @@ description: Trainability Studio is the member portal for members and clients of
             <p>Choose how reminders reach you, and turn off the ones you do not want.</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container demo-wide">
-        <header class="section-head">
-          <h2>On the screens around the gym</h2>
-          <p>Studio runs the screens in the building too, so you can see what is on without asking.</p>
-        </header>
-        <h3>Every studio, at a glance</h3>
-        <p>The screen in the foyer shows every studio side by side: what is on now, how long is left, and the rest of the day. It moves on by itself as sessions end.</p>
-        <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/09-foyer-screen-wide.png" data-phone-poster="{{root}}assets/studio-demos/09-foyer-screen-phone.png" aria-label="The foyer screen shows four studios side by side and moves on by itself as one session ends and the next begins." style="--w:944;--h:559;--pw:358;--ph:452">
-            <source src="{{root}}assets/studio-demos/09-foyer-screen-phone.mp4" type="video/mp4" media="(max-width: 600px)">
-            <source src="{{root}}assets/studio-demos/09-foyer-screen-wide.mp4" type="video/mp4">
-          </video>
-        <h3 class="demo-next">Fresh music, every night</h3>
-        <p>The studio's playlist is rebuilt each night, and Billy, our assistant, writes what is in it. The same words show on the screens, with a code to scan and listen.</p>
-        <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/07-billy-mix-wide.png" data-phone-poster="{{root}}assets/studio-demos/07-billy-mix-phone.png" aria-label="Each night the studio's playlist is rebuilt and Billy writes its description, which also shows on the gym's screens." style="--w:800;--h:470;--pw:358;--ph:614">
-            <source src="{{root}}assets/studio-demos/07-billy-mix-phone.mp4" type="video/mp4" media="(max-width: 600px)">
-            <source src="{{root}}assets/studio-demos/07-billy-mix-wide.mp4" type="video/mp4">
-          </video>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <header class="section-head">
-          <h2>The team works in Studio too</h2>
-          <p>The front desk, the trainers and the managers use the same app, so what you see is what they see.</p>
-        </header>
-        <div class="demo-wide">
-          <h3>The desk books a studio for you</h3>
-          <p>Pick the member, pick the hour, and it is on the day's schedule.</p>
+        </div>
+      </section>
+      <section class="role-panel" id="for-trainers" aria-labelledby="role-trainers">
+        <p class="role-lead">The schedule, every client and the team.</p>
+        <div class="demo-row">
+          <div>
+            <h3>Book a studio for a client</h3>
+          <p>Pick the client, pick the hour, and it is on the day’s schedule. The front desk can do it too.</p>
+          </div>
           <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/02-reserve-desk-wide.png" data-phone-poster="{{root}}assets/studio-demos/02-reserve-desk-phone.png" aria-label="The front desk reserves a studio for a member from the Schedule, and the booking lands on the day's grid." style="--w:800;--h:520;--pw:358;--ph:356">
-            <source src="{{root}}assets/studio-demos/02-reserve-desk-phone.mp4" type="video/mp4" media="(max-width: 600px)">
-            <source src="{{root}}assets/studio-demos/02-reserve-desk-wide.mp4" type="video/mp4">
-          </video>
+          <source src="{{root}}assets/studio-demos/02-reserve-desk-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+          <source src="{{root}}assets/studio-demos/02-reserve-desk-wide.mp4" type="video/mp4">
+        </video>
         </div>
-        <div class="demo-wide">
-          <h3>Your trainer knows how you are doing</h3>
-          <p>Everything about a client is in one record, with notes the team leaves for each other.</p>
+        <div class="demo-row demo-row-flip">
+          <div>
+            <h3>Every client in one record</h3>
+          <p>Who they are, what they have booked, and notes the team leaves for each other.</p>
+          </div>
           <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/05-clients-wide.png" data-phone-poster="{{root}}assets/studio-demos/05-clients-phone.png" aria-label="The front desk finds a client, opens their record, and adds a note the team will see next time." style="--w:920;--h:540;--pw:358;--ph:342">
-            <source src="{{root}}assets/studio-demos/05-clients-phone.mp4" type="video/mp4" media="(max-width: 600px)">
-            <source src="{{root}}assets/studio-demos/05-clients-wide.mp4" type="video/mp4">
-          </video>
+          <source src="{{root}}assets/studio-demos/05-clients-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+          <source src="{{root}}assets/studio-demos/05-clients-wide.mp4" type="video/mp4">
+        </video>
         </div>
-        <div class="demo-wide">
-          <h3>A new trainer in a minute</h3>
-          <p>A name and a home studio, and they are on the team.</p>
+        <div class="demo-row">
+          <div>
+            <h3>A new trainer in a minute</h3>
+          <p>A name and a home studio, and they are on the team. Managers add trainers themselves.</p>
+          </div>
           <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/06-add-trainer-wide.png" data-phone-poster="{{root}}assets/studio-demos/06-add-trainer-phone.png" aria-label="An admin adds a new trainer with a name and a default place, and they join the team list." style="--w:528;--h:404;--pw:358;--ph:400">
-            <source src="{{root}}assets/studio-demos/06-add-trainer-phone.mp4" type="video/mp4" media="(max-width: 600px)">
-            <source src="{{root}}assets/studio-demos/06-add-trainer-wide.mp4" type="video/mp4">
-          </video>
+          <source src="{{root}}assets/studio-demos/06-add-trainer-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+          <source src="{{root}}assets/studio-demos/06-add-trainer-wide.mp4" type="video/mp4">
+        </video>
         </div>
+      </section>
       </div>
     </section>
 
     <section class="section section-alt">
       <div class="container center">
         <h2>Who this is for</h2>
-        <p class="lead">Members of Trainability and clients of its trainers. If you train here or have a membership here, your member portal is already waiting.</p>
+        <p class="lead">Members of Trainability, clients of its trainers, and the trainers themselves. If you train here or have a membership here, your member portal is already waiting.</p>
         <div class="hero-actions">
           <a href="{{studio}}" class="btn">Open Studio</a>
         </div>

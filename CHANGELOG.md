@@ -311,3 +311,8 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   nightly mix Billy writes, and the team's side (the desk booking a studio,
   a client's record, adding a trainer). They play only while on screen, use a
   phone version on phones, and show a still under reduced motion.
+
+- **Studio page: for members, for clients, for trainers.** The page's
+  sections are grouped by who uses them, in three panels side by side. Swipe
+  (or pick a title) to change role; the next panel peeks in on the right.
+  trnblt.com/studio/#for-clients and #for-trainers open on that one.

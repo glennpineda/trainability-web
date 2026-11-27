@@ -1020,3 +1020,58 @@ document.querySelectorAll('[data-fill]').forEach(bar => {
   }), { threshold: 0.25 });
   demos.forEach((v) => io.observe(v));
 })();
+
+// Studio page: members, clients and trainers. Swipe (or pick a tab) to change role;
+// the track takes the height of the panel in view.
+(() => {
+  const root = document.querySelector('[data-roles]');
+  if (!root) return;
+  const track = root.querySelector('.role-track');
+  const panels = [...root.querySelectorAll('.role-panel')];
+  const tabs = [...root.querySelectorAll('[role="tab"]')];
+  const hint = root.querySelector('.role-hint');
+  const smooth = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  let current = -1;
+  const fit = () => { if (panels[current]) track.style.height = panels[current].offsetHeight + 'px'; };
+  const show = (i) => {
+    if (i === current) return;
+    const first = current === -1;
+    current = i;
+    panels.forEach((p, n) => p.classList.toggle('is-current', n === i));
+    tabs.forEach((t, n) => { t.setAttribute('aria-selected', n === i); t.tabIndex = n === i ? 0 : -1; });
+    fit();
+    if (!first && hint) hint.hidden = true;
+    if (!first) history.replaceState(null, '', '#' + panels[i].id);
+  };
+  const nearest = () => {
+    const left = track.scrollLeft;
+    let best = 0;
+    panels.forEach((p, n) => { if (Math.abs(p.offsetLeft - panels[0].offsetLeft - left) < Math.abs(panels[best].offsetLeft - panels[0].offsetLeft - left)) best = n; });
+    return best;
+  };
+  const go = (i, behavior = smooth) => {
+    track.scrollTo({ left: panels[i].offsetLeft - panels[0].offsetLeft, behavior });
+    show(i);
+    const top = root.getBoundingClientRect().top;
+    if (top < 0) root.scrollIntoView({ behavior, block: 'start' });
+  };
+  let t;
+  track.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(() => show(nearest()), 80); }, { passive: true });
+  tabs.forEach((tab, i) => tab.addEventListener('click', () => go(i)));
+  root.querySelector('[role="tablist"]').addEventListener('keydown', (e) => {
+    const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!d) return;
+    e.preventDefault();
+    const i = (current + d + panels.length) % panels.length;
+    go(i); tabs[i].focus();
+  });
+  // A peeking panel is a way in: tap it to bring it over.
+  panels.forEach((p, i) => p.addEventListener('click', (e) => { if (i !== current) { e.preventDefault(); go(i); } }, true));
+  panels.forEach((p, i) => p.addEventListener('focusin', () => { if (i !== current) go(i); }));
+  new ResizeObserver(fit).observe(root);
+  panels.forEach((p) => new ResizeObserver(fit).observe(p));
+  const start = Math.max(0, panels.findIndex((p) => '#' + p.id === location.hash));
+  show(start);
+  if (start) requestAnimationFrame(() => track.scrollTo({ left: panels[start].offsetLeft - panels[0].offsetLeft }));
+  root.classList.add('ready');
+})();

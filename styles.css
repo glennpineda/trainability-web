@@ -1021,8 +1021,37 @@ address { font-style: normal; }
 @media (max-width: 600px) { .demo { max-width: calc(var(--pw) * 1px); aspect-ratio: var(--pw) / var(--ph); } }
 .demo-row { display: grid; gap: 32px; align-items: center; }
 @media (min-width: 800px) { .demo-row { grid-template-columns: 1fr 1fr; gap: 48px; } .demo-row-flip > :first-child { order: 2; } }
-.demo-wide { text-align: center; }
-.demo-wide + .demo-wide, .demo-row + .demo-wide { margin-top: 64px; }
-.demo-wide > h3 { margin-bottom: 4px; }
-.demo-wide > p { color: var(--muted); max-width: 560px; margin: 0 auto 20px; }
-.demo-wide > .demo-next { margin-top: 64px; }
+.demo-row + .demo-row { margin-top: var(--demo-gap, 112px); }
+.section-head + .demo-row, .container:has(> .section-head) + .demo-row { margin-top: 0; }
+.demo-row h3 { font-size: clamp(1.6rem, 3.2vw, 2.4rem); margin-bottom: 12px; }
+
+/* Studio page: members, clients and trainers side by side, a swipe apart.
+   Each panel is a little narrower than the screen, so the next one peeks in on the right. */
+.role-tabs { display: flex; gap: clamp(16px, 3vw, 40px); overflow-x: auto; scrollbar-width: none; margin-bottom: 8px; }
+.role-tabs::-webkit-scrollbar { display: none; }
+.role-tabs button { flex: none; background: none; border: 0; padding: 0 0 6px; cursor: pointer; font-family: var(--display); font-weight: 800; text-transform: uppercase; line-height: 1; font-size: clamp(1.3rem, 4.2vw, 3rem); color: var(--text); opacity: 0.32; transition: opacity 0.25s; }
+.role-tabs button:hover { opacity: 0.6; }
+.role-tabs button[aria-selected="true"] { opacity: 1; }
+.role-tabs button:focus-visible { outline: 2px solid var(--magenta); outline-offset: 4px; }
+.role-hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 28px; }
+.role-track {
+  --pad: max(16px, calc((100vw - var(--max)) / 2 + 16px));
+  display: flex; align-items: flex-start; gap: 32px; overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory; scroll-padding-inline: var(--pad); padding-inline: var(--pad);
+  scrollbar-width: none; overscroll-behavior-x: contain; transition: height 0.35s ease;
+}
+.role-track::-webkit-scrollbar { display: none; }
+.role-track:focus-visible { outline: none; }
+.role-panel { flex: 0 0 min(calc(var(--max) - 32px), calc(100vw - 72px)); scroll-snap-align: start; scroll-snap-stop: always; transition: opacity 0.35s;
+  /* Room on the right, so a video doesn't run into the next panel peeking in. */
+  padding-right: clamp(16px, 7vw, 112px); }
+.roles.ready .role-panel:not(.is-current) { opacity: 0.35; }
+.role-lead { font-size: 1.15rem; color: var(--muted); margin: 0 0 72px; max-width: 640px; }
+.role-block + .role-block, .role-block + .demo-row, .demo-row + .role-block { margin-top: var(--demo-gap, 112px); }
+@media (min-width: 800px) { .roles { --demo-gap: 176px; } }
+.role-block .section-head { text-align: left; margin-left: 0; }
+@media (prefers-reduced-motion: reduce) { .role-track, .role-panel, .role-tabs button { transition: none; } }
+/* The role titles sit centered; the auto margins keep them scrollable if they're wider than the screen. */
+.role-tabs button:first-child { margin-left: auto; }
+.role-tabs button:last-child { margin-right: auto; }
+.role-hint { text-align: center; }
