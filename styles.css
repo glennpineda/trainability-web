@@ -1055,3 +1055,18 @@ address { font-style: normal; }
 .role-tabs button:first-child { margin-left: auto; }
 .role-tabs button:last-child { margin-right: auto; }
 .role-hint { text-align: center; }
+/* The role you're on stands out: brand gradient letters, a gradient bar under them, a soft glow. */
+.role-tabs { padding: 8px 4px 4px; }
+.role-tabs button { position: relative; padding-bottom: 14px; }
+.role-tabs button[aria-selected="true"] {
+  background: var(--gradient-bright); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--magenta) 45%, transparent));
+}
+.role-tabs button::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; border-radius: 2px; background: var(--gradient-bright); transform: scaleX(0); transition: transform 0.3s ease; }
+.role-tabs button[aria-selected="true"]::after { transform: scaleX(1); }
+.role-tabs button:not([aria-selected="true"]) { opacity: 0.4; }
+@media (prefers-reduced-motion: reduce) { .role-tabs button::after { transition: none; } }
+/* Room between the role titles and the panel, with or without the swipe hint. */
+.role-tabs { margin-bottom: 14px; }
+.role-hint { margin: 0; }
+.role-track { margin-top: 56px; }

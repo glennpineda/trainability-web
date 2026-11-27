@@ -316,3 +316,7 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   sections are grouped by who uses them, in three panels side by side. Swipe
   (or pick a title) to change role; the next panel peeks in on the right.
   trnblt.com/studio/#for-clients and #for-trainers open on that one.
+
+- **Studio page: four more demo videos.** For clients, buying more sessions by
+  replying BUY to a text. For trainers, taking time off in one go, getting
+  paid by clients, and ringing up a sale at the desk's Store.
