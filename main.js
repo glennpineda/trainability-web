@@ -1005,3 +1005,18 @@ document.querySelectorAll('[data-fill]').forEach(bar => {
   }, { threshold: 0.6 });
   seen.observe(bar);
 });
+
+// Studio page demo videos: the phone still on phones, play only while on screen,
+// and never under reduced motion (the still frame stays).
+(() => {
+  const demos = document.querySelectorAll('video.demo');
+  if (!demos.length) return;
+  const phone = matchMedia('(max-width: 600px)').matches;
+  demos.forEach((v) => { if (phone && v.dataset.phonePoster) v.poster = v.dataset.phonePoster; });
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) e.target.play().catch(() => {});
+    else e.target.pause();
+  }), { threshold: 0.25 });
+  demos.forEach((v) => io.observe(v));
+})();

@@ -304,3 +304,10 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   for pausing). In the contact form's place, a note says it's open in its
   own window, with **Open it again** and **← Back to the contact form**. trnblt.com/contact/#pause
   opens the pause one directly, as #cancel does the cancel one.
+
+- **Studio page demo videos.** Short looping videos of the app on the Studio
+  page: reserving a studio on the phone, Momentum, checking in at the kiosk
+  with a key tag or by name and PIN, the foyer's schedule screen, the
+  nightly mix Billy writes, and the team's side (the desk booking a studio,
+  a client's record, adding a trainer). They play only while on screen, use a
+  phone version on phones, and show a still under reduced motion.
