@@ -31,8 +31,7 @@ const COACH = process.env.COACH_REPO || join(homedir(), "Documents", "Trainabili
 const SHOTS = [
   { app: "studio", name: "schedule", from: join(STUDIO, "docs/images/02-schedule.png") },
   { app: "studio", name: "login", from: join(STUDIO, "docs/images/01-login.png") },
-  /* Cut above the bottom bar, which has a member's photo. */
-  { app: "studio", name: "momentum", from: join(STUDIO, "docs/shots-tmp/momentum.jpg"), crop: 880 },
+  { app: "studio", name: "clients", from: join(STUDIO, "docs/images/06-clients.png") },
   { app: "coach", name: "clients", from: join(COACH, "docs/images/05-clients.png") },
   { app: "coach", name: "login", from: join(COACH, "docs/images/01-login.png") },
   { app: "coach", name: "client", from: join(COACH, "docs/images/06-client-details.png") },

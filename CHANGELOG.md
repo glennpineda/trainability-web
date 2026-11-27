@@ -320,3 +320,14 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
 - **Studio page: four more demo videos.** For clients, buying more sessions by
   replying BUY to a text. For trainers, taking time off in one go, getting
   paid by clients, and ringing up a sale at the desk's Store.
+
+- **Studio page hero screenshots.** The three phones behind the Studio
+  page's title show the app as it is now: the sign-in page, the Schedule and
+  Clients, from Studio's manual (21 Nov 2026). Clients takes the place of the
+  old Momentum screen.
+
+- **Studio page headline, typed.** The headline is now Studio's sign-in
+  page's: "Your training." typed, then "Your schedule.", "Your clients.",
+  "Your members." and "Your studio’s day.", over "All in one place.", with the
+  same timings and the colour pouring down over both lines on the last one.
+  With motion reduced, "Your training. All in one place." simply stands.

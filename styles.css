@@ -623,7 +623,7 @@ address { font-style: normal; }
   transform-style: preserve-3d;
 }
 .app-phone {
-  flex: none; width: clamp(170px, 20vw, 270px); aspect-ratio: 560 / 1100; overflow: hidden;
+  flex: none; width: clamp(170px, 20vw, 270px); aspect-ratio: 560 / 1196; overflow: hidden; /* the screenshots' own shape, so the app's bottom bar shows */
   border-radius: clamp(22px, 2.6vw, 34px); border: clamp(5px, 0.6vw, 8px) solid #1c1b26;
   background: #1c1b26;
   box-shadow: 0 30px 60px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.06), 0 0 60px color-mix(in srgb, var(--magenta) 30%, transparent);
@@ -1070,3 +1070,24 @@ address { font-style: normal; }
 .role-tabs { margin-bottom: 14px; }
 .role-hint { margin: 0; }
 .role-track { margin-top: 56px; }
+
+/* Studio page hero: the headline typed, as on Studio's sign-in page (Studio's TypedLine.jsx).
+   "Your " stays; the rest is typed, held, taken back a letter at a time, and the next typed.
+   The last line pours into magenta from the top down, the line under it after it, then drains back. */
+.typed-h1 { font-size: min(clamp(3rem, 8vw, 5.75rem), 10.5vw); margin: clamp(48px, 7vw, 88px) 0 clamp(56px, 8vw, 100px); }
+.typed-h1 > span { display: block; }
+.typed-line { display: block; white-space: nowrap; }
+.typed-under { display: block; }
+.typed-caret { display: none; width: 0.06em; height: 0.82em; margin-left: 0.05em; vertical-align: -0.04em; background: currentColor; animation: typed-caret 1s steps(1) infinite; transition: background 0.2s; }
+.typed-on .typed-caret { display: inline-block; }
+@keyframes typed-caret { 50% { opacity: 0; } }
+.typed-wet { background: linear-gradient(to bottom, var(--typed-wet) 0 42%, var(--text) 58% 100%); background-size: 100% 240%;
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  animation: typed-pour 0.5s linear var(--typed-at, 0s) both; }
+.typed-text { --typed-wet: var(--magenta-bright); --typed-back: 0.5s; }
+.typed-under { --typed-wet: var(--cerulean-bright); --typed-at: 0.5s; --typed-back: 0s; }
+.typed-wet.typed-drain { animation: typed-drain 0.5s linear var(--typed-back) both; }
+.typed-wet + .typed-caret { background: var(--magenta-bright); transition: background 0.2s 0.35s; }
+.typed-wet.typed-drain + .typed-caret { background: currentColor; transition: background 0.2s 0.8s; }
+@keyframes typed-pour { from { background-position: 0 100%; } to { background-position: 0 0; } }
+@keyframes typed-drain { from { background-position: 0 0; } to { background-position: 0 100%; } }

@@ -1075,3 +1075,35 @@ document.querySelectorAll('[data-fill]').forEach(bar => {
   if (start) requestAnimationFrame(() => track.scrollTo({ left: panels[start].offsetLeft - panels[0].offsetLeft }));
   root.classList.add('ready');
 })();
+
+// Studio page hero: the headline typed, the way Studio's sign-in page types it
+// (Studio's src/auth/TypedLine.jsx: same lines, order and timings). Without the
+// script, or with motion reduced, "Your training." simply stands.
+(() => {
+  const line = document.querySelector('.typed-line[data-typed]');
+  if (!line || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const h1 = line.closest('h1');
+  const text = line.querySelector('.typed-text');
+  const under = h1.querySelector('.typed-under');
+  const lines = line.dataset.typed.split('|');
+  const TYPE = 75, UNTYPE = 60, HOLD = 1300, LAST_HOLD = 4500, START = 400, FLOOD_AFTER = 600, POUR = 1000;
+  const keep = 'Your '.length;
+  const wet = (on, drain) => [text, under].forEach((el) => { el.classList.toggle('typed-wet', on); el.classList.toggle('typed-drain', !!drain); });
+  h1.classList.add('typed-on');
+  let i = 0, n = keep, backing = false;
+  text.textContent = lines[0].slice(0, keep);
+  const step = () => {
+    const t = lines[i];
+    if (!backing) {
+      if (n < t.length) { text.textContent = t.slice(0, ++n); return setTimeout(step, TYPE); }
+      backing = true;
+      if (i !== lines.length - 1) return setTimeout(step, HOLD);
+      setTimeout(() => wet(true), FLOOD_AFTER);
+      return setTimeout(() => { wet(true, true); setTimeout(() => { wet(false); step(); }, POUR + 150); }, LAST_HOLD);
+    }
+    if (n > keep) { text.textContent = t.slice(0, --n); return setTimeout(step, UNTYPE); }
+    backing = false; i = (i + 1) % lines.length;
+    setTimeout(step, TYPE * 3);
+  };
+  setTimeout(step, START);
+})();
