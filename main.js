@@ -1030,8 +1030,18 @@ document.querySelectorAll('[data-fill]').forEach(bar => {
   const panels = [...root.querySelectorAll('.role-panel')];
   const tabs = [...root.querySelectorAll('[role="tab"]')];
   const hint = root.querySelector('.role-hint');
+  // Each role's lead line, shown once under the titles, centred across the screen.
+  const now = root.querySelector('.role-now');
+  if (now) now.hidden = false;
   const smooth = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
   let current = -1;
+  // Four titles can be wider than a phone: keep the current one in view.
+  const bar = root.querySelector('[role="tablist"]');
+  const centreTab = (behavior = 'auto') => {
+    const t = tabs[current];
+    if (!t || bar.scrollWidth <= bar.clientWidth) return;
+    bar.scrollTo({ left: bar.scrollLeft + t.getBoundingClientRect().left - bar.getBoundingClientRect().left - (bar.clientWidth - t.offsetWidth) / 2, behavior });
+  };
   const fit = () => { if (panels[current]) track.style.height = panels[current].offsetHeight + 'px'; };
   const show = (i) => {
     if (i === current) return;
@@ -1039,6 +1049,8 @@ document.querySelectorAll('[data-fill]').forEach(bar => {
     current = i;
     panels.forEach((p, n) => p.classList.toggle('is-current', n === i));
     tabs.forEach((t, n) => { t.setAttribute('aria-selected', n === i); t.tabIndex = n === i ? 0 : -1; });
+    if (now) now.textContent = panels[i].querySelector('.role-lead')?.textContent || '';
+    centreTab(first ? 'auto' : smooth);
     fit();
     if (!first && hint) hint.hidden = true;
     if (!first) history.replaceState(null, '', '#' + panels[i].id);
@@ -1072,6 +1084,8 @@ document.querySelectorAll('[data-fill]').forEach(bar => {
   panels.forEach((p) => new ResizeObserver(fit).observe(p));
   const start = Math.max(0, panels.findIndex((p) => '#' + p.id === location.hash));
   show(start);
+  new ResizeObserver(() => centreTab()).observe(bar);
+  document.fonts?.ready.then(() => centreTab());
   if (start) requestAnimationFrame(() => track.scrollTo({ left: panels[start].offsetLeft - panels[0].offsetLeft }));
   root.classList.add('ready');
 })();

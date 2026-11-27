@@ -19,6 +19,7 @@ description: Trainability Studio is the member portal for members and clients of
           <a href="{{studio}}" class="btn">Open Studio</a>
           <a href="{{studio}}/install" class="btn btn-ghost">Put it on your phone</a>
         </div>
+        <p class="app-release">Released <time datetime="2026-10-01">October 1, 2026</time></p>
       </div>
     </section>
 
@@ -28,10 +29,12 @@ description: Trainability Studio is the member portal for members and clients of
           <button type="button" role="tab" id="role-members" aria-controls="for-members" aria-selected="true">For members</button>
           <button type="button" role="tab" id="role-clients" aria-controls="for-clients" aria-selected="false">For clients</button>
           <button type="button" role="tab" id="role-trainers" aria-controls="for-trainers" aria-selected="false">For trainers</button>
+          <button type="button" role="tab" id="role-owners" aria-controls="for-owners" aria-selected="false">For owners</button>
         </div>
         <p class="role-hint" aria-hidden="true">Swipe for the next one →</p>
+        <p class="role-now" aria-live="polite" hidden></p>
       </div>
-      <div class="role-track" tabindex="0" aria-label="Studio for members, clients and trainers">
+      <div class="role-track" tabindex="0" aria-label="Studio for members, clients, trainers and owners">
       <section class="role-panel" id="for-members" aria-labelledby="role-members">
         <p class="role-lead">Book a studio, check in, and watch your visits add up.</p>
         <div class="demo-row">
@@ -221,6 +224,49 @@ description: Trainability Studio is the member portal for members and clients of
         </video>
         </div>
       </section>
+      <section class="role-panel" id="for-owners" aria-labelledby="role-owners">
+        <p class="role-lead">Your team’s hours, from the time clock straight to payroll.</p>
+        <div class="demo-row">
+          <div>
+            <h3>Clock in and out with a PIN</h3>
+            <p>Hourly staff tap their picture at the time clock and type a PIN. They see their shift straight away, split into Regular and Overtime under California’s rules, with their week and pay period so far.</p>
+          </div>
+          <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/14-time-clock-wide.png" data-phone-poster="{{root}}assets/studio-demos/14-time-clock-phone.png" aria-label="A team member taps her picture at the time clock, types her PIN and clocks out, then sees her shift split into Regular and Overtime, her week and her pay period so far." style="--w:760;--h:480;--pw:358;--ph:436">
+            <source src="{{root}}assets/studio-demos/14-time-clock-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+            <source src="{{root}}assets/studio-demos/14-time-clock-wide.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="demo-row demo-row-flip">
+          <div>
+            <h3>Your team’s hours go straight to payroll</h3>
+            <p>At the end of the pay period, check the hours, settle any shift that needs a look and mark them reviewed. One click sends them to QuickBooks payroll, overtime already worked out, and QuickBooks pays your team on payday. Nobody types hours in twice.</p>
+          </div>
+          <video class="demo" muted loop playsinline preload="none" poster="{{root}}assets/studio-demos/15-payroll-wide.png" data-phone-poster="{{root}}assets/studio-demos/15-payroll-phone.png" aria-label="An owner reviews the pay period’s clocked hours, marks them all reviewed and sends them to QuickBooks payroll, with overtime split out." style="--w:860;--h:560;--pw:358;--ph:600">
+            <source src="{{root}}assets/studio-demos/15-payroll-phone.mp4" type="video/mp4" media="(max-width: 600px)">
+            <source src="{{root}}assets/studio-demos/15-payroll-wide.mp4" type="video/mp4">
+          </video>
+        </div>
+      </section>
+      </div>
+    </section>
+
+    <section class="section studio-billy">
+      <div class="container two-col">
+        <div class="studio-billy-face">
+          <img src="{{root}}assets/billy/happy.svg" alt="Billy, happy: it’s done" width="512" height="512" loading="lazy">
+        </div>
+        <div>
+          <p class="eyebrow gradient-text">Built into Studio</p>
+          <h2>Billy, at your side</h2>
+          <p>Billy is the assistant inside Studio. He knows the screen you're on and who you are, so you can ask in your own words.</p>
+          <ul class="checks">
+            <li><strong>In the Billy panel.</strong> Tap his face in Studio and ask: "when is my next session?", "how many sessions do I have left?" He looks it up and shows you where to tap, and can read his answers aloud.</li>
+            <li><strong>On the phone.</strong> Call <a href="{{billyPhoneHref}}">{{billyPhone}}</a> and Billy answers. From the mobile number on your account he knows it's you: when you’re next in, canceling a session up to 24 hours before, or a message for the team.</li>
+            <li><strong>For trainers and the desk.</strong> He plans the day: appointments, birthdays and milestones, who's running low on sessions, who's in the rooms and where there's a free studio.</li>
+            <li><strong>Around the gym.</strong> Each night he writes what's in the studio's new playlist, for the screens and for you to follow.</li>
+          </ul>
+          <p class="app-note"><a href="{{root}}billy/">More about Billy →</a></p>
+        </div>
       </div>
     </section>
 

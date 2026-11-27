@@ -1029,7 +1029,7 @@ address { font-style: normal; }
    Each panel is a little narrower than the screen, so the next one peeks in on the right. */
 .role-tabs { display: flex; gap: clamp(16px, 3vw, 40px); overflow-x: auto; scrollbar-width: none; margin-bottom: 8px; }
 .role-tabs::-webkit-scrollbar { display: none; }
-.role-tabs button { flex: none; background: none; border: 0; padding: 0 0 6px; cursor: pointer; font-family: var(--display); font-weight: 800; text-transform: uppercase; line-height: 1; font-size: clamp(1.3rem, 4.2vw, 3rem); color: var(--text); opacity: 0.32; transition: opacity 0.25s; }
+.role-tabs button { flex: none; background: none; border: 0; padding: 0 0 6px; cursor: pointer; font-family: var(--display); font-weight: 800; text-transform: uppercase; line-height: 1; font-size: clamp(1.15rem, 3.3vw, 2.75rem); color: var(--text); opacity: 0.32; transition: opacity 0.25s; }
 .role-tabs button:hover { opacity: 0.6; }
 .role-tabs button[aria-selected="true"] { opacity: 1; }
 .role-tabs button:focus-visible { outline: 2px solid var(--magenta); outline-offset: 4px; }
@@ -1091,3 +1091,17 @@ address { font-style: normal; }
 .typed-wet.typed-drain + .typed-caret { background: currentColor; transition: background 0.2s 0.8s; }
 @keyframes typed-pour { from { background-position: 0 100%; } to { background-position: 0 0; } }
 @keyframes typed-drain { from { background-position: 0 0; } to { background-position: 0 100%; } }
+/* The role's lead line, under the titles: one line, centred across the screen.
+   The script fills it; without the script each panel keeps its own. */
+.role-now { text-align: center; color: var(--muted); font-size: 1.15rem; margin: 40px 0 0; }
+.roles.ready .role-panel .role-lead { display: none; }
+
+/* Studio page: Billy, happy (his "done" face), beside what he does in Studio. */
+.studio-billy .two-col { align-items: center; }
+.studio-billy-face { display: grid; place-items: center; }
+.studio-billy-face img { width: min(100%, 340px); height: auto; filter: drop-shadow(0 0 48px color-mix(in srgb, var(--magenta) 40%, transparent)); animation: billy-bob 6s ease-in-out infinite; }
+@keyframes billy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@media (prefers-reduced-motion: reduce) { .studio-billy-face img { animation: none; } }
+
+/* Studio and Coach: release date under the hero buttons. */
+.app-release { margin: 18px 0 0; font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; color: var(--muted); }

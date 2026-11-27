@@ -331,3 +331,14 @@ build are in the footer of every page, e.g. "3.0.1 · Ianthine".
   "Your members." and "Your studio’s day.", over "All in one place.", with the
   same timings and the colour pouring down over both lines on the last one.
   With motion reduced, "Your training. All in one place." simply stands.
+
+- **Studio page: Billy, at your side.** Above "Who this is for", Billy
+  happy, done (animated), with what he does in Studio: the Billy panel, the
+  phone line, the trainers' and desk's day, and the nightly playlist. The
+  line under the role titles is now one centred line that changes with the role.
+- **Studio page: For owners.** A fourth role panel with two more demo videos:
+  clocking in and out at the time clock with a picture and a PIN, and the pay
+  period's hours reviewed and sent to QuickBooks payroll, overtime worked out
+  under California's rules. Studio keeps the hours; QuickBooks payroll pays.
+- **Release dates.** The Studio page says it was released on October 1, 2026,
+  and the Coach page says Coach is coming in early 2027.
